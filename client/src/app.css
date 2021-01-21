@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@200;300&display=swap");
+*,
+*::before,
+*::after {
+  margin: 0;
+  font-family: "Grandstander", cursive;
+  box-sizing: border-box;
+  background-color: #f3f3f3;
+}
+.title {
+  font-family: Modak;
+  font-size: 4.75rem;
+  font-weight: bold;
+  font-style: italic;
+
+  position: absolute;
+  margin-top: -9rem;
+  margin-left: -4rem;
+  min-width: 500px;
+  background-image: url("https://media.istockphoto.com/videos/abstract-corporate-blue-motion-background-seamless-looping-video-id1185457490?b=1&k=6&m=1185457490&s=640x640&h=IhqIGPlkSsauip1o4n9MqyW28th8J5zmEnYY58xVsGw=");
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 7px 7px 0px #d2d2d22e;
+  animation: title 2s ease-in-out alternate infinite;
+}
+
+@keyframes title {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}

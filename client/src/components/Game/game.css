@@ -1,0 +1,42 @@
+#boarder {
+  border: 1px solid black;
+  border-radius: 0.4rem;
+  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+  overflow: hidden;
+}
+#grid {
+  margin-left: 14px;
+}
+.square {
+  /* position: absolute; */
+  /* margin-left: 2px; */
+  height: 57px;
+  width: 57px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+  border-radius: 70%;
+  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+}
+
+.Player-1 {
+  background-color: #f012be;
+}
+
+.Player-2 {
+  background-color: #2ecc40;
+}
+
+.connection {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1rem;
+  border-radius: 0.15rem;
+}
