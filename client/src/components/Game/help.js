@@ -1,6 +1,8 @@
 // NOTE
-// r = row index
-// c = column index
+// r = row; c = column
+
+import firebase from "firebase/app";
+import "firebase/database";
 
 export function createGrid(r, c) {
   let grid = [];
@@ -13,9 +15,6 @@ export function createGrid(r, c) {
 }
 
 export function checkResult(grid) {
-  const tie = grid.every((row) => !row.includes(null));
-  if (tie) return "Draw!";
-
   for (let r = 0; r < grid.length; r++) {
     for (let c = 0; c < grid[r].length; c++) {
       let value = grid[r][c];
@@ -53,106 +52,142 @@ export function checkResult(grid) {
       }
     }
   }
-  return null;
+  const tie = grid.every((row) => !row.includes(null));
+  if (tie) return "Draw!";
 }
 
 export function findAValidMove(grid, c) {
   for (let r = grid.length - 1; r >= 0; r--) {
     if (grid[r][c] === null) {
-      let move = [r, c];
+      let move = r;
       return move;
     }
   }
 }
 
-export function findAiMove(grid, columns, huPlayer, aiPlayer) {
-  let MAX_DEPTH = 3;
-  let bestMoveScore = 100;
-  let move = [];
-  let columnIndexes = columns - 1;
-
-  for (let c = columnIndexes; c >= 0; c--) {
-    let newMove = findAValidMove(grid, c);
-    if (newMove) {
-      const [row, col] = newMove;
-      grid[row][col] = aiPlayer;
-      const moveScore = maxScore(
-        grid,
-        columnIndexes,
-        MAX_DEPTH,
-        huPlayer,
-        aiPlayer
-      );
-      grid[row][col] = null;
-      if (moveScore < bestMoveScore) {
-        bestMoveScore = moveScore;
-        move = [row, col];
-      }
-    }
-  }
-  return move;
+export function getScore(result) {
+  return result === "Draw!" || !result ? 0 : 1;
 }
 
-function minScore(grid, columnIndexes, depth, huPlayer, aiPlayer) {
-  let result = checkResult(grid);
-  if (result) {
-    if (result === "Player-1 wins") return 10;
-    if (result === "Player-2 wins") return -10;
-    if (result === "Draw") return 0;
-  }
-  if (depth === 0) return 0;
+export function findAiMove(grid, numOfCols) {
+  let maxDepth = 7;
+  let bestMoves = [];
+  let bestDepth;
+  let bestScore = -Infinity;
 
-  let bestMoveScore = 100;
-  for (let c = columnIndexes; c >= 0; c--) {
-    const newMove = findAValidMove(grid, c);
-    if (newMove) {
-      const [row, col] = newMove;
-      grid[row][col] = huPlayer;
-      const moveScore = maxScore(
-        grid,
-        columnIndexes,
-        depth - 1,
-        huPlayer,
-        aiPlayer
-      );
-      grid[row][col] = null;
-      if (moveScore < bestMoveScore) {
-        bestMoveScore = moveScore;
+  console.log("*********BEGIN*********");
+  for (let c = 0; c < numOfCols; c++) {
+    let r = findAValidMove(grid, c);
+    if (r !== undefined) {
+      grid[r][c] = "Player-2";
+      let depthAndScore = alphabeta(grid, numOfCols, maxDepth, false);
+      grid[r][c] = null;
+      let [moveDepth, moveScore] = depthAndScore;
+      if (
+        moveScore > bestScore ||
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
+      ) {
+        console.log(
+          "Created new best moves",
+          moveScore,
+          bestScore,
+          moveDepth,
+          bestDepth
+        );
+        bestMoves = [];
+        bestDepth = moveDepth;
+        bestScore = moveScore;
+        bestMoves.push([r, c]);
+      } else if (moveScore === bestScore && moveDepth === bestDepth) {
+        console.log(
+          "pushed moves with same score",
+          moveScore,
+          bestScore,
+          moveDepth,
+          bestDepth
+        );
+        bestMoves.push([r, c]);
       }
     }
   }
-
-  return bestMoveScore;
+  console.log({ bestMoves });
+  let randomMove = Math.floor(Math.random() * bestMoves.length);
+  return bestMoves[randomMove];
 }
 
-function maxScore(grid, columnIndexes, depth, huPlayer, aiPlayer) {
+function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   let result = checkResult(grid);
-  if (result) {
-    if (result === "Player-1 wins") return 10;
-    if (result === "Player-2 wins") return -10;
-    if (result === "Draw") return 0;
-  }
-  if (depth === 0) return 0;
+  if (result === "Player-1 wins") return [depth, -10];
+  if (result === "Player-2 wins") return [depth, 10];
+  if (result === "Draw!" || depth === 0) return [depth, 0];
 
-  let bestMoveScore = -100;
-  for (let c = columnIndexes; c >= 0; c--) {
-    let newMove = findAValidMove(grid, c);
-    if (newMove) {
-      const [row, col] = newMove;
-      grid[row][col] = huPlayer;
-      const moveScore = minScore(
-        grid,
-        columnIndexes,
-        depth - 1,
-        huPlayer,
-        aiPlayer
-      );
-      grid[row][col] = null;
-      if (moveScore > bestMoveScore) {
-        bestMoveScore = moveScore;
+  if (isMaximizingPlayer) {
+    let bestMove = [];
+    let bestDepth = 0;
+    let bestScore = -Infinity;
+    for (let c = 0; c < numOfCols; c++) {
+      let r = findAValidMove(grid, c);
+      if (r !== undefined) {
+        grid[r][c] = "Player-2";
+        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false);
+        grid[r][c] = null;
+        let [moveDepth, moveScore] = depthAndScore;
+        if (
+          moveScore > bestScore ||
+          (moveScore === bestScore &&
+            moveDepth > bestDepth &&
+            moveScore >= 0) ||
+          (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
+        ) {
+          bestDepth = moveDepth;
+          bestScore = moveScore;
+          bestMove = depthAndScore;
+        }
       }
     }
+    return bestMove;
+  } else {
+    let bestMove = [];
+    let bestDepth = 0;
+    let bestScore = Infinity;
+    for (let c = 0; c < numOfCols; c++) {
+      let r = findAValidMove(grid, c);
+      if (r !== undefined) {
+        grid[r][c] = "Player-1";
+        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true);
+        grid[r][c] = null;
+        // if (!depthAndScore) continue;
+        let [moveDepth, moveScore] = depthAndScore;
+        if (
+          moveScore < bestScore ||
+          (moveScore === bestScore && moveDepth > bestDepth)
+        ) {
+          bestDepth = moveDepth;
+          bestScore = moveScore;
+          bestMove = depthAndScore;
+        }
+      }
+    }
+    return bestMove;
   }
+}
 
-  return bestMoveScore;
+export function storeScore(id, totalGame, score) {
+  firebase.database().ref(id).set({
+    played: totalGame,
+    won: score,
+  });
+}
+
+export function fetchScore(id) {
+  let played, won;
+  firebase
+    .database()
+    .ref(id)
+    .on("value", function (snapshot) {
+      played = snapshot.val().played;
+      won = snapshot.val().won;
+    });
+  return [played, won];
 }

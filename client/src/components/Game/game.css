@@ -8,8 +8,6 @@
   margin-left: 14px;
 }
 .square {
-  /* position: absolute; */
-  /* margin-left: 2px; */
   height: 57px;
   width: 57px;
   display: flex;
@@ -27,13 +25,33 @@
 
 .Player-1 {
   background-color: #f012be;
+  animation: player-1 1.5s;
 }
 
 .Player-2 {
   background-color: #2ecc40;
+  animation: player-2 1.5s;
 }
 
-.connection {
+@keyframes player-1 {
+  from {
+    background-color: rgb(0, 123, 255);
+  }
+  to {
+    background-color: #f012be;
+  }
+}
+
+@keyframes player-2 {
+  from {
+    background-color: rgb(0, 123, 255);
+  }
+  to {
+    background-color: #2ecc40;
+  }
+}
+
+.indicator {
   display: inline-block;
   width: 1rem;
   height: 1rem;
