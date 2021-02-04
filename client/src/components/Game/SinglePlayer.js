@@ -19,26 +19,22 @@ export default function SinglePlayer() {
   const initialGrid = createGrid(rows, columns);
 
   const [grid, setGrid] = useState(initialGrid);
-  const [huPlayerIsNext, setHuPlayerIsNext] = useState(true);
   const [result, displayResult] = useState("");
-  const [turn, switchTurn] = useState(true);
-  let huPlayer = "Player-1";
-  let aiPlayer = "Player-2";
-  const { currentUser } = useAuth();
   const [numOfGames, setNumOfGames] = useState(1);
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
+  const [huPlayerIsNext, setHuPlayerIsNext] = useState(true);
+  const [turn, switchTurn] = useState(true);
+  const { currentUser } = useAuth();
   const [played, won] = fetchScore(currentUser.uid);
+
+  let huPlayer = "Player-1";
+  let aiPlayer = "Player-2";
 
   useEffect(() => {
     if (!huPlayerIsNext) {
       let newGrid = grid.slice();
-      const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(
-        newGrid,
-        columns,
-        huPlayer,
-        aiPlayer
-      );
+      const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, columns);
       newGrid[aiMoveRowIdx][aiMoveColIdx] = aiPlayer;
       setGrid(newGrid);
       let newResult = checkResult(newGrid);

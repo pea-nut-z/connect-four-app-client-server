@@ -65,17 +65,13 @@ export function findAValidMove(grid, c) {
   }
 }
 
-export function getScore(result) {
-  return result === "Draw!" || !result ? 0 : 1;
-}
-
 export function findAiMove(grid, numOfCols) {
   let maxDepth = 7;
   let bestMoves = [];
   let bestDepth;
   let bestScore = -Infinity;
 
-  console.log("*********BEGIN*********");
+  // console.log("*********BEGIN*********");
   for (let c = 0; c < numOfCols; c++) {
     let r = findAValidMove(grid, c);
     if (r !== undefined) {
@@ -88,30 +84,30 @@ export function findAiMove(grid, numOfCols) {
         (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
         (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
       ) {
-        console.log(
-          "Created new best moves",
-          moveScore,
-          bestScore,
-          moveDepth,
-          bestDepth
-        );
+        // console.log(
+        //   "Created new best moves",
+        //   moveScore,
+        //   bestScore,
+        //   moveDepth,
+        //   bestDepth
+        // );
         bestMoves = [];
         bestDepth = moveDepth;
         bestScore = moveScore;
         bestMoves.push([r, c]);
       } else if (moveScore === bestScore && moveDepth === bestDepth) {
-        console.log(
-          "pushed moves with same score",
-          moveScore,
-          bestScore,
-          moveDepth,
-          bestDepth
-        );
+        // console.log(
+        //   "pushed moves with same score",
+        //   moveScore,
+        //   bestScore,
+        //   moveDepth,
+        //   bestDepth
+        // );
         bestMoves.push([r, c]);
       }
     }
   }
-  console.log({ bestMoves });
+  // console.log({ bestMoves });
   let randomMove = Math.floor(Math.random() * bestMoves.length);
   return bestMoves[randomMove];
 }
