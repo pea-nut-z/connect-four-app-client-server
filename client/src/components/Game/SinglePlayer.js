@@ -3,20 +3,13 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SquareGrid from "./SquareGrid";
 import "./game.css";
-import {
-  createGrid,
-  checkResult,
-  findAValidMove,
-  findAiMove,
-  storeScore,
-  fetchScore,
-} from "./help";
+import { createGrid, checkResult, findAValidMove, findAiMove, storeScore, fetchScore } from "./help";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SinglePlayer() {
-  const rows = 6;
-  const columns = 7;
-  const initialGrid = createGrid(rows, columns);
+  const numOfRows = 6;
+  const numOfCols = 7;
+  const initialGrid = createGrid(numOfRows, numOfCols);
 
   const [grid, setGrid] = useState(initialGrid);
   const [result, displayResult] = useState("");
@@ -34,13 +27,13 @@ export default function SinglePlayer() {
   useEffect(() => {
     if (!huPlayerIsNext) {
       let newGrid = grid.slice();
-      const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, columns);
+      const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, numOfCols);
       newGrid[aiMoveRowIdx][aiMoveColIdx] = aiPlayer;
       setGrid(newGrid);
       let newResult = checkResult(newGrid);
       if (newResult) {
-        if (newResult === "Draw!") displayResult(newResult + "🤝");
-        if (newResult !== "Draw!") {
+        if (newResult === "Draw") displayResult(newResult + "! 🤝");
+        if (newResult !== "Draw") {
           displayResult("😱 YOU LOST! 💩");
           setScore2(score2 + 1);
         }
@@ -58,13 +51,13 @@ export default function SinglePlayer() {
       newGrid[huMoveRowIdx][huMoveColIdx] = huPlayer;
       setGrid(newGrid);
       let newResult = checkResult(newGrid);
-      if (newResult && newResult !== "Draw!") {
+      if (newResult && newResult !== "Draw") {
         displayResult("🥂 YOU WIN! 🎉");
         setScore1(score1 + 1);
         storeScore(currentUser.uid, played + 1, won + 1);
       }
-      if (newResult === "Draw!") {
-        displayResult(newResult + "🤝");
+      if (newResult === "Draw") {
+        displayResult(newResult + "! 🤝");
         storeScore(currentUser.uid, played + 1, won);
       }
       if (!newResult) {
@@ -107,10 +100,7 @@ export default function SinglePlayer() {
           <div id="players" className="col">
             <h6 className="player float-right">
               {currentUser.displayName}
-              <div
-                style={{ background: "#f012be" }}
-                className="indicator rounded ml-2"
-              />
+              <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
             <h6 className="player float-right">
               Peanutbot
@@ -125,12 +115,7 @@ export default function SinglePlayer() {
           {grid.map((row, rowIndex) => (
             <div className="row" key={rowIndex}>
               {row.map((value, colIdx) => (
-                <SquareGrid
-                  key={colIdx}
-                  value={value}
-                  colIdx={colIdx}
-                  handleMove={handleMove}
-                />
+                <SquareGrid key={colIdx} value={value} colIdx={colIdx} handleMove={handleMove} />
               ))}
             </div>
           ))}
@@ -138,10 +123,7 @@ export default function SinglePlayer() {
       </div>
 
       {/* WHO's TURN DISPLAY*/}
-      <h4
-        className="text-center mt-4"
-        style={{ color: huPlayerIsNext ? "#f012be" : "#2ecc40" }}
-      >
+      <h4 className="text-center mt-4" style={{ color: huPlayerIsNext ? "#f012be" : "#2ecc40" }}>
         {result ? "" : huPlayerIsNext ? "Your turn" : "Peanutbot's turn"}
       </h4>
 

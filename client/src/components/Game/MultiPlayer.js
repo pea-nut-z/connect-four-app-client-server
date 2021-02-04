@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SquareGrid from "./SquareGrid";
-import {
-  createGrid,
-  checkResult,
-  findAValidMove,
-  storeScore,
-  fetchScore,
-} from "./help";
+import { createGrid, checkResult, findAValidMove, storeScore, fetchScore } from "./help";
 import "./game.css";
 import io from "socket.io-client";
 import { useAuth } from "../../contexts/AuthContext";
@@ -95,8 +89,8 @@ export default function MultiPlayer() {
 
       // There is a win/draw
       if (result) {
-        if (result !== "Draw!") result = "😱 YOU LOST! 💩";
-        displayResult(result + "🤝");
+        if (result !== "Draw") result = "😱 YOU LOST! 💩";
+        displayResult(result + "! 🤝");
         turn ? setScore1(score1 + 1) : setScore2(score2 + 1);
         storeScore(currentUser.uid, played + 1, won);
       }
@@ -107,7 +101,6 @@ export default function MultiPlayer() {
         toggleReady(!ready);
         disableReplayButton(false);
       }
-
       setGrid(grid);
       switchTurn(turn);
     });
@@ -129,13 +122,13 @@ export default function MultiPlayer() {
       const rowIdx = findAValidMove(newGrid, colIdx);
       newGrid[rowIdx][colIdx] = currentPlayer ? "Player-1" : "Player-2";
       let newResult = checkResult(newGrid);
-      if (newResult && newResult !== "Draw!") {
+      if (newResult && newResult !== "Draw") {
         disableReplayButton(true);
         currentPlayer ? setScore1(score1 + 1) : setScore2(score2 + 1);
         newResult = "🥂 YOU WIN! 🎉";
         storeScore(currentUser.uid, played + 1, won + 1);
       }
-      if (newResult === "Draw!") {
+      if (newResult === "Draw") {
         disableReplayButton(true);
         storeScore(currentUser.uid, played + 1, won);
       }
@@ -182,10 +175,7 @@ export default function MultiPlayer() {
           <div id="players" className="col">
             <h6 className="player float-right">
               {player1 ? player1 : "Waiting..."}
-              <div
-                style={{ background: "#f012be" }}
-                className="indicator rounded ml-2"
-              />
+              <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
             <h6 className="player float-right">
               {player2 ? player2 : "Waiting..."}
@@ -201,12 +191,7 @@ export default function MultiPlayer() {
           {grid.map((row, rowIdx) => (
             <div className="row" key={rowIdx}>
               {row.map((value, colIdx) => (
-                <SquareGrid
-                  key={colIdx}
-                  value={value}
-                  colIdx={colIdx}
-                  handleMove={handleMove}
-                />
+                <SquareGrid key={colIdx} value={value} colIdx={colIdx} handleMove={handleMove} />
               ))}
             </div>
           ))}
@@ -214,10 +199,7 @@ export default function MultiPlayer() {
       </div>
 
       {/* WHO's TURN DISPLAY*/}
-      <h4
-        className="text-center mt-4"
-        style={{ color: turn ? "#f012be" : "#2ecc40" }}
-      >
+      <h4 className="text-center mt-4" style={{ color: turn ? "#f012be" : "#2ecc40" }}>
         {result
           ? ""
           : ready && player1 && player2
@@ -234,11 +216,7 @@ export default function MultiPlayer() {
       <h5 className="text-center text-warning mt-4">{warning}</h5>
 
       {/* BUTTONS*/}
-      <Button
-        disabled={replayButton}
-        className="btn-warning w-100 mt-4"
-        onClick={handleReplay}
-      >
+      <Button disabled={replayButton} className="btn-warning w-100 mt-4" onClick={handleReplay}>
         Replay
       </Button>
       <Link to="/" className="btn btn-warning w-100 mt-3 " onClick={handleQuit}>

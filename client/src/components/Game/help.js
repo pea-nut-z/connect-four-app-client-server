@@ -26,7 +26,7 @@ export function checkResult(grid) {
         value === grid[r][c + 2] &&
         value === grid[r][c + 3]
       ) {
-        return value + " wins";
+        return value;
       }
 
       if (r < grid.length - 3) {
@@ -47,13 +47,13 @@ export function checkResult(grid) {
             value === grid[r + 2][c - 2] &&
             value === grid[r + 3][c - 3])
         ) {
-          return value + " wins";
+          return value;
         }
       }
     }
   }
   const tie = grid.every((row) => !row.includes(null));
-  if (tie) return "Draw!";
+  if (tie) return "Draw";
 }
 
 export function findAValidMove(grid, c) {
@@ -114,9 +114,9 @@ export function findAiMove(grid, numOfCols) {
 
 function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   let result = checkResult(grid);
-  if (result === "Player-1 wins") return [depth, -10];
-  if (result === "Player-2 wins") return [depth, 10];
-  if (result === "Draw!" || depth === 0) return [depth, 0];
+  if (result === "Player-1") return [depth, -10];
+  if (result === "Player-2") return [depth, 10];
+  if (result === "Draw" || depth === 0) return [depth, 0];
 
   if (isMaximizingPlayer) {
     let bestMove = [];
@@ -131,9 +131,7 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
         let [moveDepth, moveScore] = depthAndScore;
         if (
           moveScore > bestScore ||
-          (moveScore === bestScore &&
-            moveDepth > bestDepth &&
-            moveScore >= 0) ||
+          (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
           (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
         ) {
           bestDepth = moveDepth;
@@ -155,10 +153,7 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
         grid[r][c] = null;
         // if (!depthAndScore) continue;
         let [moveDepth, moveScore] = depthAndScore;
-        if (
-          moveScore < bestScore ||
-          (moveScore === bestScore && moveDepth > bestDepth)
-        ) {
+        if (moveScore < bestScore || (moveScore === bestScore && moveDepth > bestDepth)) {
           bestDepth = moveDepth;
           bestScore = moveScore;
           bestMove = depthAndScore;
