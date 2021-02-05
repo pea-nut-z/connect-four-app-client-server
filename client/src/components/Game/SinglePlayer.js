@@ -7,6 +7,8 @@ import { createGrid, checkResult, findAValidMove, findAiMove, storeScore, fetchS
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SinglePlayer() {
+  console.log(props);
+
   const numOfRows = 6;
   const numOfCols = 7;
   const initialGrid = createGrid(numOfRows, numOfCols);
