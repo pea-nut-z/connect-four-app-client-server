@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SquareGrid from "./SquareGrid";
+import ReplayButton from "./ReplayButton";
 import "./game.css";
 import { createGrid, checkResult, findAValidMove, findAiMove, storeScore, fetchScore } from "./help";
-import { useAuth } from "../../contexts/AuthContext";
+// import { useAuth } from "../../contexts/AuthContext";
 
 export default function SinglePlayer() {
-  console.log(props);
-
   const numOfRows = 6;
   const numOfCols = 7;
   const initialGrid = createGrid(numOfRows, numOfCols);
@@ -20,8 +19,8 @@ export default function SinglePlayer() {
   const [score2, setScore2] = useState(0);
   const [huPlayerIsNext, setHuPlayerIsNext] = useState(true);
   const [turn, switchTurn] = useState(true);
-  const { currentUser } = useAuth();
-  const [played, won] = fetchScore(currentUser.uid);
+  // const { currentUser } = useAuth();
+  // const [played, won] = fetchScore(currentUser.uid);
 
   let huPlayer = "Player-1";
   let aiPlayer = "Player-2";
@@ -39,7 +38,7 @@ export default function SinglePlayer() {
           displayResult("😱 YOU LOST! 💩");
           setScore2(score2 + 1);
         }
-        storeScore(currentUser.uid, played + 1, won);
+        // storeScore(currentUser.uid, played + 1, won);
       } else {
         setHuPlayerIsNext(true);
       }
@@ -56,11 +55,11 @@ export default function SinglePlayer() {
       if (newResult && newResult !== "Draw") {
         displayResult("🥂 YOU WIN! 🎉");
         setScore1(score1 + 1);
-        storeScore(currentUser.uid, played + 1, won + 1);
+        // storeScore(currentUser.uid, played + 1, won + 1);
       }
       if (newResult === "Draw") {
         displayResult(newResult + "! 🤝");
-        storeScore(currentUser.uid, played + 1, won);
+        // storeScore(currentUser.uid, played + 1, won);
       }
       if (!newResult) {
         setHuPlayerIsNext(!huPlayerIsNext);
@@ -69,16 +68,16 @@ export default function SinglePlayer() {
     }
   };
 
-  function handleReplay() {
-    if (!result) storeScore(currentUser.uid, played + 1, won);
-    setNumOfGames(numOfGames + 1);
-    setGrid(initialGrid);
-    displayResult("");
-    setHuPlayerIsNext(true);
-  }
+  // function handleReplay() {
+  //   // if (!result) storeScore(currentUser.uid, played + 1, won);
+  //   setNumOfGames(numOfGames + 1);
+  //   setGrid(initialGrid);
+  //   displayResult("");
+  //   setHuPlayerIsNext(true);
+  // }
 
   const handleQuit = () => {
-    if (!result) storeScore(currentUser.uid, played + 1, won);
+    // if (!result) storeScore(currentUser.uid, played + 1, won);
   };
 
   return (
@@ -101,7 +100,7 @@ export default function SinglePlayer() {
           {/* PLAYERS LEGEND */}
           <div id="players" className="col">
             <h6 className="player float-right">
-              {currentUser.displayName}
+              {/* {currentUser.displayName} */}
               <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
             <h6 className="player float-right">
@@ -131,9 +130,10 @@ export default function SinglePlayer() {
 
       {/* RESULT DSIPLAY*/}
       <h4 className="text-warning text-center mt-4">{result}</h4>
-      <Button className="btn-warning w-100 mt-5" onClick={handleReplay}>
+      {/* <Button className="btn-warning w-100 mt-5" onClick={handleReplay}>
         Replay
-      </Button>
+      </Button> */}
+      <ReplayButton setNumOfGames={setNumOfGames} />
       <Link to="/" className="btn btn-warning w-100 mt-3" onClick={handleQuit}>
         Quit
       </Link>

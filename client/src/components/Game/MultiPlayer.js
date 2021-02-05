@@ -25,7 +25,7 @@ export default function MultiPlayer() {
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
   const [result, displayResult] = useState("");
-  const [warning, displayWarning] = useState("");
+  const [info, displayInfo] = useState("");
   const [ready, toggleReady] = useState(false);
   const [turn, switchTurn] = useState(true);
   const [thisTurn, endThisTurn] = useState();
@@ -75,16 +75,16 @@ export default function MultiPlayer() {
     });
 
     // update clients' grid , status and score
-    client.emit("update-game", { grid, result, warning, turn });
-    client.on("update-game", ({ grid, result, warning, turn }) => {
+    client.emit("update-game", { grid, result, info, turn });
+    client.on("update-game", ({ grid, result, info, turn }) => {
       // console.log("updated");
 
       // replay was clicked
-      if (warning) {
+      if (info) {
         setNumOfGames(numOfGames + 1);
-        displayWarning("Play again? Go!");
+        displayInfo("Play again? Go!");
       } else {
-        displayWarning("");
+        displayInfo("");
       }
 
       // There is a win/draw
@@ -109,7 +109,7 @@ export default function MultiPlayer() {
     client.on("player-disconnected", ({ name, num }) => {
       // console.log("disconnected");
       num === 0 ? assignPlayer1("") : assignPlayer2("");
-      displayWarning(`${name} left💨`);
+      displayInfo(`${name} left💨`);
     });
     return () => {
       client.disconnect();
@@ -132,7 +132,7 @@ export default function MultiPlayer() {
         disableReplayButton(true);
         storeScore(currentUser.uid, played + 1, won);
       }
-      displayWarning("");
+      displayInfo("");
       setGrid(newGrid);
       displayResult(newResult);
       toggleReady(false);
@@ -142,7 +142,7 @@ export default function MultiPlayer() {
 
   const handleReplay = () => {
     if (!result) storeScore(currentUser.uid, played + 1, won);
-    displayWarning("Replay request is sent! ");
+    displayInfo("Replay request is sent! ");
     setNumOfGames(numOfGames + 1);
     toggleReady(false);
     setGrid(initialGrid);
@@ -151,7 +151,7 @@ export default function MultiPlayer() {
   };
 
   const handleQuit = () => {
-    if (!warning && !result) storeScore(currentUser.uid, played + 1, won);
+    if (!info && !result) storeScore(currentUser.uid, played + 1, won);
   };
 
   return (
@@ -212,8 +212,8 @@ export default function MultiPlayer() {
       {/* RESULT DSIPLAY*/}
       <h4 className="text-center text-warning mt-4">{result}</h4>
 
-      {/* WARNING DISPLAY */}
-      <h5 className="text-center text-warning mt-4">{warning}</h5>
+      {/* INFO DISPLAY */}
+      <h5 className="text-center text-warning mt-4">{info}</h5>
 
       {/* BUTTONS*/}
       <Button disabled={replayButton} className="btn-warning w-100 mt-4" onClick={handleReplay}>

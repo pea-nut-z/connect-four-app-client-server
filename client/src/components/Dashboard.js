@@ -9,6 +9,7 @@ export default function Dashboard() {
   const { currentUser, logout } = useAuth();
 
   const [error, setError] = useState("");
+  // const [singleMode, setSingleMode] = useState(false);
   const [playedTotal, setPlayedTotal] = useState(0);
   const [wonTotal, setWonTotal] = useState(0);
 
@@ -36,9 +37,7 @@ export default function Dashboard() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">
-            Hello, {currentUser.displayName}!
-          </h2>
+          <h2 className="text-center mb-4">Hello, {currentUser.displayName}!</h2>
           <div className="row">
             <h4 className="col-6 text-center">🎮 ✖️ {playedTotal}</h4>
             <h4 className="col-6 text-center">🏆 ✖️ {wonTotal}</h4>
@@ -58,11 +57,7 @@ export default function Dashboard() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Button
-          variant="link"
-          className="text-decoration-none"
-          onClick={handleLogout}
-        >
+        <Button variant="link" className="text-decoration-none" onClick={handleLogout}>
           Log Out
         </Button>
       </div>

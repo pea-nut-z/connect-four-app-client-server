@@ -1,7 +1,9 @@
 import React from "react";
-import SinglePlayer from "../SinglePlayer";
 import { render } from "@testing-library/react";
-describe("replay button", () => {
+
+xdescribe("replay button", () => {
+  //   const { login } = useAuth();
+  jest.mock("./MyComponent");
   // it("increments the number of round by 1", () => {
   // const { getByText } = render(<SinglePlayer/>)
   // const replayButton = getByText(/Replay/)
