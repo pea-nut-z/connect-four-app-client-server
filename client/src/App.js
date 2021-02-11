@@ -1,17 +1,16 @@
 import React from "react";
-import Signup from "./components/Signup";
 import { Container } from "react-bootstrap";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import Login from "./components/Login";
-import PrivateRoute from "./components/PrivateRoute";
-import ForgotPassword from "./components/ForgotPassword";
-import UpdateProfile from "./components/UpdateProfile";
-import SinglePlayer from "./components/Game/SinglePlayer";
-import MultiPlayer from "./components/Game/MultiPlayer";
+import PrivateRoute from "./components/auth/PrivateRoute";
+import Page from "./components/Page";
+import UpdateProfile from "./components/auth/UpdateProfile";
+import Signup from "./components/auth/Signup";
+import Login from "./components/auth/Login";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import "./app.css";
 
-function App() {
+export default function App() {
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
@@ -21,13 +20,11 @@ function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact path="/" component={Dashboard} />
+              <PrivateRoute exact path="/" component={Page} />
               <PrivateRoute path="/update-profile" component={UpdateProfile} />
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
-              <Route path="/single-player" component={SinglePlayer} />
-              <Route path="/multi-player" component={MultiPlayer} />
             </Switch>
           </AuthProvider>
         </Router>
@@ -35,5 +32,3 @@ function App() {
     </Container>
   );
 }
-
-export default App;

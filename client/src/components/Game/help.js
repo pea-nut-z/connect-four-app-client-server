@@ -1,18 +1,20 @@
 // NOTE
 // r = row; c = column
+// import "firebase/database";
+// import base from "../../firebase";
+// import React, { useState, useEffect } from "react";
 
-import firebase from "firebase/app";
-import "firebase/database";
-
-export function createGrid(r, c) {
+export const initialGrid = function () {
+  const numOfRows = 6;
+  const numOfCols = 7;
   let grid = [];
   let i = 0;
-  while (i < r) {
-    grid.push(Array(c).fill(null));
+  while (i < numOfRows) {
+    grid.push(Array(numOfCols).fill(null));
     i++;
   }
   return grid;
-}
+};
 
 export function checkResult(grid) {
   for (let r = 0; r < grid.length; r++) {
@@ -65,8 +67,9 @@ export function findAValidMove(grid, c) {
   }
 }
 
-export function findAiMove(grid, numOfCols) {
+export function findAiMove(grid) {
   let maxDepth = 7;
+  let numOfCols = grid[0].length;
   let bestMoves = [];
   let bestDepth;
   let bestScore = -Infinity;
@@ -75,7 +78,7 @@ export function findAiMove(grid, numOfCols) {
   for (let c = 0; c < numOfCols; c++) {
     let r = findAValidMove(grid, c);
     if (r !== undefined) {
-      grid[r][c] = "Player-2";
+      grid[r][c] = "p2";
       let depthAndScore = alphabeta(grid, numOfCols, maxDepth, false);
       grid[r][c] = null;
       let [moveDepth, moveScore] = depthAndScore;
@@ -114,8 +117,8 @@ export function findAiMove(grid, numOfCols) {
 
 function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   let result = checkResult(grid);
-  if (result === "Player-1") return [depth, -10];
-  if (result === "Player-2") return [depth, 10];
+  if (result === "p1") return [depth, -10];
+  if (result === "p2") return [depth, 10];
   if (result === "Draw" || depth === 0) return [depth, 0];
 
   if (isMaximizingPlayer) {
@@ -125,7 +128,7 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "Player-2";
+        grid[r][c] = "p2";
         let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false);
         grid[r][c] = null;
         let [moveDepth, moveScore] = depthAndScore;
@@ -148,7 +151,7 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "Player-1";
+        grid[r][c] = "p1";
         let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true);
         grid[r][c] = null;
         // if (!depthAndScore) continue;
@@ -164,21 +167,49 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   }
 }
 
-export function storeScore(id, totalGame, score) {
-  firebase.database().ref(id).set({
-    played: totalGame,
-    won: score,
-  });
-}
+// export function storeScore(id, totalGame, score) {
+//   firebase.database().ref(id).set({
+//     played: totalGame,
+//     won: score,
+//   });
+// }
 
-export function fetchScore(id) {
-  let played, won;
-  firebase
-    .database()
-    .ref(id)
-    .on("value", function (snapshot) {
-      played = snapshot.val().played;
-      won = snapshot.val().won;
-    });
-  return [played, won];
-}
+// export function storeScore(id, totalGame, score) {
+// base.syncState(id, {
+//   played: totalGame,
+//   won: score,
+// });
+// }
+
+// export function fetchScore(id) {
+//   let played, won;
+//   firebase
+//     .database()
+//     .ref(id)
+//     .on("value", function (snapshot) {
+//       played = snapshot.val().played;
+//       won = snapshot.val().won;
+//     });
+//   return [played, won];
+// }
+
+// export const useSyncState = (endpoint, state, setState) => {
+//   console.log({ state });
+
+//   useEffect(() => {
+//     const stateName = Object.keys(state)[0];
+//     console.log({ stateName });
+
+//     const ref = base.syncState(endpoint, {
+//       context: {
+//         setState: (stateChange) => setState({ ...stateChange[stateName] }),
+//         state,
+//       },
+//       state: stateName,
+//     });
+
+//     return () => {
+//       base.removeBinding(ref);
+//     };
+//   }, []);
+// };

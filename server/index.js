@@ -3,7 +3,8 @@ const app = express();
 const http = require("http").createServer(app);
 const server = require("socket.io")(http, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
   },
 });
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 http.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
+
 // handle a socket connection request from web client
 const connectionStatus = [false, false];
 server.on("connection", (socket) => {
@@ -48,14 +50,21 @@ server.on("connection", (socket) => {
 
   console.log({ connectionStatus });
 
-  // update game
-  socket.on("update-game", ({ grid, result, warning, turn }) => {
-    socket.broadcast.emit("update-game", {
-      grid,
-      result,
-      warning,
-      turn,
-    });
+  socket.on("update-grid", ({ grid, gameOver }) => {
+    socket.broadcast.emit("update-grid", { grid, gameOver });
+  });
+
+  socket.on("update-result-display", ({ result, lastPlayer, numOfRounds }) => {
+    console.log({ lastPlayer });
+    socket.broadcast.emit("update-result-display", { result, lastPlayer, numOfRounds });
+  });
+
+  socket.on("update-score", ({ result, numOfRounds }) => {
+    server.sockets.emit("update-score", { result, numOfRounds });
+  });
+
+  socket.on("replay-request", () => {
+    socket.broadcast.emit("replay-request");
   });
 
   // handle disconnect

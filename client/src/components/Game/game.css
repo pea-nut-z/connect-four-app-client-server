@@ -23,12 +23,12 @@
   box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
 }
 
-.Player-1 {
+.p1 {
   background-color: #f012be;
   animation: player-1 1.5s;
 }
 
-.Player-2 {
+.p2 {
   background-color: #2ecc40;
   animation: player-2 1.5s;
 }

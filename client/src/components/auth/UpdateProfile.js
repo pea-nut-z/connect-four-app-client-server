@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 
 export default function UpdateProfile() {
@@ -24,9 +24,7 @@ export default function UpdateProfile() {
     setError("");
 
     if (usernameRef.current.value !== currentUser.displayName) {
-      promises.push(
-        currentUser.updateProfile({ displayName: usernameRef.current.value })
-      );
+      promises.push(currentUser.updateProfile({ displayName: usernameRef.current.value }));
     }
     if (emailRef.current.value !== currentUser.email) {
       promises.push(updateEmail(emailRef.current.value));
@@ -63,12 +61,7 @@ export default function UpdateProfile() {
             </Form.Group>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                ref={emailRef}
-                required
-                defaultValue={currentUser.email}
-              />
+              <Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email} />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
