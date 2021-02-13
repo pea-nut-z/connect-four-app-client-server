@@ -22,49 +22,55 @@ const connectionStatus = [false, false];
 server.on("connection", (socket) => {
   let playerIndex = -1;
 
-  // find an available player number
-  for (const i in connectionStatus) {
-    if (connectionStatus[i] === false) {
-      playerIndex = parseInt(i);
-      break;
+  socket.on("player-connecting", ({ userName }) => {
+    // find an available player number
+    for (const i in connectionStatus) {
+      if (connectionStatus[i] === false) {
+        playerIndex = parseInt(i);
+        break;
+      }
     }
-  }
+    let player1 = connectionStatus[0];
+    let player2 = connectionStatus[1];
+    // assign player to the game
+    if (playerIndex === -1) {
+      console.log("extra player");
+      return;
+    }
+    if (playerIndex === 0) {
+      socket.emit("player-1-connected", player2);
+      connectionStatus[0] = userName;
+    } else if (playerIndex === 1) {
+      socket.emit("player-2-connected", player1);
+      connectionStatus[1] = userName;
+      // console.log("player connected", connectionStatus[playerIndex]);
+    } else {
+      socket.emit("full-server");
+      return;
+    }
+
+    // inform other players a player is connected
+    socket.broadcast.emit("player-has-joined", { userName, playerIndex });
+  });
 
   // tell the connecting client what player number they are
   console.log(`Player ${playerIndex} has connected`);
-
-  // assign player to the game
-  if (playerIndex === 0) {
-    socket.emit("player-1-connecting", connectionStatus[1]);
-  } else if (playerIndex === 1) {
-    socket.emit("player-2-connecting", connectionStatus[0]);
-  } else {
-    socket.emit("full-server");
-  }
-
-  // inform other players a player is connected
-  socket.on("player-connected", (name) => {
-    connectionStatus[playerIndex] = name;
-    socket.broadcast.emit("player-has-joined", { playerIndex, name });
-  });
-
   console.log({ connectionStatus });
 
-  socket.on("update-grid", ({ grid, gameOver }) => {
-    socket.broadcast.emit("update-grid", { grid, gameOver });
+  socket.on("update-grid", ({ grid, gameOver, ready }) => {
+    socket.broadcast.emit("update-grid", { grid, gameOver, ready });
   });
 
-  socket.on("update-result-display", ({ result, lastPlayer, numOfRounds }) => {
-    console.log({ lastPlayer });
-    socket.broadcast.emit("update-result-display", { result, lastPlayer, numOfRounds });
+  socket.on("update-result-display-and-rounds", ({ result, currentPlayerName, numOfRounds }) => {
+    socket.broadcast.emit("update-result-display-and-rounds", {
+      result,
+      currentPlayerName,
+      numOfRounds,
+    });
   });
 
   socket.on("update-score", ({ result, numOfRounds }) => {
     server.sockets.emit("update-score", { result, numOfRounds });
-  });
-
-  socket.on("replay-request", () => {
-    socket.broadcast.emit("replay-request");
   });
 
   // handle disconnect
@@ -73,7 +79,9 @@ server.on("connection", (socket) => {
     let num = playerIndex;
     socket.broadcast.emit("player-disconnected", { name, num });
     console.log(`Player ${playerIndex} has disconnected`);
+    console.log("player disconnected", connectionStatus[playerIndex]);
+    console.log("connections before", { connectionStatus });
     connectionStatus[playerIndex] = false;
-    console.log({ connectionStatus });
+    console.log("connections after", { connectionStatus });
   });
 });
