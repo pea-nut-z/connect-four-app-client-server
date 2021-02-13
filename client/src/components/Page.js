@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
 import { SocketContext, socket } from "../contexts/socket";
+import base from "./../firebase";
 
 export default function Page() {
   // USER INFO
@@ -10,20 +11,44 @@ export default function Page() {
   const userName = currentUser.displayName;
   const id = currentUser.uid;
   const [game, loadGame] = useState();
-  const [playedData, setPlayedData] = useState(0);
-  const [scoreData, setScoreData] = useState(0);
+  const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
 
   function toggleGameMode(mode) {
     loadGame(mode);
   }
 
-  function incrementPlayedData() {
-    setPlayedData(playedData + 1);
+  function incrementData(key) {
+    const updatedData = { ...data, [key]: data[key] + 1 };
+    setData(updatedData);
+    base.post(id, {
+      data: updatedData,
+    });
   }
 
-  function incrementScoreData() {
-    setScoreData(scoreData + 1);
-  }
+  useEffect(() => {
+    const ref = base.syncState(id, {
+      context: {
+        setState: ({ data }) => setData({ ...data }),
+        state: { data },
+      },
+      state: "data",
+    });
+
+    const existingData = ref["context"]["state"]["data"];
+    if (Object.keys(existingData).length === 0) {
+      base.post(id, {
+        data: { played: 0, won: 0 },
+      });
+    }
+
+    return () => {
+      base.removeBinding(ref);
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(id, JSON.stringify(data));
+  }, [data]);
 
   return (
     <>
@@ -32,8 +57,7 @@ export default function Page() {
           <Game
             userName={userName}
             game={game}
-            incrementPlayedData={incrementPlayedData}
-            incrementScoreData={incrementScoreData}
+            incrementData={incrementData}
             toggleGameMode={toggleGameMode}
           />
         </SocketContext.Provider>
@@ -42,8 +66,8 @@ export default function Page() {
           toggleGameMode={toggleGameMode}
           logout={logout}
           userName={userName}
-          played={playedData}
-          won={scoreData}
+          played={data.played}
+          won={data.won}
         />
       )}
     </>

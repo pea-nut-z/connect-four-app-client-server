@@ -1,19 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Button } from "react-bootstrap";
-// import { client } from "./socketConfig";
-// import io from "socket.io-client";
-// import useSocket from "use-socket.io-client";
 import { Grid } from "./Grid";
-import "./game.css";
 import { SocketContext } from "../../contexts/socket";
+import { initialGrid } from "./help";
+import "./game.css";
 
-export default function Game({
-  userName,
-  game,
-  incrementPlayedData,
-  incrementScoreData,
-  toggleGameMode,
-}) {
+export default function Game({ userName, game, incrementData, toggleGameMode }) {
   const [player1Name, assignPlayer1Name] = useState("");
   const [player2Name, assignPlayer2Name] = useState("");
   const [currentPlayerNum, setCurrentPlayerNum] = useState("p1");
@@ -24,9 +16,9 @@ export default function Game({
   const [result, saveResult] = useState("");
   const [resultMsg, displayResultMsg] = useState("");
   const [info, displayInfo] = useState("");
-  const [replayButtonFlag1, disableReplayButton] = useState(false);
-  const [replayButtonFlag2, clickReplayButton] = useState("");
+  const [replayButton, disableReplayButton] = useState(false);
 
+  const opponent = currentPlayerNum === "p1" ? player2Name : player1Name;
   const client = useContext(SocketContext);
   const ref = useRef();
 
@@ -41,47 +33,52 @@ export default function Game({
         toggleGameMode("");
         alert("Sorry, server is full.");
       });
-      client.emit("player-connected", userName);
-      client.on("player-has-joined", ({ connectionStatus }) => {
-        connectionStatus[0] && assignPlayer1Name(connectionStatus[0]);
-        connectionStatus[1] && assignPlayer2Name(connectionStatus[1]);
-        setCurrentPlayerName(connectionStatus[0]);
-        console.log("ran");
-      });
 
-      client.on("this-is-player2", ({ userName }) => {
-        setCurrentPlayerNum("p2");
+      client.emit("player-connecting", { userName });
+
+      client.on("player-1-connected", (player2) => {
+        assignPlayer1Name(userName);
         setCurrentPlayerName(userName);
+        player2 && assignPlayer2Name(player2);
       });
 
-      // handle disconnect
-      client.on("player-disconnected", () => {
-        // num === 0 ? assignPlayer1Name("") : assignPlayer2Name("");
-        // displayInfo(`${name} left💨`);
-        toggleGameMode(null);
+      client.on("player-2-connected", (player1) => {
+        assignPlayer2Name(userName);
+        setCurrentPlayerName(userName);
+        setCurrentPlayerNum("p2");
+        assignPlayer1Name(player1);
       });
-      return () => {
-        client.disconnect();
-      };
+
+      client.on("player-has-joined", ({ userName, playerIndex }) => {
+        playerIndex === 0 ? assignPlayer1Name(userName) : assignPlayer2Name(userName);
+      });
+
+      //   handle disconnect
+      client.on("player-disconnected", ({ name, num }) => {
+        num === 0 ? assignPlayer1Name("") : assignPlayer2Name("");
+        displayInfo(`${name} left💨`);
+      });
+      return () => client.disconnect(currentPlayerName);
     }
-  }, [game]);
-
-  console.log({ currentPlayerName });
+  }, []);
 
   useEffect(() => {
     if (game === "multi") {
       // to all clients except sender
-      let lastPlayer = currentPlayerNum ? player1Name : player2Name;
-      client.emit("update-result-display", { result, lastPlayer, numOfRounds });
-      client.on("update-result-display", ({ result, lastPlayer, numOfRounds }) => {
+      client.emit("update-result-display-and-rounds", {
+        result,
+        currentPlayerName,
+        numOfRounds,
+      });
+      client.on("update-result-display-and-rounds", ({ result, currentPlayerName, numOfRounds }) => {
+        setNumOfRounds(numOfRounds);
         if (result) {
           result === "Draw"
             ? displayResultMsg(result + "! 🤝")
             : displayResultMsg("😱 YOU LOST! 💩");
-          displayInfo(`Waiting for ${lastPlayer} to restart the game...`);
+          displayInfo(`Waiting for ${currentPlayerName} to restart the game...`);
           disableReplayButton(true);
         } else {
-          setNumOfRounds(numOfRounds);
           displayResultMsg("");
           displayInfo("");
           disableReplayButton(false);
@@ -91,22 +88,22 @@ export default function Game({
       // to all clients
       client.emit("update-score", { result });
       client.on("update-score", ({ result }) => {
-        result && incrementPlayedData();
+        result && incrementData("played");
         result === "p1" && setScore1(score1 + 1);
         result === "p2" && setScore2(score2 + 1);
       });
     }
-  }, [result]);
+  }, [result, numOfRounds]);
 
   function handleResult(result) {
-    saveResult(result);
     result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
     displayInfo("Click Replay ⬇️");
-    incrementScoreData();
+    incrementData("won");
+    saveResult(result);
   }
 
   function handleReplay() {
-    !resultMsg && incrementPlayedData();
+    !resultMsg && incrementData("played");
     ref.current.resetGrid();
     setNumOfRounds(numOfRounds + 1);
     displayResultMsg("");
@@ -115,9 +112,10 @@ export default function Game({
   }
 
   const handleQuit = () => {
-    //turn !== "Waiting for a player to join..."
-    if (!info && !result) incrementPlayedData();
+    const emptyGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid());
+    if (!info && !result && !emptyGrid) incrementData("played");
     toggleGameMode("");
+    window.location.reload(false);
   };
 
   return (
@@ -140,20 +138,24 @@ export default function Game({
           {/* PLAYERS LEGEND */}
           <div id="players" className="col">
             <h6 className="player float-right">
-              {player1Name}
+              {player1Name ? player1Name : "Waiting..."}
               <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
             <h6 className="player float-right">
-              {player2Name}
+              {player2Name ? player2Name : "Waiting..."}
               <div className="bg-success indicator rounded ml-2" />
             </h6>
           </div>
         </div>
       </div>
 
-      {/* {gameReady && ( */}
-      <Grid ref={ref} game={game} handleResult={handleResult} currentPlayerNum={currentPlayerNum} />
-      {/* )} */}
+      <Grid
+        ref={ref}
+        game={game}
+        handleResult={handleResult}
+        opponent={opponent}
+        currentPlayerNum={currentPlayerNum}
+      />
 
       {/* RESULT */}
       <h4 className="text-center text-warning mt-4">{resultMsg}</h4>
@@ -161,7 +163,7 @@ export default function Game({
       {/* INFO */}
       <h5 className="text-center text-warning mt-4">{info}</h5>
 
-      <Button disabled={replayButtonFlag1} className="btn-warning w-100 mt-4" onClick={handleReplay}>
+      <Button disabled={replayButton} className="btn-warning w-100 mt-4" onClick={handleReplay}>
         Replay
       </Button>
       <Button className="btn btn-warning w-100 mt-3 " onClick={handleQuit}>

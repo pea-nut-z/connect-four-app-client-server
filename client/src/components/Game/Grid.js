@@ -4,39 +4,25 @@ import { initialGrid, checkResult, findAValidMove, findAiMove } from "./help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
-const grid2 = [
-  [null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null],
-  ["p2", null, null, "p1", null, null, null],
-  ["p2", "p2", "p2", "p1", null, null, null],
-  ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
-];
-
-export const Grid = forwardRef(({ game, handleResult, currentPlayerNum }, ref) => {
-  const [grid, setGrid] = useState(grid2);
+export const Grid = forwardRef(({ game, handleResult, opponent, currentPlayerNum }, ref) => {
+  const [grid, setGrid] = useState(initialGrid);
   const [gameOver, setGameOver] = useState(false);
   const [ready, toggleReady] = useState(true);
-  //   const [turn, switchTurn] = useState(true);
   const [thisTurn, endThisTurn] = useState();
   const client = useContext(SocketContext);
+  const currentPlayerColor = currentPlayerNum === "p1" ? "#f012be" : "#2ecc40";
+  const opponentPlayerColor = currentPlayerNum === "p1" ? "#2ecc40" : "#f012be";
 
   useImperativeHandle(ref, () => ({
+    grid,
     resetGrid,
   }));
 
   const resetGrid = () => {
-    setGrid(grid2);
+    setGrid(initialGrid);
     setGameOver(false);
     endThisTurn(!thisTurn);
-    // toggleReady(false);
   };
-
-  useEffect(() => {
-    if (game === "multi") {
-      toggleReady(false);
-    }
-  }, [game]);
 
   useEffect(() => {
     if (game === "single" && !ready) {
@@ -53,12 +39,14 @@ export const Grid = forwardRef(({ game, handleResult, currentPlayerNum }, ref) =
       }
     }
 
+    // to all clients except sender
     if (game === "multi") {
-      client.emit("update-grid", { grid, gameOver });
-      client.on("update-grid", ({ grid, gameOver }) => {
+      toggleReady(!ready);
+      client.emit("update-grid", { grid, gameOver, ready });
+      client.on("update-grid", ({ grid, gameOver, ready }) => {
         setGameOver(gameOver);
         setGrid(grid);
-        toggleReady(true);
+        toggleReady(ready);
       });
     }
   }, [thisTurn]);
@@ -69,7 +57,6 @@ export const Grid = forwardRef(({ game, handleResult, currentPlayerNum }, ref) =
       const rowIdx = findAValidMove(newGrid, colIdx);
       newGrid[rowIdx][colIdx] = currentPlayerNum;
       setGrid(newGrid);
-      toggleReady(false);
       let result = checkResult(newGrid);
       result && setGameOver(true);
       result && handleResult(result);
@@ -93,8 +80,17 @@ export const Grid = forwardRef(({ game, handleResult, currentPlayerNum }, ref) =
       </div>
 
       {/* WHO's TURN */}
-      <h4 className="text-center mt-4" style={{ color: ready ? "#f012be" : "#2ecc40" }}>
-        {gameOver ? "" : ready ? "Your turn" : "Waiting"}
+      <h4
+        className="text-center mt-4"
+        style={{ color: ready ? currentPlayerColor : opponentPlayerColor }}
+      >
+        {gameOver || !opponent
+          ? ""
+          : ready
+          ? "Your turn"
+          : opponent
+          ? `Waiting for ${opponent}...`
+          : "Waiting for a player to join..."}
       </h4>
     </>
   );

@@ -1,8 +1,5 @@
 // NOTE
 // r = row; c = column
-// import "firebase/database";
-// import base from "../../firebase";
-// import React, { useState, useEffect } from "react";
 
 export const initialGrid = function () {
   const numOfRows = 6;
