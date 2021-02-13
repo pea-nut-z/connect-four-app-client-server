@@ -60,6 +60,7 @@ export const Grid = forwardRef(({ game, handleResult, opponent, currentPlayerNum
       let result = checkResult(newGrid);
       result && setGameOver(true);
       result && handleResult(result);
+      game === "single" && toggleReady(false);
       endThisTurn(!thisTurn);
     }
   };
