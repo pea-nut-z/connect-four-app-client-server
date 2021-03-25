@@ -5,6 +5,15 @@ import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
 export const Grid = forwardRef(({ game, handleResult, opponent, currentPlayerNum }, ref) => {
+  const test = [
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", "p2", "p2", "p2", null, null, null],
+    ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+  ];
+
   const [grid, setGrid] = useState(initialGrid);
   const [gameOver, setGameOver] = useState(false);
   const [ready, toggleReady] = useState(true);
@@ -25,7 +34,7 @@ export const Grid = forwardRef(({ game, handleResult, opponent, currentPlayerNum
   };
 
   useEffect(() => {
-    if (game === "single" && !ready) {
+    if (!gameOver && game === "single" && !ready) {
       let newGrid = grid.slice();
       const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
       newGrid[aiMoveRowIdx][aiMoveColIdx] = "p2";

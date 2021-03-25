@@ -97,15 +97,35 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
     }
   }, [result, numOfRounds]);
 
+  useEffect(() => {
+    if (game === "single") {
+      if (result === "p1") {
+        setScore1(score1 + 1);
+        incrementData("won");
+      }
+      if (result === "p2") {
+        setScore2(score2 + 1);
+      }
+    }
+  }, [result]);
+
   function handleResult(result) {
-    result === "Draw"
-      ? displayResultMsg(result + "! 🤝")
-      : result === "p1"
-      ? displayResultMsg("🥂 YOU WIN! 🎉")
-      : displayResultMsg("😱 YOU LOST! 💩");
-    displayInfo("Click Replay ⬇️");
-    incrementData("won");
-    saveResult(result);
+    if (game === "multi") {
+      result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
+      displayInfo("Click Replay ⬇️");
+      incrementData("won");
+      saveResult(result);
+    } else {
+      if (result === "Draw") {
+        displayResultMsg(result + "! 🤝");
+      } else if (result === "p1") {
+        displayResultMsg("🥂 YOU WIN! 🎉");
+      } else {
+        displayResultMsg("😱 YOU LOST! 💩");
+      }
+      saveResult(result);
+      displayInfo("Click Replay ⬇️");
+    }
   }
 
   function handleReplay() {
