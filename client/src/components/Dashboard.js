@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Button, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
-export default function Control({ toggleGameMode, logout, userName, played, won }) {
+export default function Dashboard({ toggleGameMode, logout, userName, played, won }) {
   const [error, setError] = useState("");
   const history = useHistory();
 

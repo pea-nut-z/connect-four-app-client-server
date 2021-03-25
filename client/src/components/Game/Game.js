@@ -51,6 +51,8 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
 
       client.on("player-has-joined", ({ userName, playerIndex }) => {
         playerIndex === 0 ? assignPlayer1Name(userName) : assignPlayer2Name(userName);
+        setScore1(0);
+        setScore2(0);
       });
 
       //   handle disconnect
@@ -96,7 +98,11 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
   }, [result, numOfRounds]);
 
   function handleResult(result) {
-    result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
+    result === "Draw"
+      ? displayResultMsg(result + "! 🤝")
+      : result === "p1"
+      ? displayResultMsg("🥂 YOU WIN! 🎉")
+      : displayResultMsg("😱 YOU LOST! 💩");
     displayInfo("Click Replay ⬇️");
     incrementData("won");
     saveResult(result);
