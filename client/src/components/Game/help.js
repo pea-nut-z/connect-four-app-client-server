@@ -1,13 +1,13 @@
 // NOTE
 // r = row; c = column
+const defaultRows = 6;
+const defaultCols = 7;
 
-export const initialGrid = function () {
-  const numOfRows = 6;
-  const numOfCols = 7;
+export const getGrid = function (rows = defaultRows, cols = defaultCols) {
   let grid = [];
   let i = 0;
-  while (i < numOfRows) {
-    grid.push(Array(numOfCols).fill(null));
+  while (i < rows) {
+    grid.push(Array(cols).fill(null));
     i++;
   }
   return grid;

@@ -28,7 +28,7 @@ export default function Signup() {
           displayName: usernameRef.current.value,
         });
       });
-      history.push("/");
+      history.push("/", { userName: usernameRef.current.value });
     } catch {
       setError("Failed to create an account");
       setLoading(false);

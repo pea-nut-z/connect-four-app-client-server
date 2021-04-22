@@ -21,7 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_ENV=test jest --watch",
+    "test": "jest --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

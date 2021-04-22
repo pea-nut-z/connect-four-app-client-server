@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { Grid } from "./Grid";
 import { SocketContext } from "../../contexts/socket";
-import { initialGrid } from "./help";
 import "./game.css";
 
-export default function Game({ userName, game, incrementData, toggleGameMode }) {
+export default function Game({ userName, game, initialGrid, incrementData, toggleGameMode }) {
   const [player1Name, assignPlayer1Name] = useState("");
   const [player2Name, assignPlayer2Name] = useState("");
   const [currentPlayerNum, setCurrentPlayerNum] = useState("p1");
@@ -97,40 +96,37 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
     }
   }, [result, numOfRounds]);
 
-  useEffect(() => {
-    if (game === "single") {
-      if (result === "p1") {
-        setScore1(score1 + 1);
-        incrementData("won");
-      }
-      if (result === "p2") {
-        setScore2(score2 + 1);
-      }
-    }
-  }, [result]);
-
   function handleResult(result) {
     if (game === "multi") {
       result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
-      displayInfo("Click Replay ⬇️");
+      //   displayInfo("Click Replay ⬇️");
       incrementData("won");
-      saveResult(result);
+      //   saveResult(result);
     } else {
+      if (result === "p1") {
+        displayResultMsg("🥂 YOU WIN! 🎉");
+        setScore1(score1 + 1);
+        incrementData("won", "played");
+      }
+      if (result === "p2") {
+        displayResultMsg("😱 YOU LOST! 💩");
+        setScore2(score2 + 1);
+        incrementData("played");
+      }
       if (result === "Draw") {
         displayResultMsg(result + "! 🤝");
-      } else if (result === "p1") {
-        displayResultMsg("🥂 YOU WIN! 🎉");
-      } else {
-        displayResultMsg("😱 YOU LOST! 💩");
+        incrementData("played");
       }
-      saveResult(result);
-      displayInfo("Click Replay ⬇️");
+      // saveResult(result);
+      // displayInfo("Click Replay ⬇️");
     }
+    displayInfo("Click Replay ⬇️");
+    saveResult(result);
   }
 
   function handleReplay() {
-    !resultMsg && incrementData("played");
-    ref.current.resetGrid();
+    !result && incrementData("played");
+    ref.current.resetGrid(result);
     setNumOfRounds(numOfRounds + 1);
     displayResultMsg("");
     displayInfo("");
@@ -138,36 +134,40 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
   }
 
   const handleQuit = () => {
-    const emptyGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid());
-    if (!info && !result && !emptyGrid) incrementData("played");
+    const blankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
+    if (!info && !result && !blankGrid) {
+      incrementData("played");
+    }
     toggleGameMode("");
     window.location.reload(false);
   };
 
   return (
     <>
-      <div id="container" className="container">
+      <div className="container">
         <div className="row">
           {/* SCORE DSIPLAY */}
-          <div id="scores" className="col">
-            <h6 className="text-primary">Round: {numOfRounds}</h6>
+          <div className="col">
+            <h6 data-testid="numOfRounds" className="text-primary">
+              Round: {numOfRounds}
+            </h6>
             <h4>
-              <span id="score-1" style={{ color: "#f012be" }}>
+              <span data-testid="score1" style={{ color: "#f012be" }}>
                 {score1}
               </span>
               <span className="text-primary"> vs </span>
-              <span id="score-2" className="text-success">
+              <span data-testid="score2" className="text-success">
                 {score2}
               </span>
             </h4>
           </div>
           {/* PLAYERS LEGEND */}
-          <div id="players" className="col">
-            <h6 className="player float-right">
+          <div className="col">
+            <h6 data-testid="p1Name" className="player float-right">
               {player1Name ? player1Name : "Waiting..."}
               <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
-            <h6 className="player float-right">
+            <h6 data-testid="p2Name" className="player float-right">
               {player2Name ? player2Name : "Waiting..."}
               <div className="bg-success indicator rounded ml-2" />
             </h6>
@@ -178,21 +178,31 @@ export default function Game({ userName, game, incrementData, toggleGameMode }) 
       <Grid
         ref={ref}
         game={game}
+        initialGrid={initialGrid}
         handleResult={handleResult}
         opponent={opponent}
         currentPlayerNum={currentPlayerNum}
       />
 
       {/* RESULT */}
-      <h4 className="text-center text-warning mt-4">{resultMsg}</h4>
+      <h4 data-testid="resultMsg" className="text-center text-warning mt-4">
+        {resultMsg}
+      </h4>
 
       {/* INFO */}
-      <h5 className="text-center text-warning mt-4">{info}</h5>
+      <h5 data-testid="info" className="text-center text-warning mt-4">
+        {info}
+      </h5>
 
-      <Button disabled={replayButton} className="btn-warning w-100 mt-4" onClick={handleReplay}>
+      <Button
+        disabled={replayButton}
+        data-testid="replay"
+        className="btn-warning w-100 mt-4"
+        onClick={handleReplay}
+      >
         Replay
       </Button>
-      <Button className="btn btn-warning w-100 mt-3 " onClick={handleQuit}>
+      <Button data-testid="quit" className="btn btn-warning w-100 mt-3 " onClick={handleQuit}>
         Quit
       </Button>
     </>

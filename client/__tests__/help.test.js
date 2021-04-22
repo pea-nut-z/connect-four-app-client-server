@@ -1,17 +1,18 @@
-import { findAValidMove, checkResult, findAiMove } from "../help";
+import { getGrid, findAValidMove, checkResult, findAiMove } from "../src/components/game/help";
 
-describe("findAValidMove finds the first valid move in a column", () => {
-  it("returns the correct row index for a move", () => {
-    const grid1 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
+describe("getGrid function", () => {
+  it("returns a specified size of blank grid", () => {
+    const rows = 4;
+    const cols = 4;
+    const grid = [
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
     ];
-    const row = findAValidMove(grid1, 0);
-    expect(row).toEqual(3);
+
+    const newGrid = getGrid(rows, cols);
+    expect(newGrid).toEqual(grid);
   });
 });
 
@@ -65,7 +66,22 @@ describe("checkResult function checks/returns winning result in every direction"
   });
 });
 
-describe("AI function makes the right move", () => {
+describe("findAValidMove function", () => {
+  it("returns the correct row index for a move in a selected column", () => {
+    const grid1 = [
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      ["p2", null, null, null, null, null, null],
+      ["p2", null, null, null, null, null, null],
+    ];
+    const row = findAValidMove(grid1, 0);
+    expect(row).toEqual(3);
+  });
+});
+
+describe("findAiMove function", () => {
   it("makes a move to avoid human from winning", () => {
     const grid1 = [
       [null, "p1", "p2", null, "p2", "p1", "p2"],

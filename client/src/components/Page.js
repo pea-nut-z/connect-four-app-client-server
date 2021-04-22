@@ -2,16 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
+import { getGrid } from "./game/help";
+
 import { SocketContext, socket } from "../contexts/socket";
 import base from "./../firebase";
+import { useLocation } from "react-router-dom";
 
 export default function Page() {
   // USER INFO
   const { currentUser, logout } = useAuth();
-  const displayName = currentUser.displayName;
   const id = currentUser.uid;
+  const profileName = currentUser.displayName;
+  const location = useLocation();
+  const userName = location.state?.userName || profileName;
+  // const initialGrid = getGrid();
+  const initialGrid = [
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", "p2", "p2", "p2", null, null, null],
+    ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+  ];
 
-  const [userName, setUserName] = useState(displayName);
   const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
   const [game, loadGame] = useState();
 
@@ -29,9 +42,7 @@ export default function Page() {
       base.post(id, {
         data: { played: 0, won: 0 },
       });
-
       setData({ played: 0, won: 0 });
-      setUserName("You");
     }
 
     return () => {
@@ -40,7 +51,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    console.log("ran second effect");
     localStorage.setItem(id, JSON.stringify(data));
   }, [data]);
 
@@ -48,8 +58,9 @@ export default function Page() {
     loadGame(mode);
   }
 
-  function incrementData(key) {
-    const updatedData = { ...data, [key]: data[key] + 1 };
+  function incrementData(key1, key2) {
+    let updatedData = { ...data, [key1]: data[key1] + 1 };
+    if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
     setData(updatedData);
     base.post(id, {
       data: updatedData,
@@ -63,6 +74,7 @@ export default function Page() {
           <Game
             userName={userName}
             game={game}
+            initialGrid={initialGrid}
             incrementData={incrementData}
             toggleGameMode={toggleGameMode}
           />
