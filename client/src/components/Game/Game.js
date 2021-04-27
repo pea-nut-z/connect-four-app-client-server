@@ -117,8 +117,6 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
         displayResultMsg(result + "! 🤝");
         incrementData("played");
       }
-      // saveResult(result);
-      // displayInfo("Click Replay ⬇️");
     }
     displayInfo("Click Replay ⬇️");
     saveResult(result);
@@ -138,8 +136,8 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
     if (!info && !result && !blankGrid) {
       incrementData("played");
     }
+    if (game === "multi") window.location.reload(false); // when quit restart socket.
     toggleGameMode("");
-    window.location.reload(false);
   };
 
   return (

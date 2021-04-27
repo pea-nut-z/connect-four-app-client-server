@@ -6,24 +6,27 @@ import { getGrid } from "./game/help";
 
 import { SocketContext, socket } from "../contexts/socket";
 import base from "./../firebase";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 export default function Page() {
   // USER INFO
   const { currentUser, logout } = useAuth();
   const id = currentUser.uid;
   const profileName = currentUser.displayName;
+
   const location = useLocation();
   const userName = location.state?.userName || profileName;
-  // const initialGrid = getGrid();
-  const initialGrid = [
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    ["p1", null, null, null, null, null, null],
-    ["p1", null, null, null, null, null, null],
-    ["p1", "p2", "p2", "p2", null, null, null],
-    ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
-  ];
+  const history = useHistory();
+
+  const initialGrid = getGrid();
+  // const initialGrid = [
+  //   [null, null, null, null, null, null, null],
+  //   [null, null, null, null, null, null, null],
+  //   ["p1", null, null, null, null, null, null],
+  //   ["p1", null, null, null, null, null, null],
+  //   ["p1", "p2", "p2", "p2", null, null, null],
+  //   ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+  // ];
 
   const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
   const [game, loadGame] = useState();
@@ -54,6 +57,10 @@ export default function Page() {
     localStorage.setItem(id, JSON.stringify(data));
   }, [data]);
 
+  function updateProfile() {
+    history.push("/update-profile");
+  }
+
   function toggleGameMode(mode) {
     loadGame(mode);
   }
@@ -83,6 +90,7 @@ export default function Page() {
         <Dashboard
           toggleGameMode={toggleGameMode}
           logout={logout}
+          updateProfile={updateProfile}
           userName={userName}
           played={data.played}
           won={data.won}

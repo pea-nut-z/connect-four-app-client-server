@@ -27,7 +27,9 @@ export default function Login() {
 
   return (
     <>
-      <h1 className="title text-center text-primary">Connect Four</h1>
+      <h1 data-testid="title" className="title text-center text-primary">
+        Connect Four
+      </h1>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>

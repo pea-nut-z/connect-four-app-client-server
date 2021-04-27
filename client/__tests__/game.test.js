@@ -1,14 +1,22 @@
-import React, { useRef } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { render, fireEvent, cleanup } from "@testing-library/react/pure";
-import { getRoles, logRoles } from "@testing-library/dom";
 import "@testing-library/jest-dom";
-import renderer from "react-test-renderer";
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 import Game from "../src/components/game/Game";
 import SquareGrid from "../src/components/game/SquareGrid";
 
-describe("Grid render", () => {
+const testGrid = [
+  [null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null],
+  ["p1", null, null, null, null, null, null],
+  ["p1", null, null, null, null, null, null],
+  ["p1", "p2", "p2", "p2", null, null, null],
+  ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+];
+const incrementData = jest.fn();
+const toggleGameMode = jest.fn();
+
+describe("Game Screen", () => {
   it("renders <Game /> without crashing", () => {
     shallow(<Game />);
   });
@@ -19,17 +27,6 @@ describe("Grid render", () => {
 });
 
 describe("<Game /> in single player mode", () => {
-  const incrementData = jest.fn();
-  const toggleGameMode = jest.fn();
-  const testGrid = [
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    ["p1", null, null, null, null, null, null],
-    ["p1", null, null, null, null, null, null],
-    ["p1", "p2", "p2", "p2", null, null, null],
-    ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
-  ];
-
   let getByTestId, getAllByTestId;
   let initialGrid;
 
@@ -68,11 +65,11 @@ describe("<Game /> in single player mode", () => {
     fireEvent.click(square);
     expect(getByTestId("resultMsg")).toHaveTextContent("🥂 YOU WIN! 🎉");
     expect(getByTestId("score1")).toHaveTextContent(1);
-    expect(incrementData).toHaveBeenCalledTimes(1);
+    expect(incrementData).toHaveBeenCalledWith("won", "played");
     expect(getByTestId("info")).toHaveTextContent("Click Replay ⬇️");
   });
 
-  it("clicks replay button when game is over -> increments number of rounds & data -> resets some states", () => {
+  it("clicks replay button on game over when it has won -> increments number of rounds & data -> resets some states", () => {
     const button = getByTestId("replay");
     const numOfRounds = getByTestId("numOfRounds");
     fireEvent.click(button);
@@ -82,20 +79,53 @@ describe("<Game /> in single player mode", () => {
     expect(getAllByTestId("square")).toEqual(initialGrid);
   });
 
-  it("makes a losing move -> displays msg -> increments opponent's score -> clicks replay", () => {
+  it("makes a losing move -> displays msg -> increments opponent's score", () => {
     const grid = getAllByTestId("square");
     const square = grid[22];
     fireEvent.click(square);
     expect(getByTestId("resultMsg")).toHaveTextContent("😱 YOU LOST! 💩");
     expect(getByTestId("score2")).toHaveTextContent(1);
     expect(getByTestId("info")).toHaveTextContent("Click Replay ⬇️");
-    const button = getByTestId("replay");
-    fireEvent.click(button);
   });
 
-  it("clicks replay button in the middle of a game -> increments data", () => {
+  it("clicks replay button on game over when it has lost -> increments data", () => {
     const button = getByTestId("replay");
     fireEvent.click(button);
-    expect(incrementData).toHaveBeenCalledTimes(1);
+    expect(incrementData).toHaveBeenCalledWith("played");
+  });
+
+  it("clicks replay button during a game -> increments data", () => {
+    const button = getByTestId("replay");
+    fireEvent.click(button);
+    expect(incrementData).toHaveBeenCalledWith("played");
+  });
+
+  it("clicks Quit button on game over -> calls toggleGameMode -> does not call incrementData", () => {
+    const button = getByTestId("quit");
+    fireEvent.click(button);
+    expect(toggleGameMode).toHaveBeenCalledTimes(1);
+    expect(incrementData).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Quit Button", () => {
+  it("clicks Quit button during a game -> calls toggleGameMode -> increments data", () => {
+    const component = render(
+      <Game
+        game={"single"}
+        initialGrid={testGrid}
+        incrementData={incrementData}
+        toggleGameMode={toggleGameMode}
+      />
+    );
+
+    const grid = component.getAllByTestId("square");
+    const square = grid[32];
+    fireEvent.click(square);
+    const quitBtn = component.getByTestId("quit");
+    fireEvent.click(quitBtn);
+    expect(toggleGameMode).toHaveBeenCalledTimes(1);
+    expect(incrementData).toHaveBeenCalledWith("played");
+    cleanup();
   });
 });

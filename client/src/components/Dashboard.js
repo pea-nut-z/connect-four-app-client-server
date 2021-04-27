@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Card, Button, Alert } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-export default function Dashboard({ toggleGameMode, logout, userName, played, won }) {
-  const [error, setError] = useState("");
+export default function Dashboard({ toggleGameMode, logout, updateProfile, userName, played, won }) {
   const history = useHistory();
+  const [error, setError] = useState("");
 
   async function handleLogout() {
     setError("");
@@ -20,14 +20,21 @@ export default function Dashboard({ toggleGameMode, logout, userName, played, wo
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Hello, {userName}!</h2>
+          <h2 id="userName" className="text-center mb-4">
+            Hello, {userName}!
+          </h2>
           <div className="row">
-            <h4 className="col-6 text-center">🎮 ✖️ {played}</h4>
-            <h4 className="col-6 text-center">🏆 ✖️ {won}</h4>
+            <h4 id="played" className="col-6 text-center">
+              🎮 ✖️ {played}
+            </h4>
+            <h4 id="won" className="col-6 text-center">
+              🏆 ✖️ {won}
+            </h4>
           </div>
           {error && <Alert variant="danger">{error}</Alert>}
 
           <Button
+            id="single"
             onClick={() => {
               toggleGameMode("single");
             }}
@@ -36,6 +43,7 @@ export default function Dashboard({ toggleGameMode, logout, userName, played, wo
             Challenge Peanutbot
           </Button>
           <Button
+            id="multi"
             onClick={() => {
               toggleGameMode("multi");
             }}
@@ -43,13 +51,13 @@ export default function Dashboard({ toggleGameMode, logout, userName, played, wo
           >
             Play With A Friend
           </Button>
-          <Link to="/update-profile" className="btn btn-warning w-100 mt-3">
+          <Button id="updateProfile" className="btn btn-warning w-100 mt-3" onClick={updateProfile}>
             Update Profile
-          </Link>
+          </Button>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Button variant="link" className="text-decoration-none" onClick={handleLogout}>
+        <Button id="logout" variant="link" className="text-decoration-none" onClick={handleLogout}>
           Log Out
         </Button>
       </div>

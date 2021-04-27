@@ -26,25 +26,22 @@ server.on("connection", (socket) => {
     // find an available player number
     for (const i in connectionStatus) {
       if (connectionStatus[i] === false) {
+        console.log("connection available");
         playerIndex = parseInt(i);
         break;
       }
     }
     let player1 = connectionStatus[0];
     let player2 = connectionStatus[1];
-    // assign player to the game
-    if (playerIndex === -1) {
-      console.log("extra player");
-      return;
-    }
+
     if (playerIndex === 0) {
       socket.emit("player-1-connected", player2);
       connectionStatus[0] = userName;
     } else if (playerIndex === 1) {
       socket.emit("player-2-connected", player1);
       connectionStatus[1] = userName;
-      // console.log("player connected", connectionStatus[playerIndex]);
-    } else {
+    } else if (playerIndex === -1) {
+      console.log("emited full server");
       socket.emit("full-server");
       return;
     }
@@ -55,7 +52,6 @@ server.on("connection", (socket) => {
 
   // tell the connecting client what player number they are
   console.log(`Player ${playerIndex} has connected`);
-  console.log({ connectionStatus });
 
   socket.on("update-grid", ({ grid, gameOver, ready }) => {
     socket.broadcast.emit("update-grid", { grid, gameOver, ready });
@@ -75,13 +71,14 @@ server.on("connection", (socket) => {
 
   // handle disconnect
   socket.on("disconnect", () => {
-    let name = connectionStatus[playerIndex];
-    let num = playerIndex;
-    socket.broadcast.emit("player-disconnected", { name, num });
     console.log(`Player ${playerIndex} has disconnected`);
-    console.log("player disconnected", connectionStatus[playerIndex]);
     console.log("connections before", { connectionStatus });
-    connectionStatus[playerIndex] = false;
+    if (playerIndex !== -1) {
+      let name = connectionStatus[playerIndex];
+      let num = playerIndex;
+      socket.broadcast.emit("player-disconnected", { name, num });
+      connectionStatus[playerIndex] = false;
+    }
     console.log("connections after", { connectionStatus });
   });
 });
