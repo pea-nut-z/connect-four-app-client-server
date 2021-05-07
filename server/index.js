@@ -45,13 +45,11 @@ server.on("connection", (socket) => {
       socket.emit("full-server");
       return;
     }
+    console.log(`Player ${playerIndex} has connected`);
 
     // inform other players a player is connected
     socket.broadcast.emit("player-has-joined", { userName, playerIndex });
   });
-
-  // tell the connecting client what player number they are
-  console.log(`Player ${playerIndex} has connected`);
 
   socket.on("update-grid", ({ grid, gameOver, ready }) => {
     socket.broadcast.emit("update-grid", { grid, gameOver, ready });
