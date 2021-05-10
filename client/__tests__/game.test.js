@@ -26,7 +26,7 @@ describe("Game Screen", () => {
   });
 });
 
-describe("<Game /> in single player mode", () => {
+describe("Single player mode", () => {
   let getByTestId, getAllByTestId;
   let initialGrid;
 
