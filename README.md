@@ -4,7 +4,7 @@
 
 ### Context
 
-It uses React hooks and WebSockets. It authenticates the user, tracks wins and number of games you have played. It offers the options of playing in single or multiplayer mode.  
+This app uses React hooks and WebSockets. It authenticates the user, tracks wins and number of games you have played. It offers the options of playing in single or multiplayer mode.  
 In single player mode, you are playing against Peanutbot (AI player). In multiplayer mode, a game starts when two players are connected. The third player connected to multiplayer mode will get an alert that the server is full but they can play in single player mode.
 
 ### To get started

@@ -65,7 +65,7 @@ export function findAValidMove(grid, c) {
 }
 
 export function findAiMove(grid) {
-  let maxDepth = 6;
+  let maxDepth = 7;
   let numOfCols = grid[0].length;
   let bestMoves = [];
   let bestDepth;

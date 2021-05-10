@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from "react";
 import SquareGrid from "./SquareGrid";
-import { getGrid, checkResult, findAValidMove, findAiMove } from "./help";
+import { checkResult, findAValidMove, findAiMove } from "./help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
@@ -33,16 +33,18 @@ export const Grid = forwardRef(
     useEffect(() => {
       if (!gameOver && game === "single" && !ready) {
         let newGrid = grid.slice();
-        const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
-        newGrid[aiMoveRowIdx][aiMoveColIdx] = "p2";
-        setGrid(newGrid);
-        let result = checkResult(newGrid);
-        if (result) {
-          setGameOver(true);
-          handleResult(result);
-        } else {
-          toggleReady(!ready);
-        }
+        setTimeout(() => {
+          const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
+          newGrid[aiMoveRowIdx][aiMoveColIdx] = "p2";
+          setGrid(newGrid);
+          let result = checkResult(newGrid);
+          if (result) {
+            setGameOver(true);
+            handleResult(result);
+          } else {
+            toggleReady(!ready);
+          }
+        }, 500);
       }
 
       // to all clients except sender

@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@200;300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Modak&display=swap");
+
 *,
 *::before,
 *::after {
@@ -8,13 +10,11 @@
   background-color: #f3f3f3;
 }
 .title {
-  font-family: "Modak";
+  font-family: "Modak", cursive;
   font-size: 4.75rem;
-  font-weight: bold;
-  font-style: italic;
   position: absolute;
   margin-top: -9rem;
-  margin-left: -4rem;
+  margin-left: -3rem;
   min-width: 500px;
   text-shadow: 7px 7px 0px #d2d2d22e;
   animation: title 2s ease-in-out alternate infinite;
