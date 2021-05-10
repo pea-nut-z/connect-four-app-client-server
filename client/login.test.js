@@ -7,9 +7,9 @@ import { render, fireEvent, cleanup } from "@testing-library/react/pure";
 var jest = require("jest");
 
 it("Mock", () => {
-  jest.mock("./firebase-init", () => {
-    return mocksdk;
-  });
-  // data is logged
-  mocksdk.database().flush();
+  // jest.mock("./firebase-init", () => {
+  //   return mocksdk;
+  // });
+  // // data is logged
+  // mocksdk.database().flush();
 });

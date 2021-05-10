@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
 import { getGrid } from "./game/help";
-
 import { SocketContext, socket } from "../contexts/socket";
 import base from "./../firebase";
 import { useLocation, useHistory } from "react-router-dom";
