@@ -160,12 +160,12 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
             </h4>
           </div>
           {/* PLAYERS LEGEND */}
-          <div className="col">
-            <h6 data-testid="p1Name" className="player float-right">
+          <div className="col align-self-end">
+            <h6 data-testid="p1Name" className="player row justify-content-end">
               {player1Name ? player1Name : "Waiting..."}
               <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
             </h6>
-            <h6 data-testid="p2Name" className="player float-right">
+            <h6 data-testid="p2Name" className="player row justify-content-end">
               {player2Name ? player2Name : "Waiting..."}
               <div className="bg-success indicator rounded ml-2" />
             </h6>

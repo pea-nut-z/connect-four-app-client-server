@@ -1,6 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@200;300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Modak&display=swap");
 
+/* 
+  --desktop: 1200px;
+  --laptop: 1024px;
+  --tablet: 768px;
+  --phone: 480px;
+   */
+
+@media screen and (max-width: 500px) {
+  #title-msg-container {
+    font-size: 3.5rem !important ;
+  }
+}
 *,
 *::before,
 *::after {
