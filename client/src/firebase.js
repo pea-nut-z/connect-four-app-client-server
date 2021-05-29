@@ -13,7 +13,12 @@ const app = firebase.initializeApp({
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
 
+let auth = app.auth();
+if (window.location.hostname === "localhost") {
+  app.database().useEmulator("localhost", 9000);
+  app.auth().useEmulator("http://localhost:9099", { disableWarnings: true });
+}
+
 const base = Rebase.createClass(app.database());
-export { app };
-export const auth = app.auth();
+export { app, auth };
 export default base;

@@ -57,7 +57,12 @@ export default function Dashboard({ toggleGameMode, logout, updateProfile, userN
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Button id="logout" variant="link" className="text-decoration-none" onClick={handleLogout}>
+        <Button
+          id="logoutBtn"
+          variant="link"
+          className="text-decoration-none"
+          onClick={handleLogout}
+        >
           Log Out
         </Button>
       </div>

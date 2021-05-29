@@ -1,0 +1,58 @@
+[debug] [2021-05-27T20:55:36.891Z] ----------------------------------------------------------------------
+[debug] [2021-05-27T20:55:36.893Z] Command:       /usr/local/bin/node /Users/paulinez/connect-four/client/node_modules/.bin/firebase emulators:start
+[debug] [2021-05-27T20:55:36.893Z] CLI Version:   9.12.0
+[debug] [2021-05-27T20:55:36.893Z] Platform:      darwin
+[debug] [2021-05-27T20:55:36.893Z] Node Version:  v12.18.3
+[debug] [2021-05-27T20:55:36.894Z] Time:          Thu May 27 2021 16:55:36 GMT-0400 (Eastern Daylight Time)
+[debug] [2021-05-27T20:55:36.894Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-05-27T20:55:36.896Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2021-05-27T20:55:36.919Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-05-27T20:55:36.919Z] > authorizing via signed-in user (topeanutz@gmail.com)
+[info] i  emulators: Starting emulators: auth, database {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, database"}}
+[debug] [2021-05-27T20:55:36.933Z] [hub] writing locator at /var/folders/km/bqptkfyd0j5fxw_gzqfqm0kw0000gn/T/hub-connect-four-development.json
+[debug] [2021-05-27T20:55:36.990Z] > refreshing access token with scopes: []
+[debug] [2021-05-27T20:55:36.991Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-05-27T20:55:37.112Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-05-27T20:55:37.112Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2021-05-27T20:55:37.179Z] <<< HTTP RESPONSE 200 {"date":"Thu, 27 May 2021 20:55:37 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-05-27T20:55:37.248Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/connect-four-development [none]
+[debug] [2021-05-27T20:55:37.494Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/connect-four-development 200
+[debug] [2021-05-27T20:55:37.494Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/connect-four-development {"projectId":"connect-four-development","projectNumber":"790566826312","displayName":"connect-four-development","name":"projects/connect-four-development","resources":{"hostingSite":"connect-four-development","realtimeDatabaseInstance":"connect-four-development-default-rtdb"},"state":"ACTIVE"}
+[debug] [2021-05-27T20:55:37.495Z] database rules config:  []
+[warn] ⚠  database: Did not find a Realtime Database rules file specified in a firebase.json config file. The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration. {"metadata":{"emulator":{"name":"database"},"message":"Did not find a Realtime Database rules file specified in a firebase.json config file. The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration."}}
+[debug] [2021-05-27T20:55:37.498Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2021-05-27T20:55:37.498Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-05-27T20:55:37.499Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2021-05-27T20:55:37.499Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","/Users/paulinez/.cache/firebase/emulators/firebase-database-emulator-v4.7.2.jar","--host","localhost","--port",9000],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"/Users/paulinez/.cache/firebase/emulators/firebase-database-emulator-v4.7.2.jar\",\"--host\",\"localhost\",\"--port\",9000],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2021-05-27T20:55:38.902Z] 16:55:38.900 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+ {"metadata":{"emulator":{"name":"database"},"message":"16:55:38.900 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started\n"}}
+[debug] [2021-05-27T20:55:39.088Z] 16:55:39.088 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000
+ {"metadata":{"emulator":{"name":"database"},"message":"16:55:39.088 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000\n"}}
+[debug] [2021-05-27T20:55:42.009Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-05-27T20:55:42.010Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-05-27T20:55:42.010Z] Starting Emulator UI with command {"binary":"node","args":["/Users/paulinez/.cache/firebase/emulators/ui-v1.5.0/server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/paulinez/.cache/firebase/emulators/ui-v1.5.0/server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-05-27T20:55:42.105Z] Web / API server started at http://localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at http://localhost:4000\n"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth     │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Database       │ localhost:9000 │ http://localhost:4000/database │
+└────────────────┴────────────────┴────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[info] i  To reset your email address to test12@gmail.com, follow this link: http://localhost:9099/emulator/action?mode=recoverEmail&lang=en&oobCode=HHWGlZgZN1xQl-soR1TNeGbVqwyf5APKuIsN_nWTlVJ1SHtKaTp89X&apiKey=fake-api-key {"metadata":{"emulator":{"name":"auth"},"message":"To reset your email address to test12@gmail.com, follow this link: http://localhost:9099/emulator/action?mode=recoverEmail&lang=en&oobCode=HHWGlZgZN1xQl-soR1TNeGbVqwyf5APKuIsN_nWTlVJ1SHtKaTp89X&apiKey=fake-api-key"}}

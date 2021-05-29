@@ -200,7 +200,12 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       >
         Replay
       </Button>
-      <Button data-testid="quit" className="btn btn-warning w-100 mt-3 " onClick={handleQuit}>
+      <Button
+        id="quitBtn"
+        data-testid="quit"
+        className="btn btn-warning w-100 mt-3 "
+        onClick={handleQuit}
+      >
         Quit
       </Button>
     </>

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon index.js",
-    "client": "cd ../client && npm start",
+    "client": "cd ../client && npm start && npm emulators",
     "dev": "concurrently --kill-others-on-fail 'npm run server' 'npm run client'",
     "start": "node index.js"
   },

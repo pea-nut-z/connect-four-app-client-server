@@ -53,6 +53,7 @@ export default function UpdateProfile() {
             <Form.Group id="username">
               <Form.Label>Username</Form.Label>
               <Form.Control
+                id="usernameInput"
                 type="text"
                 ref={usernameRef}
                 required
@@ -79,14 +80,16 @@ export default function UpdateProfile() {
                 placeholder="Leave blank to keep the same"
               />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button id="updateBtn" disabled={loading} className="w-100" type="submit">
               Update
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Link to="/">Cancel</Link>
+        <Link id="cancelLink" to="/">
+          Cancel
+        </Link>
       </div>
     </>
   );
