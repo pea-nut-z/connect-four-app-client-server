@@ -17,15 +17,16 @@ export default function Page() {
   const profileName = currentUser.displayName;
   const userName = location.state?.userName || profileName;
 
-  // const initialGrid = [
-  //   [null, null, null, null, null, null, null],
-  //   [null, null, null, null, null, null, null],
-  //   ["p1", null, null, null, null, null, null],
-  //   ["p1", null, null, null, null, null, null],
-  //   ["p1", "p2", "p2", "p2", null, null, null],
-  //   ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
-  // ];
-  const initialGrid = getGrid();
+  const initialGrid = [
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", null, null, null, null, null, null],
+    ["p1", "p2", "p2", null, "p2", null, null],
+    ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+  ];
+
+  // const initialGrid = getGrid();
   const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
   const [game, loadGame] = useState();
 

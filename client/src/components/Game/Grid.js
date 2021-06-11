@@ -90,16 +90,12 @@ export const Grid = forwardRef(
 
         {/* WHO's TURN */}
         <h4
+          data-testid="turn"
           className="text-center mt-4"
           style={{ color: ready ? currentPlayerColor : opponentPlayerColor }}
         >
-          {gameOver || !opponent
-            ? ""
-            : ready
-            ? "Your turn"
-            : opponent
-            ? `Waiting for ${opponent}...`
-            : "Waiting for a player to join..."}
+          {opponent ? "" : "Waiting for a player to join..."}
+          {gameOver ? "" : ready ? "Your turn" : opponent ? `Waiting for ${opponent}...` : ""}
         </h4>
       </>
     );

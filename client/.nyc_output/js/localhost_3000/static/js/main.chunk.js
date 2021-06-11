@@ -3431,9 +3431,12 @@ __webpack_require__.$Refresh$.setup(module.i);
 
 
 const SocketContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createContext();
-const socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default.a.connect("http://localhost:3001", {
+const url = Object({"NODE_ENV":"development","PUBLIC_URL":"","WDS_SOCKET_HOST":undefined,"WDS_SOCKET_PATH":undefined,"WDS_SOCKET_PORT":undefined,"FAST_REFRESH":true,"REACT_APP_FIREBASE_API_KEY":"AIzaSyBgr9G-PNput-ub3WUqUFwj9ujDw42hPOk","REACT_APP_FIREBASE_AUTH_DOMAIN":"connect-four-development.firebaseapp.com","REACT_APP_FIREBASE_DATABASE_URL":"https://connect-four-development-default-rtdb.firebaseio.com","REACT_APP_FIREBASE_PROJECT_ID":"connect-four-development","REACT_APP_FIREBASE_STOREAGE_BUCKET":"connect-four-development.appspot.com","REACT_APP_FIREBASE_MESSAGING_SENDER_ID":"790566826312","REACT_APP_FIREBASE_APP_ID":"1:790566826312:web:213915aaf3255f0eb1437d"}).REACT_APP_ENV === "test" ? "" : "http://localhost:3001"; // export const socket = socketio.connect("http://localhost:3001", { forceNew: true });
+
+const socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default.a.connect(url, {
   forceNew: true
 });
+console.log("use server");
 
 const currentExports = __react_refresh_utils__.getModuleExports(module.i);
 __react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
