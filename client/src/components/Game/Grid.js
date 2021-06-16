@@ -8,8 +8,7 @@ export const Grid = forwardRef(
   ({ game, initialGrid, handleResult, opponent, currentPlayerNum }, ref) => {
     const blankGrid = JSON.parse(JSON.stringify(initialGrid));
     const [grid, setGrid] = useState(blankGrid);
-
-    const [gameOver, setGameOver] = useState(false);
+    const [gameOver, setGameOver] = useState(true);
     const [ready, toggleReady] = useState(true);
     const [thisTurn, endThisTurn] = useState();
     const client = useContext(SocketContext);
@@ -19,6 +18,7 @@ export const Grid = forwardRef(
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,
+      toggleGameOver,
     }));
 
     const resetGrid = (result) => {
@@ -28,6 +28,10 @@ export const Grid = forwardRef(
       setGrid(initialGrid);
       setGameOver(false);
       endThisTurn(!thisTurn);
+    };
+
+    const toggleGameOver = (boolean) => {
+      setGameOver(boolean);
     };
 
     useEffect(() => {
@@ -50,9 +54,8 @@ export const Grid = forwardRef(
       // to all clients except sender
       if (game === "multi") {
         toggleReady(!ready);
-        client.emit("update-grid", { grid, gameOver, ready });
-        client.on("update-grid", ({ grid, gameOver, ready }) => {
-          setGameOver(gameOver);
+        client.emit("update-grid", { grid, ready });
+        client.on("update-grid", ({ grid, ready }) => {
           setGrid(grid);
           toggleReady(ready);
         });
@@ -94,8 +97,8 @@ export const Grid = forwardRef(
           className="text-center mt-4"
           style={{ color: ready ? currentPlayerColor : opponentPlayerColor }}
         >
-          {opponent ? "" : "Waiting for a player to join..."}
-          {gameOver ? "" : ready ? "Your turn" : opponent ? `Waiting for ${opponent}...` : ""}
+          {!opponent && "Waiting for a player to join..."}
+          {gameOver ? "" : ready ? "Your turn" : `Waiting for ${opponent}...`}
         </h4>
       </>
     );

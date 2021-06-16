@@ -10,7 +10,7 @@ import "@testing-library/jest-dom";
 import { shallow } from "enzyme";
 import Game from "../../src/components/game/Game";
 import SquareGrid from "../../src/components/game/SquareGrid";
-import { testGridSingle } from "../constants";
+import { testGridSingle, player1 } from "../constants";
 
 const incrementData = jest.fn();
 const toggleGameMode = jest.fn();
@@ -32,7 +32,7 @@ describe("Single player mode", () => {
   beforeAll(() => {
     const component = render(
       <Game
-        userName={"Test"}
+        userName={player1}
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}
@@ -51,7 +51,7 @@ describe("Single player mode", () => {
   });
 
   it("renders initial layout", () => {
-    expect(getByTestId("p1Name")).toHaveTextContent("Test");
+    expect(getByTestId("p1Name")).toHaveTextContent(player1);
     expect(getByTestId("p2Name")).toHaveTextContent("Peanutbot");
     expect(getByTestId("numOfRounds")).toHaveTextContent(1);
     expect(getByTestId("score1")).toHaveTextContent(0);
@@ -82,10 +82,6 @@ describe("Single player mode", () => {
 
   it("makes a losing move -> displays messages -> increments opponent's score", async () => {
     const grid = getAllByTestId("square");
-    // const square = grid[3];
-    // await fireEvent.click(grid[3]);
-    // await fireEvent.click(grid[5]);
-    // await fireEvent.click(grid[5]);
     fireEvent.click(grid[3]);
     await waitForElementToBeRemoved(() => getByText("Waiting for Peanutbot..."));
     fireEvent.click(grid[5]);
@@ -127,6 +123,7 @@ describe("Quit Button", () => {
   it("clicks quit button during a game -> calls toggleGameMode -> increments play count data", async () => {
     const component = render(
       <Game
+        userName={player1}
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}

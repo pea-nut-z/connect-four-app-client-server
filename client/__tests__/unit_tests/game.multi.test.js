@@ -1,4 +1,3 @@
-// import React from "react";
 import React from "react";
 import { render, fireEvent, cleanup, act, waitFor } from "@testing-library/react/pure";
 import "@testing-library/jest-dom";
@@ -35,9 +34,7 @@ describe("Multi player mode", () => {
   });
 
   afterAll(async () => {
-    // await page.click("#logoutBtn");
-    // await browser.close();
-    // await browser.close().catch((e) => e);
+    await browser.close();
     cleanup();
   });
 
@@ -60,22 +57,12 @@ describe("Multi player mode", () => {
       await page.click("#loginBtn");
       await page.waitForNavigation();
       await page.click("#multi");
-      // click replay to get the pre filled grid passed through component as prop
-      const replayBtn = getByTestId("replay");
-      await fireEvent.click(replayBtn);
-
       expect(getByTestId("p1Name")).toHaveTextContent(player1);
       expect(getByTestId("p2Name")).toHaveTextContent(player2.username);
     });
   });
 
-  it("says it is player2's turn in green.", () => {
-    expect(getByTestId("turn")).toHaveTextContent(`Waiting for ${player2.username}...`);
-    expect(getByTestId("turn").style).toHaveProperty("color", "rgb(46, 204, 64)");
-  });
-
   it("says it is player1's turn in pink.", async () => {
-    page.click("#grid");
     await waitFor(() => {
       expect(getByTestId("turn")).toHaveTextContent("Your turn");
       expect(getByTestId("turn").style).toHaveProperty("color", "rgb(240, 18, 190)");
@@ -83,7 +70,7 @@ describe("Multi player mode", () => {
   });
 
   it("says player1 wins and increments its score.", async () => {
-    fireEvent.click(grid[3]);
+    fireEvent.click(grid[2]);
     await waitFor(() => {
       expect(getByTestId("resultMsg")).toHaveTextContent("🥂 YOU WIN! 🎉");
       expect(getByTestId("score1")).toHaveTextContent(1);
@@ -95,11 +82,16 @@ describe("Multi player mode", () => {
   it("increments the number of rounds after winner clicks replay.", () => {
     const replayBtn = getByTestId("replay");
     fireEvent.click(replayBtn);
-    expect(getByTestId("numOfRounds")).toHaveTextContent("3");
+    expect(getByTestId("numOfRounds")).toHaveTextContent("2");
+  });
+
+  it("says it is player2's turn in green.", () => {
+    fireEvent.click(grid[0]);
+    expect(getByTestId("turn")).toHaveTextContent(`Waiting for ${player2.username}...`);
+    expect(getByTestId("turn").style).toHaveProperty("color", "rgb(46, 204, 64)");
   });
 
   it("says player1 has lost and increments opponent's score.", async () => {
-    fireEvent.click(grid[3]);
     page.click("#grid");
     await waitFor(() => {
       expect(getByTestId("resultMsg")).toHaveTextContent("😱 YOU LOST! 💩");
@@ -111,11 +103,26 @@ describe("Multi player mode", () => {
     });
   });
 
+  it("says draw.", async () => {
+    await act(async () => {
+      await page.click("#replay");
+      await page.click("#testCol2");
+      await fireEvent.click(grid[3]);
+      await page.click("#testCol0");
+      await waitFor(() => {
+        expect(getByTestId("resultMsg")).toHaveTextContent("Draw! 🤝");
+        expect(getByTestId("replay")).toBeDisabled();
+      });
+    });
+  });
+
   it("says a player has left the game.", async () => {
-    page.click("#quitBtn");
-    await waitFor(() => {
-      expect(getByTestId("turn")).toHaveTextContent("Waiting for a player to join...");
-      expect(getByTestId("info")).toHaveTextContent(`${player2.username} left💨`);
+    await act(async () => {
+      page.click("#quitBtn");
+      await waitFor(() => {
+        expect(getByTestId("turn")).toHaveTextContent("Waiting for a player to join...");
+        expect(getByTestId("info")).toHaveTextContent(`${player2.username} left💨`);
+      });
     });
   });
 });

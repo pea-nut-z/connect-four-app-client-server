@@ -96,6 +96,15 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
     }
   }, [result, numOfRounds]);
 
+  useEffect(() => {
+    if (player1Name && player2Name) {
+      ref.current.toggleGameOver(false);
+    } else {
+      ref.current.toggleGameOver(true);
+      // disableReplayButton(true);
+    }
+  }, [player1Name, player2Name]);
+
   function handleResult(result) {
     if (game === "multi") {
       result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
@@ -194,6 +203,7 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
 
       <Button
         disabled={replayButton}
+        id="replay"
         data-testid="replay"
         className="btn-warning w-100 mt-4"
         onClick={handleReplay}
