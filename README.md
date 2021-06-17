@@ -26,4 +26,4 @@ Password for all accounts : 123456
 
 ### Road blocks
 
-Testing is mostly in place. It is missing testing for authentications and sockets. I am using Firebase Authentication and Firebase real-time database. I tried mocking it but the resources were not up to date. Firebase has come up with an emulator for testing. My next step would be to give that a try.
+The coverage report for functional tests does not have source mapping due to it is an React app.
