@@ -26,4 +26,4 @@ Password for all accounts : 123456
 
 ### Road blocks
 
-The coverage report for functional tests does not have source mapping due to it is an React app.
+The coverage report for functional tests does not have source mapping because tests are ran using the build of React app.
