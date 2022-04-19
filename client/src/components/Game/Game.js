@@ -29,6 +29,8 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
 
     if (game === "multi") {
       client.on("full-server", () => {
+        console.log("ran");
+
         toggleGameMode("");
         alert("Sorry, server is full.");
       });
@@ -61,7 +63,7 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       });
       return () => client.disconnect(currentPlayerName);
     }
-  }, []);
+  }, [client, currentPlayerName, game, userName]);
 
   useEffect(() => {
     if (game === "multi") {
@@ -94,7 +96,7 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
         result === "p2" && setScore2(score2 + 1);
       });
     }
-  }, [result, numOfRounds]);
+  }, [result, numOfRounds, client, currentPlayerName, game, incrementData, score1, score2]);
 
   useEffect(() => {
     if (player1Name && player2Name) {

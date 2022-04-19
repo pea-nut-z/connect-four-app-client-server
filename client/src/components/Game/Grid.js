@@ -60,7 +60,7 @@ export const Grid = forwardRef(
           toggleReady(ready);
         });
       }
-    }, [thisTurn]);
+    }, [client, game, gameOver, grid, handleResult, ready]);
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
