@@ -14,9 +14,10 @@ const app = firebase.initializeApp({
 });
 
 let auth = app.auth();
+
 if (window.location.hostname === "localhost") {
   app.database().useEmulator("localhost", 9000);
-  app.auth().useEmulator("http://localhost:9099", { disableWarnings: true });
+  app.auth().useEmulator("http://localhost:9099", { disableWarnings: false });
 }
 
 const base = Rebase.createClass(app.database());
