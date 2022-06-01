@@ -17,8 +17,7 @@ export default function Page() {
   const profileName = currentUser.displayName;
   const userName = location.state?.userName || profileName;
 
-  let initialGrid;
-  const testGrid = [
+  const initialGrid = [
     [null, "p2", null, null, "p1", "p1", "p2"],
     ["p1", "p2", "p1", "p2", "p2", "p1", "p2"],
     ["p1", "p2", "p1", "p2", "p2", "p2", "p1"],
@@ -26,8 +25,8 @@ export default function Page() {
     ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
     ["p2", "p1", "p1", "p1", "p2", "p2", "p2"],
   ];
-  initialGrid = process.env.REACT_APP_TEST ? testGrid : getGrid();
 
+  // const initialGrid = getGrid();
   const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
   const [game, loadGame] = useState();
 
@@ -51,11 +50,11 @@ export default function Page() {
     return () => {
       base.removeBinding(ref);
     };
-  }, [data, id]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(id, JSON.stringify(data));
-  }, [data, id]);
+  }, [data]);
 
   function updateProfile() {
     history.push("/update-profile");
