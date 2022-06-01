@@ -15,7 +15,8 @@ const app = firebase.initializeApp({
 
 let auth = app.auth();
 
-if (window.location.hostname === "localhost") {
+// USE EMULATORS IN TEST ENVIRONMENT
+if (window.location.hostname === "localhost" && process.env.REACT_APP_TEST) {
   app.database().useEmulator("localhost", 9000);
   app.auth().useEmulator("http://localhost:9099", { disableWarnings: false });
 }
