@@ -22,4 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 ui-debug.log*
 firebase-debug.log*
-database-debug.log*
+client/database-debug.log
