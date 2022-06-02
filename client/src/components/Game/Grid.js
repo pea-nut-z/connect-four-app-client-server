@@ -12,8 +12,8 @@ export const Grid = forwardRef(
     const [ready, toggleReady] = useState(true);
     const [thisTurn, endThisTurn] = useState();
     const client = useContext(SocketContext);
-    const currentPlayerColor = currentPlayerNum === "p1" ? "#f012be" : "#2ecc40";
-    const opponentPlayerColor = currentPlayerNum === "p1" ? "#2ecc40" : "#f012be";
+    const currentPlayerColor = currentPlayerNum === 1 ? "#f012be" : "#2ecc40";
+    const opponentPlayerColor = currentPlayerNum === 1 ? "#2ecc40" : "#f012be";
 
     useImperativeHandle(ref, () => ({
       grid,
@@ -22,7 +22,7 @@ export const Grid = forwardRef(
     }));
 
     const resetGrid = (result) => {
-      if (game === "single" && result === "p1") {
+      if (game === "single" && result === 1) {
         toggleReady(true);
       }
       setGrid(initialGrid);
@@ -39,7 +39,7 @@ export const Grid = forwardRef(
         let newGrid = grid.slice();
         setTimeout(() => {
           const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
-          newGrid[aiMoveRowIdx][aiMoveColIdx] = "p2";
+          newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
           setGrid(newGrid);
           let result = checkResult(newGrid);
           if (result) {

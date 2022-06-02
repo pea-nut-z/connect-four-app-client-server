@@ -12,19 +12,19 @@ export const player3 = {
 };
 
 export const testGridSingle = [
-  [null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null],
-  ["p1", null, null, null, null, null, null],
-  ["p1", null, null, null, null, null, null],
-  ["p1", "p2", "p2", null, "p2", null, null],
-  ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [1, 0, 0, 0, 0, 0, 0],
+  [1, 0, 0, 0, 0, 0, 0],
+  [1, 2, 2, 0, 2, 0, 0],
+  [2, 1, 2, 1, 2, 1, 2],
 ];
 
 export const testGridMulti = [
-  [null, "p2", null, null, "p1", "p1", "p2"],
-  ["p1", "p2", "p1", "p2", "p2", "p1", "p2"],
-  ["p1", "p2", "p1", "p2", "p2", "p2", "p1"],
-  ["p2", "p1", "p1", "p2", "p1", "p1", "p2"],
-  ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
-  ["p2", "p1", "p1", "p1", "p2", "p2", "p2"],
+  [0, 2, 0, 0, 1, 1, 2],
+  [1, 2, 1, 2, 2, 1, 2],
+  [1, 2, 1, 2, 2, 2, 1],
+  [2, 1, 1, 2, 1, 1, 2],
+  [2, 1, 2, 1, 2, 1, 2],
+  [2, 1, 1, 1, 2, 2, 2],
 ];

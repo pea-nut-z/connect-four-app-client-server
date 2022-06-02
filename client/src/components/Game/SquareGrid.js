@@ -6,7 +6,7 @@ export default function SquareGrid({ value, colIdx, handleMove }) {
       <div
         id={colIdx === 0 ? "testCol0" : colIdx === 2 ? "testCol2" : ""}
         data-testid="square"
-        className={`circle ${value ? value : ""}`}
+        className={`circle ${value ? "p" + value : ""}`}
       ></div>
     </div>
   );

@@ -5,10 +5,10 @@ describe("getGrid function", () => {
     const rows = 4;
     const cols = 4;
     const grid = [
-      [null, null, null, null],
-      [null, null, null, null],
-      [null, null, null, null],
-      [null, null, null, null],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
     ];
 
     const newGrid = getGrid(rows, cols);
@@ -17,12 +17,12 @@ describe("getGrid function", () => {
 
   it("returns a default size of blank grid", () => {
     const grid = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
     ];
     const newGrid = getGrid();
     expect(newGrid).toEqual(grid);
@@ -32,48 +32,48 @@ describe("getGrid function", () => {
 describe("checkResult function checks/returns winning result in every direction", () => {
   it("returns a winner - horizontally", () => {
     const grid1 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p2", "p2", "p2", "p2", null, null, null],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [2, 2, 2, 2, 0, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
-    expect(checkResult(grid1)).toEqual("p2");
+    expect(checkResult(grid1)).toEqual(2);
   });
 
   it("returns a winner - vertically", () => {
     const grid2 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
-      ["p2", "p2", "p2", "p1", null, null, null],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0],
+      [2, 2, 2, 1, 0, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
-    expect(checkResult(grid2)).toEqual("p2");
+    expect(checkResult(grid2)).toEqual(2);
   });
 
   it("returns a winner - diagonally", () => {
     const grid3 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p1", null, null, "p2", null, null, null],
-      ["p2", null, "p2", null, null, null, null],
-      ["p1", "p2", "p2", "p1", null, null, null],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 2, 0, 0, 0],
+      [2, 0, 2, 0, 0, 0, 0],
+      [1, 2, 2, 1, 0, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
-    expect(checkResult(grid3)).toEqual("p2");
+    expect(checkResult(grid3)).toEqual(2);
   });
 
   it("returns Draw", () => {
     const grid4 = [
-      ["p2", "p2", "p1", "p1", "p2", "p1", "p1"],
-      ["p1", "p2", "p1", "p1", "p2", "p1", "p2"],
-      ["p1", "p1", "p1", "p2", "p2", "p1", "p1"],
-      ["p2", "p2", "p2", "p1", "p1", "p2", "p1"],
-      ["p2", "p1", "p1", "p2", "p2", "p1", "p2"],
-      ["p2", "p2", "p1", "p1", "p2", "p2", "p2"],
+      [2, 2, 1, 1, 2, 1, 1],
+      [1, 2, 1, 1, 2, 1, 2],
+      [1, 1, 1, 2, 2, 1, 1],
+      [2, 2, 2, 1, 1, 2, 1],
+      [2, 1, 1, 2, 2, 1, 2],
+      [2, 2, 1, 1, 2, 2, 2],
     ];
     expect(checkResult(grid4)).toEqual("Draw");
   });
@@ -82,12 +82,12 @@ describe("checkResult function checks/returns winning result in every direction"
 describe("findAValidMove function", () => {
   it("returns the correct row index for a move in a selected column", () => {
     const grid5 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
-      ["p2", null, null, null, null, null, null],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0],
     ];
     const row = findAValidMove(grid5, 0);
     expect(row).toEqual(3);
@@ -97,12 +97,12 @@ describe("findAValidMove function", () => {
 describe("findAiMove function", () => {
   it("makes a move to avoid human from winning", () => {
     const grid6 = [
-      [null, "p1", "p2", null, "p2", "p1", "p2"],
-      ["p2", "p1", "p2", null, "p2", "p1", "p2"],
-      ["p2", "p1", "p2", null, "p2", "p1", "p2"],
-      ["p2", "p1", "p2", null, "p2", "p1", "p2"],
-      ["p2", "p2", "p2", "p1", "p2", "p1", "p2"],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 1, 2, 0, 2, 1, 2],
+      [2, 1, 2, 0, 2, 1, 2],
+      [2, 1, 2, 0, 2, 1, 2],
+      [2, 1, 2, 0, 2, 1, 2],
+      [2, 2, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
     const [row, col] = findAiMove(grid6, 7);
     expect(row).toEqual(0);
@@ -111,29 +111,29 @@ describe("findAiMove function", () => {
 
   it("makes a move to win instead of blocking", () => {
     const grid7 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p1", null, null, null, null, null, null],
-      ["p1", null, null, null, null, null, null],
-      ["p1", "p2", "p2", "p2", null, null, null],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 2, 2, 2, 0, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
     const [row, col] = findAiMove(grid7, 7);
-    grid7[row][col] = "p2";
-    expect(checkResult(grid7)).toEqual("p2");
+    grid7[row][col] = 2;
+    expect(checkResult(grid7)).toEqual(2);
   });
 
   it("makes a move to block", () => {
     const grid8 = [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      ["p2", "p2", "p2", null, null, null, null],
-      ["p2", "p1", "p2", "p1", "p2", "p1", "p2"],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [2, 2, 2, 0, 0, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
     ];
     const [row, col] = findAiMove(grid8, 7);
-    grid8[row][col] = "p2";
+    grid8[row][col] = 2;
     expect(row).toEqual(4);
     expect(col).toEqual(3);
   });

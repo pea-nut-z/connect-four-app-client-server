@@ -7,7 +7,7 @@ export const getGrid = function (rows = defaultRows, cols = defaultCols) {
   let grid = [];
   let i = 0;
   while (i < rows) {
-    grid.push(Array(cols).fill(null));
+    grid.push(Array(cols).fill(0));
     i++;
   }
   return grid;
@@ -51,18 +51,20 @@ export function checkResult(grid) {
       }
     }
   }
-  const tie = grid.every((row) => !row.includes(null));
+  const tie = grid.every((row) => !row.includes(0));
   if (tie) return "Draw";
 }
 
 export function findAValidMove(grid, c) {
   for (let r = grid.length - 1; r >= 0; r--) {
-    if (grid[r][c] === null) {
+    if (grid[r][c] === 0) {
       let move = r;
       return move;
     }
   }
 }
+
+const test = 0;
 
 export function findAiMove(grid) {
   const t0 = performance.now();
@@ -75,9 +77,9 @@ export function findAiMove(grid) {
   for (let c = 0; c < numOfCols; c++) {
     let r = findAValidMove(grid, c);
     if (r !== undefined) {
-      grid[r][c] = "p2"; // bot's move
+      grid[r][c] = 2; // bot's move
       let depthAndScore = alphabeta(grid, numOfCols, maxDepth, true); // get human's move
-      grid[r][c] = null;
+      grid[r][c] = 0;
       let [moveDepth, moveScore] = depthAndScore;
 
       if (
@@ -96,16 +98,15 @@ export function findAiMove(grid) {
   }
   let randomMove = Math.floor(Math.random() * bestMoves.length);
   const t1 = performance.now();
-  // Total time : It took 2217.699999988079 milliseconds.
-  // It took 2667.899999976158 milliseconds.
+  // Total time : It took 2217 to 2667 milliseconds.
   console.log(`It took ${t1 - t0} milliseconds.`);
   return bestMoves[randomMove];
 }
 
 function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   let result = checkResult(grid);
-  if (result === "p1") return [depth, 10]; // human
-  if (result === "p2") return [depth, -10]; // bot
+  if (result === 1) return [depth, 10]; // human
+  if (result === 2) return [depth, -10]; // bot
   if (result === "Draw" || depth === 0) return [depth, 0];
 
   if (isMaximizingPlayer) {
@@ -115,9 +116,9 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "p1"; // human's move
+        grid[r][c] = 1; // human's move
         let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false); // get bot's move
-        grid[r][c] = null;
+        grid[r][c] = 0;
         let [moveDepth, moveScore] = depthAndScore;
         if (
           moveScore > bestScore || // look for highest score (10)
@@ -138,9 +139,9 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "p2"; // bot's move
+        grid[r][c] = 2; // bot's move
         let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true); // get human's move
-        grid[r][c] = null;
+        grid[r][c] = 0;
         let [moveDepth, moveScore] = depthAndScore;
         if (
           moveScore < bestScore || // look for lowest score (-10)
