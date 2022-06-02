@@ -65,74 +65,64 @@ export function findAValidMove(grid, c) {
 }
 
 export function findAiMove(grid) {
+  const t0 = performance.now();
   let maxDepth = 7;
   let numOfCols = grid[0].length;
-  let bestMoves = [];
+  let bestMoves;
   let bestDepth;
-  let bestScore = -Infinity;
+  let bestScore = Infinity;
 
-  // console.log("*********BEGIN*********");
   for (let c = 0; c < numOfCols; c++) {
     let r = findAValidMove(grid, c);
     if (r !== undefined) {
-      grid[r][c] = "p2";
-      let depthAndScore = alphabeta(grid, numOfCols, maxDepth, false);
+      grid[r][c] = "p2"; // bot's move
+      let depthAndScore = alphabeta(grid, numOfCols, maxDepth, true); // get human's move
       grid[r][c] = null;
       let [moveDepth, moveScore] = depthAndScore;
+
       if (
-        moveScore > bestScore ||
-        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
-        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
+        moveScore < bestScore || // look for lowest score (-10)
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // positive score - human is winning; look for min depth to delay human's win
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // negative score - bot is winning; look for max depth to speed up bot's win
       ) {
-        // console.log(
-        //   "Created new best moves",
-        //   moveScore,
-        //   bestScore,
-        //   moveDepth,
-        //   bestDepth
-        // );
         bestMoves = [];
         bestDepth = moveDepth;
         bestScore = moveScore;
         bestMoves.push([r, c]);
       } else if (moveScore === bestScore && moveDepth === bestDepth) {
-        // console.log(
-        //   "pushed moves with same score",
-        //   moveScore,
-        //   bestScore,
-        //   moveDepth,
-        //   bestDepth
-        // );
         bestMoves.push([r, c]);
       }
     }
   }
-  // console.log({ bestMoves });
   let randomMove = Math.floor(Math.random() * bestMoves.length);
+  const t1 = performance.now();
+  // Total time : It took 2217.699999988079 milliseconds.
+  // It took 2667.899999976158 milliseconds.
+  console.log(`It took ${t1 - t0} milliseconds.`);
   return bestMoves[randomMove];
 }
 
 function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
   let result = checkResult(grid);
-  if (result === "p1") return [depth, -10];
-  if (result === "p2") return [depth, 10];
+  if (result === "p1") return [depth, 10]; // human
+  if (result === "p2") return [depth, -10]; // bot
   if (result === "Draw" || depth === 0) return [depth, 0];
 
   if (isMaximizingPlayer) {
-    let bestMove = [];
-    let bestDepth = 0;
+    let bestMove;
+    let bestDepth = Infinity;
     let bestScore = -Infinity;
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "p2";
-        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false);
+        grid[r][c] = "p1"; // human's move
+        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false); // get bot's move
         grid[r][c] = null;
         let [moveDepth, moveScore] = depthAndScore;
         if (
-          moveScore > bestScore ||
-          (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
-          (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
+          moveScore > bestScore || // look for highest score (10)
+          (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) || // positive score - human is winning; look for max depth to speed up human's win
+          (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0) // negative score - bot is winning; look for min depth to delay bot's win
         ) {
           bestDepth = moveDepth;
           bestScore = moveScore;
@@ -142,18 +132,21 @@ function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
     }
     return bestMove;
   } else {
-    let bestMove = [];
-    let bestDepth = 0;
+    let bestMove;
+    let bestDepth = Infinity;
     let bestScore = Infinity;
     for (let c = 0; c < numOfCols; c++) {
       let r = findAValidMove(grid, c);
       if (r !== undefined) {
-        grid[r][c] = "p1";
-        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true);
+        grid[r][c] = "p2"; // bot's move
+        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true); // get human's move
         grid[r][c] = null;
-        // if (!depthAndScore) continue;
         let [moveDepth, moveScore] = depthAndScore;
-        if (moveScore < bestScore || (moveScore === bestScore && moveDepth > bestDepth)) {
+        if (
+          moveScore < bestScore || // look for lowest score (-10)
+          (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // positive score - human is winning; look for min depth to delay human's win
+          (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // negative score - bot is winning; look for max depth to speed up bot's win
+        ) {
           bestDepth = moveDepth;
           bestScore = moveScore;
           bestMove = depthAndScore;
