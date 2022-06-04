@@ -8,13 +8,14 @@ export const Grid = forwardRef(
   ({ game, initialGrid, handleResult, opponent, currentPlayerNum }, ref) => {
     const blankGrid = JSON.parse(JSON.stringify(initialGrid));
     const [grid, setGrid] = useState(blankGrid);
+    const [validMoves, setValidMoves] = useState({});
     const [gameOver, setGameOver] = useState(true);
     const [ready, toggleReady] = useState(true);
     const [thisTurn, endThisTurn] = useState();
     const client = useContext(SocketContext);
     const currentPlayerColor = currentPlayerNum === 1 ? "#f012be" : "#2ecc40";
     const opponentPlayerColor = currentPlayerNum === 1 ? "#2ecc40" : "#f012be";
-
+    const fullCol = blankGrid[0].length - 1;
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,
@@ -41,7 +42,7 @@ export const Grid = forwardRef(
           const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
           newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
           setGrid(newGrid);
-          let result = checkResult(newGrid);
+          let result = checkResult(newGrid, aiMoveRowIdx, aiMoveColIdx);
           if (result) {
             setGameOver(true);
             handleResult(result);
@@ -64,11 +65,12 @@ export const Grid = forwardRef(
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
+        if (grid[0][colIdx] !== 0) return; // Full column
         let newGrid = grid.slice();
         const rowIdx = findAValidMove(newGrid, colIdx);
         newGrid[rowIdx][colIdx] = currentPlayerNum;
         setGrid(newGrid);
-        let result = checkResult(newGrid);
+        let result = checkResult(newGrid, rowIdx, colIdx);
         result && setGameOver(true);
         result && handleResult(result);
         game === "single" && toggleReady(false);
