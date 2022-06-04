@@ -34,27 +34,39 @@ describe("checkResult function checks/returns winning result in every direction"
     const grid1 = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [2, 2, 2, 2, 0, 0, 0],
-      [2, 1, 2, 1, 2, 1, 2],
+      [0, 0, 0, 0, 2, 0, 0],
+      [0, 0, 0, 2, 1, 1, 0],
+      [0, 0, 1, 1, 1, 2, 0],
+      [2, 2, 2, 2, 1, 2, 0],
     ];
-    expect(checkResult(grid1)).toEqual(2);
+    expect(checkResult(grid1, 5, 1)).toEqual(2);
   });
 
   it("returns a winner - vertically", () => {
     const grid2 = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [2, 0, 0, 0, 0, 0, 0],
-      [2, 0, 0, 0, 0, 0, 0],
-      [2, 2, 2, 1, 0, 0, 0],
-      [2, 1, 2, 1, 2, 1, 2],
+      [0, 0, 0, 0, 0, 0, 1],
+      [0, 0, 0, 0, 0, 0, 1],
+      [0, 0, 0, 0, 0, 0, 1],
+      [0, 0, 0, 0, 0, 2, 1],
+      [0, 0, 0, 0, 0, 2, 2],
+      [0, 0, 0, 0, 0, 1, 2],
     ];
-    expect(checkResult(grid2)).toEqual(2);
+    expect(checkResult(grid2, 1, 6)).toEqual(1);
   });
 
-  it("returns a winner - diagonally", () => {
+  it("returns a winner - diagonally '\\'", () => {
+    const grid3 = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0],
+      [2, 0, 2, 1, 0, 0, 0],
+      [1, 2, 2, 1, 1, 0, 0],
+      [2, 1, 2, 1, 2, 1, 2],
+    ];
+    expect(checkResult(grid3, 5, 5)).toEqual(1);
+  });
+
+  it("returns a winner - diagonally '/'", () => {
     const grid3 = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
@@ -63,7 +75,7 @@ describe("checkResult function checks/returns winning result in every direction"
       [1, 2, 2, 1, 0, 0, 0],
       [2, 1, 2, 1, 2, 1, 2],
     ];
-    expect(checkResult(grid3)).toEqual(2);
+    expect(checkResult(grid3, 4, 1)).toEqual(2);
   });
 
   it("returns Draw", () => {
@@ -75,7 +87,7 @@ describe("checkResult function checks/returns winning result in every direction"
       [2, 1, 1, 2, 2, 1, 2],
       [2, 2, 1, 1, 2, 2, 2],
     ];
-    expect(checkResult(grid4)).toEqual("Draw");
+    expect(checkResult(grid4, 0, 0)).toEqual("Draw");
   });
 });
 
