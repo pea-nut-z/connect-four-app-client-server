@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from "react";
 import SquareGrid from "./SquareGrid";
-import { checkResult, findAValidMove, findAiMove } from "./help";
+import { getRowsAvailable, checkResult, findAiMove } from "./help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
@@ -8,14 +8,14 @@ export const Grid = forwardRef(
   ({ game, initialGrid, handleResult, opponent, currentPlayerNum }, ref) => {
     const blankGrid = JSON.parse(JSON.stringify(initialGrid));
     const [grid, setGrid] = useState(blankGrid);
-    const [validMoves, setValidMoves] = useState({});
+    const [rowsAvailable, setRowsAvailable] = useState(getRowsAvailable(initialGrid));
     const [gameOver, setGameOver] = useState(true);
     const [ready, toggleReady] = useState(true);
     const [thisTurn, endThisTurn] = useState();
-    const client = useContext(SocketContext);
     const currentPlayerColor = currentPlayerNum === 1 ? "#f012be" : "#2ecc40";
     const opponentPlayerColor = currentPlayerNum === 1 ? "#2ecc40" : "#f012be";
-    const fullCol = blankGrid[0].length - 1;
+
+    const client = useContext(SocketContext);
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,
@@ -26,7 +26,8 @@ export const Grid = forwardRef(
       if (game === "single" && result === 1) {
         toggleReady(true);
       }
-      setGrid(initialGrid);
+      setGrid(blankGrid);
+      setRowsAvailable(getRowsAvailable(initialGrid));
       setGameOver(false);
       endThisTurn(!thisTurn);
     };
@@ -37,16 +38,22 @@ export const Grid = forwardRef(
 
     useEffect(() => {
       if (!gameOver && game === "single" && !ready) {
-        let newGrid = grid.slice();
+        const newGrid = grid.slice();
+        const newRowChart = rowsAvailable.slice();
         setTimeout(() => {
-          const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid);
+          const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, newRowChart);
           newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
           setGrid(newGrid);
-          let result = checkResult(newGrid, aiMoveRowIdx, aiMoveColIdx);
+          const result = checkResult(newGrid, aiMoveRowIdx, aiMoveColIdx);
           if (result) {
             setGameOver(true);
             handleResult(result);
           } else {
+            const rowValue = aiMoveRowIdx === 0 ? 9 : aiMoveRowIdx - 1;
+            newRowChart[aiMoveColIdx] = rowValue;
+            // console.log("at grid", newRowChart);
+
+            setRowsAvailable(newRowChart);
             toggleReady(!ready);
           }
         }, 500);
@@ -65,14 +72,22 @@ export const Grid = forwardRef(
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
-        if (grid[0][colIdx] !== 0) return; // Full column
-        let newGrid = grid.slice();
-        const rowIdx = findAValidMove(newGrid, colIdx);
+        if (rowsAvailable[colIdx] === 9) return; // 9 means full column; Max standard num of rows is 8
+        const newGrid = grid.slice();
+        const rowIdx = rowsAvailable[colIdx];
         newGrid[rowIdx][colIdx] = currentPlayerNum;
         setGrid(newGrid);
-        let result = checkResult(newGrid, rowIdx, colIdx);
-        result && setGameOver(true);
-        result && handleResult(result);
+        const result = checkResult(newGrid, rowIdx, colIdx);
+        if (result) {
+          setGameOver(true);
+          handleResult(result);
+        } else {
+          const newRowChart = rowsAvailable.slice();
+          const rowValue = rowIdx === 0 ? 9 : rowIdx - 1;
+          newRowChart[colIdx] = rowValue;
+          setRowsAvailable(newRowChart);
+        }
+
         game === "single" && toggleReady(false);
         endThisTurn(!thisTurn);
       }
