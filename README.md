@@ -21,13 +21,14 @@ In single player mode, you are playing against Peanutbot (AI player). In multipl
 
 ### Potential future features
 
-1. User experience - add a link to redirect the user to login page after they reset their password on a different window
+1. Multiple Web Sockets - enables more than two persons to play in multiplayer mode
 2. Chat
 
 ### Road blocks
 
-- [ ] Authentication components at the "client/src/components/auth" directory are tested using Puppeteer, unlike others which use Jest. Its test files are at "client/**tests**/functional_tests". Puppeteer uses the build of the application to run the tests. Thus, it does not have source mapping. As a result, the coverage report is not present.
+- [ ] Critical runtime in single player mode on a mobile device
+- [ ] Authentication components at the "client/src/components/auth" directory are tested using Puppeteer, unlike others which use Jest. Its test files are at "client/\_\_tests\_\_/functional_tests". Puppeteer uses the build of the application to run the tests. Thus, it does not have source mapping. As a result, the coverage report is not present.
 
 Resolved
 
-- [x] Playing against Peanutbot (AI) in a single-player mood took an average of 2660 to 2670 milliseconds for Peanutbot to execute its move. It has now reduced to an average of 1230 to 1240 milliseconds.
+- [x] Playing against Peanutbot (AI) in a single-player mode took an average of 2660 to 2670 milliseconds for Peanutbot to execute its move. It has now reduced to an average of 1230 to 1240 milliseconds.
