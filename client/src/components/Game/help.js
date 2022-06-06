@@ -1,4 +1,4 @@
-const times = [];
+// const times = [];    // for checking runtime in development
 const DEFAULT_ROWS = 6;
 const DEFAULT_COLS = 7;
 const FULL_COLUMN = 9; // 9 represents a column is full because the max standard number of rows is 8
@@ -39,7 +39,7 @@ export function checkResult(grid, row, col) {
   let upLeft_downRight = 1;
   let upRight_downLeft = 1;
 
-  // FLAG FOR COUNT INCREMENT
+  // FLAGS FOR COUNT INCREMENT
   let up = true;
   let down = true;
   let left = true;
@@ -99,7 +99,7 @@ export function findAiMove(grid, rowsAvailable) {
   // const t0 = performance.now();
   const maxDepth = 7;
   const numOfCols = grid[0].length;
-  const bestMoves = [];
+  let bestMoves = [];
   let bestDepth;
   let bestScore = Infinity;
 
