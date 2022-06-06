@@ -1,9 +1,9 @@
-const times = [];
-const DEFAULT_ROWS = 6;
-const DEFAULT_COLS = 7;
-const FULL_COLUMN = 9; // 9 represents a column is full because the max standard number of rows is 8
+// NOTE
+// r = row; c = column
+const defaultRows = 6;
+const defaultCols = 7;
 
-export const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
+export const getGrid = function (rows = defaultRows, cols = defaultCols) {
   const grid = [];
   let i = 0;
   while (i < rows) {
@@ -27,19 +27,19 @@ export function getRowsAvailable(grid) {
 
 export function checkResult(grid, row, col) {
   const value = grid[row][col];
-  // INDEXES
+  // Indexes
   let rMins = row - 1;
   let rPlus = row + 1;
   let cMins = col - 1;
   let cPlus = col + 1;
 
-  // COUNTS
+  // Counts
   let up_down = 1;
   let left_right = 1;
   let upLeft_downRight = 1;
   let upRight_downLeft = 1;
 
-  // FLAG FOR COUNT INCREMENT
+  // Flag to increment its count
   let up = true;
   let down = true;
   let left = true;
@@ -96,48 +96,44 @@ export function checkResult(grid, row, col) {
 }
 
 export function findAiMove(grid, rowsAvailable) {
-  // const t0 = performance.now();
-  const maxDepth = 7;
-  const numOfCols = grid[0].length;
-  const bestMoves = [];
+  const t0 = performance.now();
+  let maxDepth = 7;
+  let numOfCols = grid[0].length;
+  let bestMoves = [];
+  let bestScores = [];
   let bestDepth;
   let bestScore = Infinity;
 
   for (let c = 0; c < numOfCols; c++) {
-    if (rowsAvailable[c] === FULL_COLUMN) continue;
+    if (rowsAvailable[c] === 9) continue; // Full column
     let r = rowsAvailable[c];
-    grid[r][c] = 2; // BOT'S MOVE
-    let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, maxDepth, true); // GET HUMAN'S MOVE
+    grid[r][c] = 2; // bot's move
+    let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, maxDepth, true); // get human's move
     rowsAvailable[c] = r;
     grid[r][c] = 0;
     let [moveDepth, moveScore] = depthAndScore;
     if (
-      moveScore < bestScore || // LOOK FOR LOWEST SCORE (-10)
-      (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
-      (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for max depth to speed up bot's win
+      moveScore < bestScore || // look for lowest score (-10)
+      (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // positive score - human is winning; look for min depth to delay human's win
+      (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // negative score - bot is winning; look for max depth to speed up bot's win
     ) {
       bestMoves = [];
+      bestScores = [];
       bestDepth = moveDepth;
       bestScore = moveScore;
       bestMoves.push([r, c]);
+      bestScores.push(moveScore);
     } else if (moveScore === bestScore && moveDepth === bestDepth) {
       bestMoves.push([r, c]);
+      bestScores.push(moveScore);
     }
   }
   let randomMove = Math.floor(Math.random() * bestMoves.length);
   const t1 = performance.now();
-
-  // TO GET AVERAGE RUNTIME
-  // console.log(`It took ${t1 - t0} milliseconds.`);
-  // const time = t1 - t0;
-  // times.push(time);
-  // const total = times.reduce((acc, time) => {
-  //   return acc + time;
-  // }, 0);
-  // const average = total / times.length;
-  // console.log({ average });
-
-  return bestMoves[randomMove];
+  // Total time : It took 2217 to 2667 milliseconds.
+  console.log(`It took ${t1 - t0} milliseconds.`);
+  const move = bestMoves[randomMove];
+  return move;
 }
 
 function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizingPlayer) {
@@ -162,17 +158,17 @@ function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizing
     let bestDepth = Infinity;
     let bestScore = -Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      if (rowsAvailable[c] === FULL_COLUMN) continue;
+      if (rowsAvailable[c] === 9) continue; // Full column
       let r = rowsAvailable[c];
-      grid[r][c] = 1; // HUMAN'S MOVE
-      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, false); // GET BOT'S MOVE
+      grid[r][c] = 1; // human's move;
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, false); // get bot's move
       rowsAvailable[c] = r;
       grid[r][c] = 0;
       let [moveDepth, moveScore] = depthAndScore;
       if (
-        moveScore > bestScore || // LOOK FOR HIGHEST SCORE (10)
-        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for max depth to speed up human's win
-        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for min depth to delay bot's win
+        moveScore > bestScore || // look for highest score (10)
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) || // positive score - human is winning; look for max depth to speed up human's win
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0) // negative score - bot is winning; look for min depth to delay bot's win
       ) {
         bestDepth = moveDepth;
         bestScore = moveScore;
@@ -185,17 +181,17 @@ function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizing
     let bestDepth = Infinity;
     let bestScore = Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      if (rowsAvailable[c] === FULL_COLUMN) continue;
+      if (rowsAvailable[c] === 9) continue; // Full column
       let r = rowsAvailable[c];
-      grid[r][c] = 2; // BOT'S MOVE
-      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, true); // GET HUMAN's MOVE
+      grid[r][c] = 2; // bot's move
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, true); // get human's move
       rowsAvailable[c] = r;
       grid[r][c] = 0;
       let [moveDepth, moveScore] = depthAndScore;
       if (
-        moveScore < bestScore || // LOOK FOR LOWEST SCORE (-10)
-        (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
-        (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for max depth to speed up bot's win
+        moveScore < bestScore || // look for lowest score (-10)
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // positive score - human is winning; look for min depth to delay human's win
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // negative score - bot is winning; look for max depth to speed up bot's win
       ) {
         bestDepth = moveDepth;
         bestScore = moveScore;
