@@ -7,7 +7,7 @@ import "./game.css";
 export default function Game({ userName, game, initialGrid, incrementData, toggleGameMode }) {
   const [player1Name, assignPlayer1Name] = useState("");
   const [player2Name, assignPlayer2Name] = useState("");
-  const [currentPlayerNum, setCurrentPlayerNum] = useState("p1");
+  const [currentPlayerNum, setCurrentPlayerNum] = useState(1);
   const [currentPlayerName, setCurrentPlayerName] = useState("");
   const [numOfRounds, setNumOfRounds] = useState(1);
   const [score1, setScore1] = useState(0);
@@ -17,7 +17,7 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
   const [info, displayInfo] = useState("");
   const [replayButton, disableReplayButton] = useState(false);
 
-  const opponent = currentPlayerNum === "p1" ? player2Name : player1Name;
+  const opponent = currentPlayerNum === 1 ? player2Name : player1Name;
   const client = useContext(SocketContext);
   const ref = useRef();
 
@@ -44,7 +44,7 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       client.on("player-2-connected", (player1) => {
         assignPlayer2Name(userName);
         setCurrentPlayerName(userName);
-        setCurrentPlayerNum("p2");
+        setCurrentPlayerNum(2);
         assignPlayer1Name(player1);
       });
 
@@ -90,8 +90,8 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       client.emit("update-score", { result });
       client.on("update-score", ({ result }) => {
         result && incrementData("played");
-        result === "p1" && setScore1(score1 + 1);
-        result === "p2" && setScore2(score2 + 1);
+        result === 1 && setScore1(score1 + 1);
+        result === 2 && setScore2(score2 + 1);
       });
     }
   }, [result, numOfRounds]);
@@ -112,12 +112,12 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       incrementData("won");
       //   saveResult(result);
     } else {
-      if (result === "p1") {
+      if (result === 1) {
         displayResultMsg("🥂 YOU WIN! 🎉");
         setScore1(score1 + 1);
         incrementData("won", "played");
       }
-      if (result === "p2") {
+      if (result === 2) {
         displayResultMsg("😱 YOU LOST! 💩");
         setScore2(score2 + 1);
         incrementData("played");

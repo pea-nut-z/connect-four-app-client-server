@@ -1,163 +1,205 @@
-// NOTE
-// r = row; c = column
-const defaultRows = 6;
-const defaultCols = 7;
+// const times = [];    // for checking runtime in development
+const DEFAULT_ROWS = 6;
+const DEFAULT_COLS = 7;
+const FULL_COLUMN = 9; // 9 represents a column is full because the max standard number of rows is 8
 
-export const getGrid = function (rows = defaultRows, cols = defaultCols) {
-  let grid = [];
+export const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
+  const grid = [];
   let i = 0;
   while (i < rows) {
-    grid.push(Array(cols).fill(null));
+    grid.push(Array(cols).fill(0));
     i++;
   }
   return grid;
 };
 
-export function checkResult(grid) {
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[r].length; c++) {
-      let value = grid[r][c];
-
-      if (
-        //left and right
-        value &&
-        value === grid[r][c + 1] &&
-        value === grid[r][c + 2] &&
-        value === grid[r][c + 3]
-      ) {
-        return value;
-      }
-
-      if (r < grid.length - 3) {
-        if (
-          //up and down
-          (value &&
-            value === grid[r + 1][c] &&
-            value === grid[r + 2][c] &&
-            value === grid[r + 3][c]) ||
-          //diagonal " \ "
-          (value &&
-            value === grid[r + 1][c + 1] &&
-            value === grid[r + 2][c + 2] &&
-            value === grid[r + 3][c + 3]) ||
-          //diagonal " / "
-          (value &&
-            value === grid[r + 1][c - 1] &&
-            value === grid[r + 2][c - 2] &&
-            value === grid[r + 3][c - 3])
-        ) {
-          return value;
-        }
-      }
-    }
+export function getRowsAvailable(grid) {
+  const numOfCol = grid[0].length;
+  const maxRowIdx = grid.length - 1;
+  const rowsAvailable = [];
+  let i = 0;
+  while (i < numOfCol) {
+    rowsAvailable.push(maxRowIdx);
+    i++;
   }
-  const tie = grid.every((row) => !row.includes(null));
-  if (tie) return "Draw";
+  return rowsAvailable;
 }
 
-export function findAValidMove(grid, c) {
-  for (let r = grid.length - 1; r >= 0; r--) {
-    if (grid[r][c] === null) {
-      let move = r;
-      return move;
+export function checkResult(grid, row, col) {
+  const value = grid[row][col];
+  // INDEXES
+  let rMins = row - 1;
+  let rPlus = row + 1;
+  let cMins = col - 1;
+  let cPlus = col + 1;
+
+  // COUNTS
+  let up_down = 1;
+  let left_right = 1;
+  let upLeft_downRight = 1;
+  let upRight_downLeft = 1;
+
+  // FLAGS FOR COUNT INCREMENT
+  let up = true;
+  let down = true;
+  let left = true;
+  let right = true;
+  let upLeft = true;
+  let downRight = true;
+  let upRight = true;
+  let downLeft = true;
+
+  while (up || down || left || right || upLeft || downRight || upRight || downLeft) {
+    const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
+    if (counts.some((count) => count >= 4)) return value;
+
+    if (up) {
+      grid[rMins]?.[col] === value ? up_down++ : (up = false);
     }
+
+    if (down) {
+      grid[rPlus]?.[col] === value ? up_down++ : (down = false);
+    }
+
+    if (left) {
+      grid[row][cMins] === value ? left_right++ : (left = false);
+    }
+
+    if (right) {
+      grid[row][cPlus] === value ? left_right++ : (right = false);
+    }
+
+    if (upLeft) {
+      grid[rMins]?.[cMins] === value ? upLeft_downRight++ : (upLeft = false);
+    }
+
+    if (downRight) {
+      grid[rPlus]?.[cPlus] === value ? upLeft_downRight++ : (downRight = false);
+    }
+
+    if (upRight) {
+      grid[rMins]?.[cPlus] === value ? upRight_downLeft++ : (upRight = false);
+    }
+
+    if (downLeft) {
+      grid[rPlus]?.[cMins] === value ? upRight_downLeft++ : (downLeft = false);
+    }
+    rMins--;
+    rPlus++;
+    cMins--;
+    cPlus++;
   }
+
+  const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
+  if (counts.some((count) => count >= 4)) return value;
+  if (row === 0 && !grid[0].includes(0)) return "Draw";
 }
 
-export function findAiMove(grid) {
-  let maxDepth = 7;
-  let numOfCols = grid[0].length;
+export function findAiMove(grid, rowsAvailable) {
+  // const t0 = performance.now();
+  const maxDepth = 7;
+  const numOfCols = grid[0].length;
   let bestMoves = [];
   let bestDepth;
-  let bestScore = -Infinity;
+  let bestScore = Infinity;
 
-  // console.log("*********BEGIN*********");
   for (let c = 0; c < numOfCols; c++) {
-    let r = findAValidMove(grid, c);
-    if (r !== undefined) {
-      grid[r][c] = "p2";
-      let depthAndScore = alphabeta(grid, numOfCols, maxDepth, false);
-      grid[r][c] = null;
-      let [moveDepth, moveScore] = depthAndScore;
-      if (
-        moveScore > bestScore ||
-        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
-        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
-      ) {
-        // console.log(
-        //   "Created new best moves",
-        //   moveScore,
-        //   bestScore,
-        //   moveDepth,
-        //   bestDepth
-        // );
-        bestMoves = [];
-        bestDepth = moveDepth;
-        bestScore = moveScore;
-        bestMoves.push([r, c]);
-      } else if (moveScore === bestScore && moveDepth === bestDepth) {
-        // console.log(
-        //   "pushed moves with same score",
-        //   moveScore,
-        //   bestScore,
-        //   moveDepth,
-        //   bestDepth
-        // );
-        bestMoves.push([r, c]);
-      }
+    if (rowsAvailable[c] === FULL_COLUMN) continue;
+    let r = rowsAvailable[c];
+    grid[r][c] = 2; // BOT'S MOVE
+    let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, maxDepth, true); // GET HUMAN'S MOVE
+    rowsAvailable[c] = r;
+    grid[r][c] = 0;
+    let [moveDepth, moveScore] = depthAndScore;
+    if (
+      moveScore < bestScore || // LOOK FOR LOWEST SCORE (-10)
+      (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
+      (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for max depth to speed up bot's win
+    ) {
+      bestMoves = [];
+      bestDepth = moveDepth;
+      bestScore = moveScore;
+      bestMoves.push([r, c]);
+    } else if (moveScore === bestScore && moveDepth === bestDepth) {
+      bestMoves.push([r, c]);
     }
   }
-  // console.log({ bestMoves });
   let randomMove = Math.floor(Math.random() * bestMoves.length);
+  const t1 = performance.now();
+
+  // TO GET AVERAGE RUNTIME
+  // console.log(`It took ${t1 - t0} milliseconds.`);
+  // const time = t1 - t0;
+  // times.push(time);
+  // const total = times.reduce((acc, time) => {
+  //   return acc + time;
+  // }, 0);
+  // const average = total / times.length;
+  // console.log({ average });
+
   return bestMoves[randomMove];
 }
 
-function alphabeta(grid, numOfCols, depth, isMaximizingPlayer) {
-  let result = checkResult(grid);
-  if (result === "p1") return [depth, -10];
-  if (result === "p2") return [depth, 10];
-  if (result === "Draw" || depth === 0) return [depth, 0];
+function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizingPlayer) {
+  let result = checkResult(grid, row, col);
+  switch (result) {
+    case 1:
+      return [depth, 10];
+    case 2:
+      return [depth, -10];
+    case "Draw":
+      return [depth, 0];
+    case undefined:
+      if (depth === 0) return [depth, 0];
+      rowsAvailable[col] = row === 0 ? 9 : row - 1;
+      break;
+    default:
+      console.log("uncaught result", result);
+  }
 
   if (isMaximizingPlayer) {
     let bestMove = [];
-    let bestDepth = 0;
+    let bestDepth = Infinity;
     let bestScore = -Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      let r = findAValidMove(grid, c);
-      if (r !== undefined) {
-        grid[r][c] = "p2";
-        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, false);
-        grid[r][c] = null;
-        let [moveDepth, moveScore] = depthAndScore;
-        if (
-          moveScore > bestScore ||
-          (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) ||
-          (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0)
-        ) {
-          bestDepth = moveDepth;
-          bestScore = moveScore;
-          bestMove = depthAndScore;
-        }
+      if (rowsAvailable[c] === FULL_COLUMN) continue;
+      let r = rowsAvailable[c];
+      grid[r][c] = 1; // HUMAN'S MOVE
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, false); // GET BOT'S MOVE
+      rowsAvailable[c] = r;
+      grid[r][c] = 0;
+      let [moveDepth, moveScore] = depthAndScore;
+      if (
+        moveScore > bestScore || // LOOK FOR HIGHEST SCORE (10)
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for max depth to speed up human's win
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for min depth to delay bot's win
+      ) {
+        bestDepth = moveDepth;
+        bestScore = moveScore;
+        bestMove = depthAndScore;
       }
     }
     return bestMove;
   } else {
     let bestMove = [];
-    let bestDepth = 0;
+    let bestDepth = Infinity;
     let bestScore = Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      let r = findAValidMove(grid, c);
-      if (r !== undefined) {
-        grid[r][c] = "p1";
-        let depthAndScore = alphabeta(grid, numOfCols, depth - 1, true);
-        grid[r][c] = null;
-        // if (!depthAndScore) continue;
-        let [moveDepth, moveScore] = depthAndScore;
-        if (moveScore < bestScore || (moveScore === bestScore && moveDepth > bestDepth)) {
-          bestDepth = moveDepth;
-          bestScore = moveScore;
-          bestMove = depthAndScore;
-        }
+      if (rowsAvailable[c] === FULL_COLUMN) continue;
+      let r = rowsAvailable[c];
+      grid[r][c] = 2; // BOT'S MOVE
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, true); // GET HUMAN's MOVE
+      rowsAvailable[c] = r;
+      grid[r][c] = 0;
+      let [moveDepth, moveScore] = depthAndScore;
+      if (
+        moveScore < bestScore || // LOOK FOR LOWEST SCORE (-10)
+        (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
+        (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for max depth to speed up bot's win
+      ) {
+        bestDepth = moveDepth;
+        bestScore = moveScore;
+        bestMove = depthAndScore;
       }
     }
     return bestMove;
