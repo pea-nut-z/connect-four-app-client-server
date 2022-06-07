@@ -18,7 +18,7 @@ export default function Dashboard({ toggleGameMode, logout, updateProfile, userN
 
   return (
     <>
-      <Card>
+      <Card className="box">
         <Card.Body>
           <h2 id="userName" className="text-center mb-4">
             Hello, {userName}!

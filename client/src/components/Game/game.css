@@ -1,23 +1,23 @@
-#boarder {
-  border: 1px solid black;
-  border-radius: 0.4rem;
-  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
-  overflow: hidden;
-}
-#grid {
-  margin-left: 14px;
-}
-.square {
-  height: 57px;
-  width: 57px;
+.grid {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid black;
+  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+  padding: 2px;
+}
+
 .circle {
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border: 1px solid black;
   border-radius: 70%;
   box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);

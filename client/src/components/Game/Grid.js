@@ -51,8 +51,6 @@ export const Grid = forwardRef(
           } else {
             const rowValue = aiMoveRowIdx === 0 ? 9 : aiMoveRowIdx - 1;
             newRowChart[aiMoveColIdx] = rowValue;
-            // console.log("at grid", newRowChart);
-
             setRowsAvailable(newRowChart);
             toggleReady(!ready);
           }
@@ -97,7 +95,7 @@ export const Grid = forwardRef(
       <>
         {/* Grid */}
         <div id="boarder">
-          <div id="grid">
+          <div id="grid" className="grid">
             {grid.map((row, rowIndex) => (
               <div className="row" key={rowIndex}>
                 {row.map((value, colIdx) => (

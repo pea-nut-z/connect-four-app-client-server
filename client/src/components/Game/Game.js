@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { Grid } from "./Grid";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
@@ -150,35 +150,33 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="row">
-          {/* SCORE DSIPLAY */}
-          <div className="col">
-            <h6 data-testid="numOfRounds" className="text-primary">
-              Round: {numOfRounds}
-            </h6>
-            <h4>
-              <span data-testid="score1" style={{ color: "#f012be" }}>
-                {score1}
-              </span>
-              <span className="text-primary"> vs </span>
-              <span data-testid="score2" className="text-success">
-                {score2}
-              </span>
-            </h4>
-          </div>
-          {/* PLAYERS LEGEND */}
-          <div className="col align-self-end">
-            <h6 data-testid="p1Name" className="player row justify-content-end">
-              {player1Name ? player1Name : "Waiting..."}
-              <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
-            </h6>
-            <h6 data-testid="p2Name" className="player row justify-content-end">
-              {player2Name ? player2Name : "Waiting..."}
-              <div className="bg-success indicator rounded ml-2" />
-            </h6>
-          </div>
+    <div className="box">
+      <div className="row">
+        {/* SCORE DSIPLAY */}
+        <div className="col">
+          <h6 data-testid="numOfRounds" className="text-primary">
+            Round: {numOfRounds}
+          </h6>
+          <h4>
+            <span data-testid="score1" style={{ color: "#f012be" }}>
+              {score1}
+            </span>
+            <span className="text-primary"> vs </span>
+            <span data-testid="score2" className="text-success">
+              {score2}
+            </span>
+          </h4>
+        </div>
+        {/* PLAYERS LEGEND */}
+        <div className="col align-self-end">
+          <h6 data-testid="p1Name" className="player row justify-content-end">
+            {player1Name ? player1Name : "Waiting..."}
+            <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
+          </h6>
+          <h6 data-testid="p2Name" className="player row justify-content-end">
+            {player2Name ? player2Name : "Waiting..."}
+            <div className="bg-success indicator rounded ml-2" />
+          </h6>
         </div>
       </div>
 
@@ -218,6 +216,6 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       >
         Quit
       </Button>
-    </>
+    </div>
   );
 }

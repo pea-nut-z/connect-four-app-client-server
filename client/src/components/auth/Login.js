@@ -30,9 +30,8 @@ export default function Login() {
       <h1 data-testid="title" className="title text-center text-primary">
         Connect Four
       </h1>
-      <Card>
+      <Card className="box">
         <Card.Body>
-          <h2 className="text-center mb-4">Log In</h2>
           {error && (
             <Alert id="error" variant="danger">
               {error}

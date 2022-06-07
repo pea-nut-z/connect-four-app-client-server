@@ -7,12 +7,6 @@
   --tablet: 768px;
   --phone: 480px;
    */
-
-@media screen and (max-width: 500px) {
-  #title-msg-container {
-    font-size: 3.5rem !important ;
-  }
-}
 *,
 *::before,
 *::after {
@@ -21,13 +15,20 @@
   box-sizing: border-box;
   background-color: #f3f3f3;
 }
+
+.box{
+  width: 90%;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
 .title {
   font-family: "Modak", cursive;
-  font-size: 4.75rem;
+  font-size: 3rem;
   position: absolute;
-  margin-top: -9rem;
-  margin-left: -3rem;
-  min-width: 500px;
+  margin-top: -3rem;
+  margin-left: 3rem;
   text-shadow: 7px 7px 0px #d2d2d22e;
   animation: title 2s ease-in-out alternate infinite;
 }
@@ -38,5 +39,11 @@
   }
   to {
     transform: scale(1.1);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #title-msg-container {
+    font-size: 3.5rem !important ;
   }
 }
