@@ -51,8 +51,8 @@ server.on("connection", (socket) => {
     socket.broadcast.emit("player-has-joined", { userName, playerIndex });
   });
 
-  socket.on("update-grid", ({ grid, ready }) => {
-    socket.broadcast.emit("update-grid", { grid, ready });
+  socket.on("update-grid", ({ grid, rowsAvailable, ready }) => {
+    socket.broadcast.emit("update-grid", { grid, rowsAvailable, ready });
   });
 
   socket.on("update-result-display-and-rounds", ({ result, currentPlayerName, numOfRounds }) => {

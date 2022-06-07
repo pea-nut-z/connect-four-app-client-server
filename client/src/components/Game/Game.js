@@ -101,16 +101,13 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
       ref.current.toggleGameOver(false);
     } else {
       ref.current.toggleGameOver(true);
-      // disableReplayButton(true);
     }
   }, [player1Name, player2Name]);
 
   function handleResult(result) {
     if (game === "multi") {
       result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
-      //   displayInfo("Click Replay ⬇️");
       incrementData("won");
-      //   saveResult(result);
     } else {
       if (result === 1) {
         displayResultMsg("🥂 YOU WIN! 🎉");

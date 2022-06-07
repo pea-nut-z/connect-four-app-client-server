@@ -60,17 +60,18 @@ export const Grid = forwardRef(
       // to all clients except sender
       if (game === "multi") {
         toggleReady(!ready);
-        client.emit("update-grid", { grid, ready });
-        client.on("update-grid", ({ grid, ready }) => {
+        client.emit("update-grid", { grid, rowsAvailable, ready });
+        client.on("update-grid", ({ grid, rowsAvailable, ready }) => {
           setGrid(grid);
           toggleReady(ready);
+          setRowsAvailable(rowsAvailable);
         });
       }
     }, [thisTurn]);
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
-        if (rowsAvailable[colIdx] === 9) return; // 9 means full column; Max standard num of rows is 8
+        if (rowsAvailable[colIdx] === 9) return; // 9 means full column; Max standard number of rows is 8
         const newGrid = grid.slice();
         const rowIdx = rowsAvailable[colIdx];
         newGrid[rowIdx][colIdx] = currentPlayerNum;
