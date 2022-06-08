@@ -14,7 +14,6 @@ export const Grid = forwardRef(
     const [thisTurn, endThisTurn] = useState();
     const currentPlayerColor = currentPlayerNum === 1 ? "#f012be" : "#2ecc40";
     const opponentPlayerColor = currentPlayerNum === 1 ? "#2ecc40" : "#f012be";
-
     const client = useContext(SocketContext);
     useImperativeHandle(ref, () => ({
       grid,

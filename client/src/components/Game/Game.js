@@ -77,12 +77,14 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
           result === "Draw"
             ? displayResultMsg(result + "! 🤝")
             : displayResultMsg("😱 YOU LOST! 💩");
+          ref.current.toggleGameOver(true);
           displayInfo(`Waiting for ${currentPlayerName} to restart the game...`);
           disableReplayButton(true);
         } else {
           displayResultMsg("");
           displayInfo("");
           disableReplayButton(false);
+          ref.current.toggleGameOver(false);
         }
       });
 
@@ -106,8 +108,12 @@ export default function Game({ userName, game, initialGrid, incrementData, toggl
 
   function handleResult(result) {
     if (game === "multi") {
-      result === "Draw" ? displayResultMsg(result + "! 🤝") : displayResultMsg("🥂 YOU WIN! 🎉");
-      incrementData("won");
+      if (result === "Draw") {
+        displayResultMsg(result + "! 🤝");
+      } else {
+        displayResultMsg("🥂 YOU WIN! 🎉");
+        incrementData("won");
+      }
     } else {
       if (result === 1) {
         displayResultMsg("🥂 YOU WIN! 🎉");

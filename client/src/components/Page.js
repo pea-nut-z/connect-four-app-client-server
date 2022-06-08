@@ -16,7 +16,6 @@ export default function Page() {
   const id = currentUser.uid;
   const profileName = currentUser.displayName;
   const userName = location.state?.userName || profileName;
-
   const initialGrid = getGrid();
   const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
   const [game, loadGame] = useState();
