@@ -1,5 +1,7 @@
 ## Web App - Connect Four
 
+Click [here](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) to watch me demonstrate the app.
+
 ### To get started
 
 [Link to app](https://peanutz-connect-four.herokuapp.com/)
