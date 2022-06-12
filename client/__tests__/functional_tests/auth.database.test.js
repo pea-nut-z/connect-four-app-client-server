@@ -39,8 +39,8 @@ describe("Authentication and database", () => {
     await page.type("#passwordInput", player2.password);
     await page.type("#confirmPasswordInput", player2.password);
     await page.click("#signupBtn");
-    await page.waitForSelector("#userName", { visible: true });
-    const msg = await page.$eval("#userName", (element) => {
+    await page.waitForSelector("#", { visible: true });
+    const msg = await page.$eval("#", (element) => {
       return element.innerHTML;
     });
     const played = await page.$eval("#played", (element) => {
@@ -58,8 +58,8 @@ describe("Authentication and database", () => {
     await page.click("#updateProfile");
     await page.type("#usernameInput", "123");
     await page.click("#updateBtn");
-    await page.waitForSelector("#userName", { visible: true });
-    const msg = await page.$eval("#userName", (element) => {
+    await page.waitForSelector("#", { visible: true });
+    const msg = await page.$eval("#", (element) => {
       return element.innerHTML;
     });
     expect(msg).toBe(`Hello, ${player2.username}123!`);
@@ -69,7 +69,7 @@ describe("Authentication and database", () => {
     await page.click("#updateProfile");
     await page.type("#usernameInput", "456");
     await page.click("#cancelLink");
-    const nameDisplay = await page.waitForSelector("#userName", (element) => {
+    const nameDisplay = await page.waitForSelector("#", (element) => {
       return element;
     });
     expect(nameDisplay).toBeTruthy();

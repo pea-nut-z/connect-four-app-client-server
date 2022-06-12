@@ -19,9 +19,9 @@ describe("Multi player mode", () => {
       component = await render(
         <SocketContext.Provider value={socket}>
           <Game
-            userName={player1}
+            USER_NAME={player1}
             game={"multi"}
-            initialGrid={testGridMulti}
+            INITIAL_GRID={testGridMulti}
             incrementData={incrementData}
             toggleGameMode={toggleGameMode}
           />

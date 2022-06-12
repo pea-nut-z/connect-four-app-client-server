@@ -11,7 +11,7 @@ describe("Dashboard", () => {
     toggleGameMode: jest.fn(),
     logout: jest.fn(),
     updateProfile: jest.fn(),
-    userName: "Test",
+    : "Test",
     played: 10,
     won: 5,
   };
@@ -25,7 +25,7 @@ describe("Dashboard", () => {
   });
 
   it("shows username", () => {
-    expect(wrapper.find("#userName").text()).toEqual(`Hello, ${props.userName}!`);
+    expect(wrapper.find("#").text()).toEqual(`Hello, ${props.}!`);
   });
 
   it("shows number of games played", () => {

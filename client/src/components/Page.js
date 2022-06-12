@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
-import { getGrid } from "./game/help";
 import { SocketContext, socket } from "../contexts/socket";
 import base from "./../firebase";
 import { useLocation, useHistory } from "react-router-dom";
@@ -13,15 +12,32 @@ export default function Page() {
 
   // USER INFO
   const { currentUser, logout } = useAuth();
-  const id = currentUser.uid;
-  const profileName = currentUser.displayName;
-  const userName = location.state?.userName || profileName;
-  const initialGrid = getGrid();
-  const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
+  const ID = currentUser.uid;
+  const PROFILE_NAME = currentUser.displayName;
+  const USER_NAME = location.state?.USER_NAME || PROFILE_NAME;
+  const [data, setData] = useState(JSON.parse(localStorage.getItem(ID)) || {});
   const [game, loadGame] = useState();
 
+  // const INITIAL_GRID = [
+  //   [0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0],
+  //   [2, 2, 2, 0, 0, 0, 0],
+  //   [1, 1, 1, 0, 0, 0, 0],
+  // ];
+
+  // const INITIAL_GRID = [
+  //   [2, 2, 1, 1, 2, 0, 1],
+  //   [1, 2, 1, 1, 2, 1, 2],
+  //   [1, 1, 1, 2, 2, 1, 1],
+  //   [2, 2, 2, 1, 1, 2, 1],
+  //   [2, 1, 1, 2, 2, 1, 2],
+  //   [2, 2, 1, 1, 2, 2, 2],
+  // ];
+
   useEffect(() => {
-    const ref = base.syncState(id, {
+    const ref = base.syncState(ID, {
       context: {
         setState: ({ data }) => setData({ ...data }),
         state: { data },
@@ -31,7 +47,7 @@ export default function Page() {
 
     const existingData = ref["context"]["state"]["data"];
     if (Object.keys(existingData).length === 0) {
-      base.post(id, {
+      base.post(ID, {
         data: { played: 0, won: 0 },
       });
       setData({ played: 0, won: 0 });
@@ -43,8 +59,8 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(id, JSON.stringify(data));
-  }, [data]);
+    localStorage.setItem(ID, JSON.stringify(data));
+  }, [data, ID]);
 
   function updateProfile() {
     history.push("/update-profile");
@@ -58,7 +74,7 @@ export default function Page() {
     let updatedData = { ...data, [key1]: data[key1] + 1 };
     if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
     setData(updatedData);
-    base.post(id, {
+    base.post(ID, {
       data: updatedData,
     });
   }
@@ -68,9 +84,8 @@ export default function Page() {
       {game ? (
         <SocketContext.Provider value={socket}>
           <Game
-            userName={userName}
+            USER_NAME={USER_NAME}
             game={game}
-            initialGrid={initialGrid}
             incrementData={incrementData}
             toggleGameMode={toggleGameMode}
           />
@@ -80,7 +95,7 @@ export default function Page() {
           toggleGameMode={toggleGameMode}
           logout={logout}
           updateProfile={updateProfile}
-          userName={userName}
+          USER_NAME={USER_NAME}
           played={data.played}
           won={data.won}
         />

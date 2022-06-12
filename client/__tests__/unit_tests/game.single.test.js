@@ -32,7 +32,7 @@ describe("Single player mode", () => {
   beforeAll(() => {
     const component = render(
       <Game
-        userName={player1}
+        USER_NAME={player1}
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}
@@ -123,7 +123,7 @@ describe("Quit Button", () => {
   it("clicks quit button during a game -> calls toggleGameMode -> increments play count data", async () => {
     const component = render(
       <Game
-        userName={player1}
+        USER_NAME={player1}
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}

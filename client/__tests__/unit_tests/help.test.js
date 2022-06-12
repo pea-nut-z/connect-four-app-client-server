@@ -1,4 +1,4 @@
-import { getGrid, getRowsAvailable, checkResult, findAiMove } from "../../src/components/game/help";
+import { getGrid, getRowChart, checkResult, findAiMove } from "../../src/components/game/help";
 
 describe("getGrid function", () => {
   it("returns a specified size of blank grid", () => {
@@ -29,7 +29,7 @@ describe("getGrid function", () => {
   });
 });
 
-describe("getRowsAvailable function", () => {
+describe("getRowChart function", () => {
   it("returns an array that has the number of columns in length and holds the max row index as each value", () => {
     const grid = [
       [0, 0, 0, 0, 0, 0, 0],
@@ -39,8 +39,8 @@ describe("getRowsAvailable function", () => {
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
     ];
-    const rowsAvailable = getRowsAvailable(grid);
-    expect(rowsAvailable).toEqual([5, 5, 5, 5, 5, 5, 5]);
+    const rowChart = getRowChart(grid);
+    expect(rowChart).toEqual([5, 5, 5, 5, 5, 5, 5]);
   });
 });
 

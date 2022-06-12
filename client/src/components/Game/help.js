@@ -13,16 +13,16 @@ export const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
   return grid;
 };
 
-export function getRowsAvailable(grid) {
+export function getRowChart(grid) {
   const numOfCol = grid[0].length;
   const maxRowIdx = grid.length - 1;
-  const rowsAvailable = [];
+  const rowChart = [];
   let i = 0;
   while (i < numOfCol) {
-    rowsAvailable.push(maxRowIdx);
+    rowChart.push(maxRowIdx);
     i++;
   }
-  return rowsAvailable;
+  return rowChart;
 }
 
 export function checkResult(grid, row, col) {
@@ -95,7 +95,7 @@ export function checkResult(grid, row, col) {
   if (row === 0 && !grid[0].includes(0)) return "Draw";
 }
 
-export function findAiMove(grid, rowsAvailable) {
+export function findAiMove(grid, rowChart) {
   // const t0 = performance.now();
   const maxDepth = 7;
   const numOfCols = grid[0].length;
@@ -104,11 +104,11 @@ export function findAiMove(grid, rowsAvailable) {
   let bestScore = Infinity;
 
   for (let c = 0; c < numOfCols; c++) {
-    if (rowsAvailable[c] === FULL_COLUMN) continue;
-    let r = rowsAvailable[c];
+    if (rowChart[c] === FULL_COLUMN) continue;
+    let r = rowChart[c];
     grid[r][c] = 2; // BOT'S MOVE
-    let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, maxDepth, true); // GET HUMAN'S MOVE
-    rowsAvailable[c] = r;
+    let depthAndScore = alphabeta(r, c, grid, numOfCols, rowChart, maxDepth, true); // GET HUMAN'S MOVE
+    rowChart[c] = r;
     grid[r][c] = 0;
     let [moveDepth, moveScore] = depthAndScore;
     if (
@@ -125,9 +125,9 @@ export function findAiMove(grid, rowsAvailable) {
     }
   }
   let randomMove = Math.floor(Math.random() * bestMoves.length);
-  const t1 = performance.now();
 
   // TO GET AVERAGE RUNTIME
+  // const t1 = performance.now();
   // console.log(`It took ${t1 - t0} milliseconds.`);
   // const time = t1 - t0;
   // times.push(time);
@@ -140,7 +140,7 @@ export function findAiMove(grid, rowsAvailable) {
   return bestMoves[randomMove];
 }
 
-function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizingPlayer) {
+function alphabeta(row, col, grid, numOfCols, rowChart, depth, isMaximizingPlayer) {
   let result = checkResult(grid, row, col);
   switch (result) {
     case 1:
@@ -151,7 +151,7 @@ function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizing
       return [depth, 0];
     case undefined:
       if (depth === 0) return [depth, 0];
-      rowsAvailable[col] = row === 0 ? 9 : row - 1;
+      rowChart[col] = row === 0 ? 9 : row - 1;
       break;
     default:
       console.log("uncaught result", result);
@@ -162,11 +162,11 @@ function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizing
     let bestDepth = Infinity;
     let bestScore = -Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      if (rowsAvailable[c] === FULL_COLUMN) continue;
-      let r = rowsAvailable[c];
+      if (rowChart[c] === FULL_COLUMN) continue;
+      let r = rowChart[c];
       grid[r][c] = 1; // HUMAN'S MOVE
-      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, false); // GET BOT'S MOVE
-      rowsAvailable[c] = r;
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowChart, depth - 1, false); // GET BOT'S MOVE
+      rowChart[c] = r;
       grid[r][c] = 0;
       let [moveDepth, moveScore] = depthAndScore;
       if (
@@ -185,11 +185,11 @@ function alphabeta(row, col, grid, numOfCols, rowsAvailable, depth, isMaximizing
     let bestDepth = Infinity;
     let bestScore = Infinity;
     for (let c = 0; c < numOfCols; c++) {
-      if (rowsAvailable[c] === FULL_COLUMN) continue;
-      let r = rowsAvailable[c];
+      if (rowChart[c] === FULL_COLUMN) continue;
+      let r = rowChart[c];
       grid[r][c] = 2; // BOT'S MOVE
-      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowsAvailable, depth - 1, true); // GET HUMAN's MOVE
-      rowsAvailable[c] = r;
+      let depthAndScore = alphabeta(r, c, grid, numOfCols, rowChart, depth - 1, true); // GET HUMAN's MOVE
+      rowChart[c] = r;
       grid[r][c] = 0;
       let [moveDepth, moveScore] = depthAndScore;
       if (

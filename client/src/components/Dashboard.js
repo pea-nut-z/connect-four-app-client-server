@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { Card, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-export default function Dashboard({ toggleGameMode, logout, updateProfile, userName, played, won }) {
+export default function Dashboard({
+  toggleGameMode,
+  logout,
+  updateProfile,
+  USER_NAME,
+  played,
+  won,
+}) {
   const history = useHistory();
   const [error, setError] = useState("");
 
@@ -21,7 +28,7 @@ export default function Dashboard({ toggleGameMode, logout, updateProfile, userN
       <Card className="box">
         <Card.Body>
           <h2 id="userName" className="text-center mb-4">
-            Hello, {userName}!
+            Hello, {USER_NAME}!
           </h2>
           <div className="row">
             <h4 id="played" className="col-6 text-center">
