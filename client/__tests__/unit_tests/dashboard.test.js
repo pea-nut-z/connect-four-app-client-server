@@ -8,7 +8,7 @@ describe("Dashboard", () => {
   let wrapper;
 
   const props = {
-    toggleGameMode: jest.fn(),
+    toggleGameModeCb: jest.fn(),
     logout: jest.fn(),
     updateProfile: jest.fn(),
     : "Test",
@@ -36,14 +36,14 @@ describe("Dashboard", () => {
     expect(wrapper.find("#won").text()).toEqual(`🏆 ✖️ ${props.won}`);
   });
 
-  it("clicks Challenge Peanutbot button -> calls toggleGameMode to start game in single player mode", () => {
+  it("clicks Challenge Peanutbot button -> calls toggleGameModeCb to start game in single player mode", () => {
     wrapper.find("#single").simulate("click");
-    expect(props.toggleGameMode).toHaveBeenCalledWith("single");
+    expect(props.toggleGameModeCb).toHaveBeenCalledWith("single");
   });
 
-  it("clicks Play With A Friend button -> calls toggleGameMode to start game in multi player mode", () => {
+  it("clicks Play With A Friend button -> calls toggleGameModeCb to start game in multi player mode", () => {
     wrapper.find("#multi").simulate("click");
-    expect(props.toggleGameMode).toHaveBeenCalledWith("multi");
+    expect(props.toggleGameModeCb).toHaveBeenCalledWith("multi");
   });
 
   it("clicks on Log Out button -> calls logout", () => {

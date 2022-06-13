@@ -3,10 +3,10 @@ import { Card, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function Dashboard({
-  toggleGameMode,
+  toggleGameModeCb,
   logout,
   updateProfile,
-  USER_NAME,
+  userName,
   played,
   won,
 }) {
@@ -28,7 +28,7 @@ export default function Dashboard({
       <Card className="box">
         <Card.Body>
           <h2 id="userName" className="text-center mb-4">
-            Hello, {USER_NAME}!
+            Hello, {userName}!
           </h2>
           <div className="row">
             <h4 id="played" className="col-6 text-center">
@@ -43,7 +43,7 @@ export default function Dashboard({
           <Button
             id="single"
             onClick={() => {
-              toggleGameMode("single");
+              toggleGameModeCb("single");
             }}
             className="btn btn-warning w-100 mt-3"
           >
@@ -52,7 +52,7 @@ export default function Dashboard({
           <Button
             id="multi"
             onClick={() => {
-              toggleGameMode("multi");
+              toggleGameModeCb("multi");
             }}
             className="btn btn-warning w-100 mt-3"
           >

@@ -18,11 +18,11 @@ const PORT = process.env.PORT || 3001;
 http.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
 
 // handle a socket connection request from web client
-const connectionStatus = [false, false];
+let connectionStatus = [false, false];
 server.on("connection", (socket) => {
   let playerIndex = -1;
 
-  socket.on("player-connecting", ({ USER_NAME }) => {
+  socket.on("player-connecting", ({ userName }) => {
     // find an available player number
     for (const i in connectionStatus) {
       if (connectionStatus[i] === false) {
@@ -32,31 +32,28 @@ server.on("connection", (socket) => {
     }
 
     if (playerIndex === 0) {
-      connectionStatus[0] = USER_NAME;
+      connectionStatus[0] = userName;
       socket.emit("player-1-connected");
     } else if (playerIndex === 1) {
-      connectionStatus[1] = USER_NAME;
+      connectionStatus[1] = userName;
       socket.emit("player-2-connected");
     } else if (playerIndex === -1) {
       socket.emit("full-server");
       return;
     }
-    console.log(`Player ${playerIndex} has connected`);
     server.emit("player-has-joined", { player1: connectionStatus[0], player2: connectionStatus[1] });
+    console.log(`Player has connected: `, connectionStatus);
   });
 
   socket.on("go-first", () => {
-    console.log("SERVER - GO-FIRST");
     socket.broadcast.emit("go-first");
   });
 
   socket.on("update-grid", ({ grid, rowChart, result }) => {
-    console.log("SERVER - UPDATE GRID");
     socket.broadcast.emit("update-grid", { grid, rowChart, result });
   });
 
   socket.on("handle-result", ({ result, lastPlayer }) => {
-    console.log("SERVER - HANDLE-RESULT");
     socket.broadcast.emit("handle-result", { result, lastPlayer });
   });
 
@@ -65,15 +62,15 @@ server.on("connection", (socket) => {
   });
 
   socket.on("player-disconnected", ({ playerNum }) => {
-    console.log(`Player ${playerNum} has disconnected`);
     let playerName = connectionStatus[playerNum - 1];
     socket.broadcast.emit("player-disconnected", { playerName, playerNum });
     connectionStatus[playerIndex] = false;
-    console.log("Updated Connections: ", connectionStatus);
+    console.log(`Player ${playerNum} has disconnected: `, connectionStatus);
   });
 
   // handle disconnect
   socket.on("disconnect", () => {
-    console.log("PLAYERS ALL LEFT AND SOCKET IS CLOSED.");
+    connectionStatus = [false, false];
+    console.log("All players left: ", connectionStatus);
   });
 });

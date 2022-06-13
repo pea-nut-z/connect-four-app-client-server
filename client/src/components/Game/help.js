@@ -1,9 +1,9 @@
 // const times = [];    // for checking runtime in development
 const DEFAULT_ROWS = 6;
 const DEFAULT_COLS = 7;
-const FULL_COLUMN = 9; // 9 represents a column is full because the max standard number of rows is 8
+const FULL_COLUMN = 9; // Because the max standard number of rows is 8
 
-export const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
+const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
   const grid = [];
   let i = 0;
   while (i < rows) {
@@ -13,7 +13,9 @@ export const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
   return grid;
 };
 
-export function getRowChart(grid) {
+export const initialGrid = getGrid();
+
+function getRowChart(grid) {
   const numOfCol = grid[0].length;
   const maxRowIdx = grid.length - 1;
   const rowChart = [];
@@ -24,6 +26,8 @@ export function getRowChart(grid) {
   }
   return rowChart;
 }
+
+export const initialRowChart = getRowChart(getGrid());
 
 export function checkResult(grid, row, col) {
   const value = grid[row][col];

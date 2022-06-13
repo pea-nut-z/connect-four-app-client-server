@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback, useContext, useMemo } from "react";
 import { Button } from "react-bootstrap";
 import { Grid } from "./Grid";
-import { getGrid } from "../game/help";
+import { initialGrid } from "../game/help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
-export default function Game({ USER_NAME, game, incrementData, toggleGameMode }) {
+export default function Game({ userName, game, incrementData, toggleGameModeCb }) {
   const [player1Name, setPlayer1Name] = useState("");
   const [player2Name, setPlayer2Name] = useState("");
   const [round, setRound] = useState(1);
@@ -17,8 +17,6 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   const [replayButton, setReplayButton] = useState(false);
   const [thisPlayerNum, setThisPlayerNum] = useState(1);
   const [thisPlayerName, setThisPlayerName] = useState("");
-  const INITIAL_GRID = getGrid();
-
   const opponentName = useMemo(
     () => (thisPlayerNum === 1 ? player2Name : player1Name),
     [player1Name, player2Name, thisPlayerNum]
@@ -53,10 +51,11 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
 
   const handleReplayCb = useCallback(
     (playerNum) => {
-      const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(INITIAL_GRID);
+      const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
       if (!gameOver && !isBlankGrid && playerNum === thisPlayerNum) incrementData("played"); //replay in the middle of the game
-      if (game === "multi" && playerNum === thisPlayerNum)
+      if (game === "multi" && playerNum === thisPlayerNum) {
         client.emit("handle-replay", { playerNum });
+      }
       ref.current.resetGrid();
       setGameOver(false);
       setRound((PreRound) => PreRound + 1);
@@ -64,14 +63,14 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
       setInfo("");
       setReplayButton(false);
     },
-    [client, incrementData, thisPlayerNum, INITIAL_GRID, game, gameOver]
+    [client, incrementData, thisPlayerNum, game, gameOver]
   );
 
   const handleQuit = () => {
-    const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(INITIAL_GRID);
+    const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
     if (!info && !isBlankGrid) incrementData("played");
     client.emit("player-disconnected", { playerNum: thisPlayerNum });
-    toggleGameMode("");
+    toggleGameModeCb("");
   };
 
   client.on("player-has-joined", ({ player1, player2 }) => {
@@ -98,27 +97,25 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   useEffect(() => {
     if (game === "single") {
       setGameOver(false);
-      setPlayer1Name(USER_NAME);
+      setPlayer1Name(userName);
       setPlayer2Name("Peanutbot");
     }
 
     if (game === "multi") {
-      client.emit("player-connecting", { USER_NAME }, () => {
-        console.log("EMMITING FROM CLIENT");
+      client.emit("player-connecting", { userName }, () => {});
+
+      client.on("full-server", () => {
+        toggleGameModeCb("");
+        alert("Sorry, server is full.");
       });
 
-      // client.on("full-server", () => {
-      //   toggleGameMode("");
-      //   alert("Sorry, server is full.");
-      // });
-
       client.on("player-1-connected", () => {
-        setThisPlayerName(USER_NAME);
+        setThisPlayerName(userName);
       });
 
       client.on("player-2-connected", () => {
         setThisPlayerNum(2);
-        setThisPlayerName(USER_NAME);
+        setThisPlayerName(userName);
       });
 
       return () => {
@@ -127,7 +124,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
         client.off("player-2-connected");
       };
     }
-  }, [client, game, USER_NAME]);
+  }, [client, game, userName, toggleGameModeCb]);
 
   useEffect(() => {
     if (game === "multi") {

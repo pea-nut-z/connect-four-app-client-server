@@ -8,7 +8,7 @@ import { app, player1, player2, testGridMulti, testGridDraw } from "../constants
 
 let browser, page;
 const incrementData = jest.fn();
-const toggleGameMode = jest.fn();
+const toggleGameModeCb = jest.fn();
 
 describe("Multi player mode", () => {
   let component, grid;
@@ -19,11 +19,11 @@ describe("Multi player mode", () => {
       component = await render(
         <SocketContext.Provider value={socket}>
           <Game
-            USER_NAME={player1}
+            userName={player1}
             game={"multi"}
             INITIAL_GRID={testGridMulti}
             incrementData={incrementData}
-            toggleGameMode={toggleGameMode}
+            toggleGameModeCb={toggleGameModeCb}
           />
         </SocketContext.Provider>
       );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
@@ -13,41 +13,37 @@ export default function Page() {
 
   const [data, setData] = useState({});
   const [game, loadGame] = useState();
-
-  const ID = useMemo(() => currentUser.uid, [currentUser.uid]);
-  const USER_NAME = useMemo(
-    () => location.state?.USER_NAME || currentUser.displayName,
-    [currentUser.displayName, location.state?.USER_NAME]
-  );
+  const [id] = useState(currentUser.uid);
+  const [userName] = useState(location.state?.userName || currentUser.displayName);
 
   useEffect(() => {
-    const ref = base.syncState(ID, {
+    const ref = base.syncState(id, {
       context: {
         setState: (data) => setData(data["data"]),
       },
       state: "data",
       defaultValue: { played: 0, won: 0 },
-      then: () => console.log("established"),
+      then: () => console.log("data synced"),
       onFailure: () => console.log("access denied"),
     });
 
     return () => {
       base.removeBinding(ref);
     };
-  }, [ID]);
+  }, [id]);
+
+  const toggleGameModeCb = useCallback((mode) => {
+    loadGame(mode);
+  }, []);
 
   function updateProfile() {
     history.push("/update-profile");
   }
 
-  function toggleGameMode(mode) {
-    loadGame(mode);
-  }
-
   function incrementData(key1, key2) {
     let updatedData = { ...data, [key1]: data[key1] + 1 };
     if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
-    base.post(ID, {
+    base.post(id, {
       data: updatedData,
       then(err) {
         if (err) console.log(err);
@@ -60,18 +56,18 @@ export default function Page() {
       {game ? (
         <SocketContext.Provider value={socket}>
           <Game
-            USER_NAME={USER_NAME}
+            userName={userName}
             game={game}
             incrementData={incrementData}
-            toggleGameMode={toggleGameMode}
+            toggleGameModeCb={toggleGameModeCb}
           />
         </SocketContext.Provider>
       ) : (
         <Dashboard
-          toggleGameMode={toggleGameMode}
+          toggleGameModeCb={toggleGameModeCb}
           logout={logout}
           updateProfile={updateProfile}
-          USER_NAME={USER_NAME}
+          userName={userName}
           played={data.played}
           won={data.won}
         />

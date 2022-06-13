@@ -4,51 +4,47 @@ import React, {
   forwardRef,
   useEffect,
   useContext,
-  useRef,
+  useMemo,
 } from "react";
 import SquareGrid from "./SquareGrid";
-import { getRowChart, checkResult, findAiMove, getGrid } from "./help";
+import { checkResult, findAiMove, initialGrid, initialRowChart } from "./help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
 export const Grid = forwardRef(
   ({ game, handleResultCb, opponentName, thisPlayerNum, gameOver }, ref) => {
-    // const INITIAL_GRID = JSON.parse(JSON.stringify(INITIAL_GRID));
-    const INITIAL_GRID = getGrid();
-    const INITIAL_ROW_CHART = getRowChart(INITIAL_GRID);
-    const [grid, setGrid] = useState(INITIAL_GRID);
-    // const testRow = [3, 3, 3, 5, 5, 5, 5];
-    // DRAW
-    // const testRow = [9, 9, 9, 9, 9, 0, 9];
-    // const [rowChart, setRowChart] = useState(testRow);
-
-    const [rowChart, setRowChart] = useState(INITIAL_ROW_CHART);
+    const [grid, setGrid] = useState(initialGrid);
+    const [rowChart, setRowChart] = useState(initialRowChart);
     const [ready, setReady] = useState(game === "single" ? true : false);
-    const thisPlayerColor = thisPlayerNum === 1 ? "#f012be" : "#2ecc40";
-    const opponentPlayerColor = thisPlayerNum === 1 ? "#2ecc40" : "#f012be";
-    const client = useContext(SocketContext);
-    // 12 RENDERS
-    // const [thisPlayerColor] = useState(thisPlayerNum === 1 ? "#f012be" : "#2ecc40");
-    // const thisPlayerColor = useRef(thisPlayerNum === 1 ? "#f012be" : "#2ecc40");
-    console.log({ thisPlayerColor });
 
+    const thisPlayerColor = useMemo(
+      () => (thisPlayerNum === 1 ? "#f012be" : "#2ecc40"),
+      [thisPlayerNum]
+    );
+
+    const opponentPlayerColor = useMemo(
+      () => (thisPlayerNum === 1 ? "#2ecc40" : "#f012be"),
+      [thisPlayerNum]
+    );
+
+    const client = useContext(SocketContext);
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,
     }));
 
     const resetGrid = () => {
-      setGrid(INITIAL_GRID);
-      setRowChart(INITIAL_ROW_CHART);
+      setGrid(initialGrid);
+      setRowChart(initialRowChart);
       if (game === "single" && !ready) {
         setTimeout(() => {
-          handleAiMove(INITIAL_GRID, INITIAL_ROW_CHART);
+          handleAiMove(initialGrid, initialRowChart);
         }, 100);
       }
     };
 
     const handleAiMove = (huGrid, huRowChart) => {
-      const newGrid = huGrid.slice();
+      const newGrid = huGrid.map((a) => a.slice());
       const newRowChart = huRowChart.slice();
       const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, newRowChart);
       newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
@@ -68,7 +64,7 @@ export const Grid = forwardRef(
       if (!gameOver && ready) {
         if (rowChart[colIdx] === 9) return; // 9 means full column
         let newRowsAvailable;
-        const newGrid = grid.slice();
+        const newGrid = grid.map((a) => a.slice());
         const rowIdx = rowChart[colIdx];
         newGrid[rowIdx][colIdx] = thisPlayerNum;
         setGrid(newGrid);
@@ -94,12 +90,11 @@ export const Grid = forwardRef(
 
     client.on("go-first", () => {
       setReady(true);
-      setGrid(INITIAL_GRID);
-      setRowChart(INITIAL_ROW_CHART);
+      setGrid(initialGrid);
+      setRowChart(initialRowChart);
     });
 
     client.on("update-grid", ({ grid, rowChart, result }) => {
-      console.log("RECEIEVE UPDATE-GRID");
       if (!result) setReady(true);
       setGrid(grid);
       setRowChart(rowChart);
