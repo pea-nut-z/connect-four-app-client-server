@@ -71,6 +71,7 @@ server.on("connection", (socket) => {
       let name = connectionStatus[playerIndex];
       let num = playerIndex;
       socket.broadcast.emit("player-disconnected", { name, num });
+      console.log("SERVER EMITTED DISCONNECT");
       connectionStatus[playerIndex] = false;
     }
     console.log("Updated Connections: ", connectionStatus);

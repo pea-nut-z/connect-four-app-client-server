@@ -40,11 +40,10 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
         setInfo(`Waiting for ${thisPlayerName} to restart the game...`);
         disableReplayButton(true);
       }
-      if (result === 1) setScore1((score) => score + 1);
-      if (result === 2) setScore2((score) => score + 1);
-
+      result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
+      result === 1 && setScore1((score) => score + 1);
+      result === 2 && setScore2((score) => score + 1);
       setGameOver(true);
-      incrementData("played");
     },
     [client, game, incrementData, thisPlayerName, thisPlayerNum]
   );
@@ -52,7 +51,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   const handleReplayCb = useCallback(
     (playerNum) => {
       const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(INITIAL_GRID);
-      if (!gameOver && !isBlankGrid) incrementData("played"); //replay in the middle of the game
+      if (!gameOver && !isBlankGrid && playerNum === thisPlayerNum) incrementData("played"); //replay in the middle of the game
       if (game === "multi" && playerNum === thisPlayerNum)
         client.emit("handle-replay", { playerNum });
       ref.current.resetGrid();
@@ -68,7 +67,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   const handleQuit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(INITIAL_GRID);
     if (!info && !isBlankGrid) incrementData("played");
-    if (game === "multi") window.location.reload(false); // when quit restart socket.
+    // client.disconnect();
     toggleGameMode("");
   };
 
@@ -83,6 +82,13 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
       setGameOver(false);
       disableReplayButton(false);
     }
+  });
+
+  client.on("player-disconnected", ({ name, num }) => {
+    num === 0 ? setPlayer1Name("") : setPlayer2Name("");
+    setInfo(`${name} left💨`);
+    setResultMsg("");
+    setGameOver(true);
   });
 
   useEffect(() => {
@@ -109,18 +115,11 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
         setThisPlayerName(USER_NAME);
       });
 
-      client.on("player-disconnected", ({ name, num }) => {
-        num === 0 ? setPlayer1Name("") : setPlayer2Name("");
-        setInfo(`${name} left💨`);
-        setResultMsg("");
-        setGameOver(true);
-      });
-
       return () => {
         client.off("full-server");
         client.off("player-1-connected");
         client.off("player-2-connected");
-        client.off("player-disconnected");
+        // client.off("player-disconnected");
       };
     }
   }, [client, game, USER_NAME]);

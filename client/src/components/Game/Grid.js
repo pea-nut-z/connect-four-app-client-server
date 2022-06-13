@@ -63,7 +63,6 @@ export const Grid = forwardRef(
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
-        console.log({ gameOver });
         if (rowChart[colIdx] === 9) return; // 9 means full column
         let newRowsAvailable;
         const newGrid = grid.slice();
