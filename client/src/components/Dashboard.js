@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { Card, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-export default function Dashboard({ toggleGameMode, logout, updateProfile, userName, played, won }) {
+export default function Dashboard({
+  toggleGameModeCb,
+  logout,
+  updateProfile,
+  userName,
+  played,
+  won,
+}) {
   const history = useHistory();
   const [error, setError] = useState("");
 
@@ -36,7 +43,7 @@ export default function Dashboard({ toggleGameMode, logout, updateProfile, userN
           <Button
             id="single"
             onClick={() => {
-              toggleGameMode("single");
+              toggleGameModeCb("single");
             }}
             className="btn btn-warning w-100 mt-3"
           >
@@ -45,7 +52,7 @@ export default function Dashboard({ toggleGameMode, logout, updateProfile, userN
           <Button
             id="multi"
             onClick={() => {
-              toggleGameMode("multi");
+              toggleGameModeCb("multi");
             }}
             className="btn btn-warning w-100 mt-3"
           >

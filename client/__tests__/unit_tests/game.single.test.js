@@ -13,7 +13,7 @@ import SquareGrid from "../../src/components/game/SquareGrid";
 import { testGridSingle, player1 } from "../constants";
 
 const incrementData = jest.fn();
-const toggleGameMode = jest.fn();
+const toggleGameModeCb = jest.fn();
 
 describe("Game Screen", () => {
   it("renders Game component without crashing", () => {
@@ -36,7 +36,7 @@ describe("Single player mode", () => {
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}
-        toggleGameMode={toggleGameMode}
+        toggleGameModeCb={toggleGameModeCb}
       />
     );
 
@@ -111,23 +111,23 @@ describe("Single player mode", () => {
     });
   });
 
-  it("clicks quit button after game is over -> calls toggleGameMode -> does not call incrementData", async () => {
+  it("clicks quit button after game is over -> calls toggleGameModeCb -> does not call incrementData", async () => {
     const button = getByTestId("quit");
     await fireEvent.click(button);
-    expect(toggleGameMode).toHaveBeenCalledTimes(1);
+    expect(toggleGameModeCb).toHaveBeenCalledTimes(1);
     expect(incrementData).toHaveBeenCalledTimes(0);
   });
 });
 
 describe("Quit Button", () => {
-  it("clicks quit button during a game -> calls toggleGameMode -> increments play count data", async () => {
+  it("clicks quit button during a game -> calls toggleGameModeCb -> increments play count data", async () => {
     const component = render(
       <Game
         userName={player1}
         game={"single"}
         initialGrid={testGridSingle}
         incrementData={incrementData}
-        toggleGameMode={toggleGameMode}
+        toggleGameModeCb={toggleGameModeCb}
       />
     );
 
@@ -136,7 +136,7 @@ describe("Quit Button", () => {
     await fireEvent.click(square);
     const quitBtn = component.getByTestId("quit");
     await fireEvent.click(quitBtn);
-    expect(toggleGameMode).toHaveBeenCalledTimes(1);
+    expect(toggleGameModeCb).toHaveBeenCalledTimes(1);
     expect(incrementData).toHaveBeenCalledWith("played");
     cleanup();
   });

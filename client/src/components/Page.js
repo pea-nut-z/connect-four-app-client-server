@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Game from "./game/Game";
-import { getGrid } from "./game/help";
 import { SocketContext, socket } from "../contexts/socket";
 import base from "./../firebase";
 import { useLocation, useHistory } from "react-router-dom";
@@ -10,56 +9,45 @@ import { useLocation, useHistory } from "react-router-dom";
 export default function Page() {
   const history = useHistory();
   const location = useLocation();
-
-  // USER INFO
   const { currentUser, logout } = useAuth();
-  const id = currentUser.uid;
-  const profileName = currentUser.displayName;
-  const userName = location.state?.userName || profileName;
-  const initialGrid = getGrid();
-  const [data, setData] = useState(JSON.parse(localStorage.getItem(id)) || {});
+
+  const [data, setData] = useState({});
   const [game, loadGame] = useState();
+  const [id] = useState(currentUser.uid);
+  const [userName] = useState(location.state?.userName || currentUser.displayName);
 
   useEffect(() => {
     const ref = base.syncState(id, {
       context: {
-        setState: ({ data }) => setData({ ...data }),
-        state: { data },
+        setState: (data) => setData(data["data"]),
       },
       state: "data",
+      defaultValue: { played: 0, won: 0 },
+      then: () => console.log("data synced"),
+      onFailure: () => console.log("access denied"),
     });
-
-    const existingData = ref["context"]["state"]["data"];
-    if (Object.keys(existingData).length === 0) {
-      base.post(id, {
-        data: { played: 0, won: 0 },
-      });
-      setData({ played: 0, won: 0 });
-    }
 
     return () => {
       base.removeBinding(ref);
     };
-  }, []);
+  }, [id]);
 
-  useEffect(() => {
-    localStorage.setItem(id, JSON.stringify(data));
-  }, [data]);
+  const toggleGameModeCb = useCallback((mode) => {
+    loadGame(mode);
+  }, []);
 
   function updateProfile() {
     history.push("/update-profile");
   }
 
-  function toggleGameMode(mode) {
-    loadGame(mode);
-  }
-
   function incrementData(key1, key2) {
     let updatedData = { ...data, [key1]: data[key1] + 1 };
     if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
-    setData(updatedData);
     base.post(id, {
       data: updatedData,
+      then(err) {
+        if (err) console.log(err);
+      },
     });
   }
 
@@ -70,14 +58,13 @@ export default function Page() {
           <Game
             userName={userName}
             game={game}
-            initialGrid={initialGrid}
             incrementData={incrementData}
-            toggleGameMode={toggleGameMode}
+            toggleGameModeCb={toggleGameModeCb}
           />
         </SocketContext.Provider>
       ) : (
         <Dashboard
-          toggleGameMode={toggleGameMode}
+          toggleGameModeCb={toggleGameModeCb}
           logout={logout}
           updateProfile={updateProfile}
           userName={userName}

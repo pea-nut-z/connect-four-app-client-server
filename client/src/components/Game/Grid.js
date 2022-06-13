@@ -1,95 +1,113 @@
-import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+  useContext,
+  useMemo,
+} from "react";
 import SquareGrid from "./SquareGrid";
-import { getRowsAvailable, checkResult, findAiMove } from "./help";
+import { checkResult, findAiMove, initialGrid, initialRowChart } from "./help";
 import { SocketContext } from "../../contexts/socket";
 import "./game.css";
 
 export const Grid = forwardRef(
-  ({ game, initialGrid, handleResult, opponent, currentPlayerNum }, ref) => {
-    const blankGrid = JSON.parse(JSON.stringify(initialGrid));
-    const [grid, setGrid] = useState(blankGrid);
-    const [rowsAvailable, setRowsAvailable] = useState(getRowsAvailable(initialGrid));
-    const [gameOver, setGameOver] = useState(true);
-    const [ready, toggleReady] = useState(true);
-    const [thisTurn, endThisTurn] = useState();
-    const currentPlayerColor = currentPlayerNum === 1 ? "#f012be" : "#2ecc40";
-    const opponentPlayerColor = currentPlayerNum === 1 ? "#2ecc40" : "#f012be";
+  ({ game, handleResultCb, opponentName, thisPlayerNum, gameOver }, ref) => {
+    const [grid, setGrid] = useState(initialGrid);
+    const [rowChart, setRowChart] = useState(initialRowChart);
+    const [ready, setReady] = useState(game === "single" ? true : false);
+
+    const thisPlayerColor = useMemo(
+      () => (thisPlayerNum === 1 ? "#f012be" : "#2ecc40"),
+      [thisPlayerNum]
+    );
+
+    const opponentPlayerColor = useMemo(
+      () => (thisPlayerNum === 1 ? "#2ecc40" : "#f012be"),
+      [thisPlayerNum]
+    );
+
     const client = useContext(SocketContext);
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,
-      toggleGameOver,
     }));
 
-    const resetGrid = (result) => {
-      if (game === "single" && result === 1) {
-        toggleReady(true);
-      }
-      setGrid(blankGrid);
-      setRowsAvailable(getRowsAvailable(initialGrid));
-      setGameOver(false);
-      endThisTurn(!thisTurn);
-    };
-
-    const toggleGameOver = (boolean) => {
-      setGameOver(boolean);
-    };
-
-    useEffect(() => {
-      if (!gameOver && game === "single" && !ready) {
-        const newGrid = grid.slice();
-        const newRowChart = rowsAvailable.slice();
+    const resetGrid = () => {
+      setGrid(initialGrid);
+      setRowChart(initialRowChart);
+      if (game === "single" && !ready) {
         setTimeout(() => {
-          const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, newRowChart);
-          newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
-          setGrid(newGrid);
-          const result = checkResult(newGrid, aiMoveRowIdx, aiMoveColIdx);
-          if (result) {
-            setGameOver(true);
-            handleResult(result);
-          } else {
-            const rowValue = aiMoveRowIdx === 0 ? 9 : aiMoveRowIdx - 1;
-            newRowChart[aiMoveColIdx] = rowValue;
-            setRowsAvailable(newRowChart);
-            toggleReady(!ready);
-          }
-        }, 500);
+          handleAiMove(initialGrid, initialRowChart);
+        }, 100);
       }
+    };
 
-      // to all clients except sender
-      if (game === "multi") {
-        toggleReady(!ready);
-        client.emit("update-grid", { grid, rowsAvailable, ready });
-        client.on("update-grid", ({ grid, rowsAvailable, ready }) => {
-          setGrid(grid);
-          toggleReady(ready);
-          setRowsAvailable(rowsAvailable);
-        });
+    const handleAiMove = (huGrid, huRowChart) => {
+      const newGrid = huGrid.map((a) => a.slice());
+      const newRowChart = huRowChart.slice();
+      const [aiMoveRowIdx, aiMoveColIdx] = findAiMove(newGrid, newRowChart);
+      newGrid[aiMoveRowIdx][aiMoveColIdx] = 2;
+      setGrid(newGrid);
+      const result = checkResult(newGrid, aiMoveRowIdx, aiMoveColIdx);
+      if (result) {
+        handleResultCb(result);
+      } else {
+        const rowValue = aiMoveRowIdx === 0 ? 9 : aiMoveRowIdx - 1;
+        newRowChart[aiMoveColIdx] = rowValue;
+        setRowChart(newRowChart);
+        setReady(true);
       }
-    }, [thisTurn]);
+    };
 
     const handleMove = (colIdx) => {
       if (!gameOver && ready) {
-        if (rowsAvailable[colIdx] === 9) return; // 9 means full column; Max standard number of rows is 8
-        const newGrid = grid.slice();
-        const rowIdx = rowsAvailable[colIdx];
-        newGrid[rowIdx][colIdx] = currentPlayerNum;
+        if (rowChart[colIdx] === 9) return; // 9 means full column
+        let newRowsAvailable;
+        const newGrid = grid.map((a) => a.slice());
+        const rowIdx = rowChart[colIdx];
+        newGrid[rowIdx][colIdx] = thisPlayerNum;
         setGrid(newGrid);
         const result = checkResult(newGrid, rowIdx, colIdx);
         if (result) {
-          setGameOver(true);
-          handleResult(result);
+          handleResultCb(result, thisPlayerNum);
         } else {
-          const newRowChart = rowsAvailable.slice();
+          setReady(false);
+          newRowsAvailable = rowChart.slice();
           const rowValue = rowIdx === 0 ? 9 : rowIdx - 1;
-          newRowChart[colIdx] = rowValue;
-          setRowsAvailable(newRowChart);
+          newRowsAvailable[colIdx] = rowValue;
+          setRowChart(newRowsAvailable);
+          if (game === "single") {
+            setTimeout(() => {
+              handleAiMove(newGrid, newRowsAvailable);
+            }, 100);
+          }
         }
-
-        game === "single" && toggleReady(false);
-        endThisTurn(!thisTurn);
+        game === "multi" &&
+          client.emit("update-grid", { grid: newGrid, rowChart: newRowsAvailable, result });
       }
     };
+
+    client.on("go-first", () => {
+      setReady(true);
+      setGrid(initialGrid);
+      setRowChart(initialRowChart);
+    });
+
+    client.on("update-grid", ({ grid, rowChart, result }) => {
+      if (!result) setReady(true);
+      setGrid(grid);
+      setRowChart(rowChart);
+    });
+
+    useEffect(() => {
+      if (game === "multi") {
+        client.emit("go-first");
+      }
+      return () => {
+        client.off("go-first");
+      };
+    }, [client, game]);
 
     return (
       <>
@@ -110,10 +128,10 @@ export const Grid = forwardRef(
         <h4
           data-testid="turn"
           className="text-center mt-4"
-          style={{ color: ready ? currentPlayerColor : opponentPlayerColor }}
+          style={{ color: ready ? thisPlayerColor : opponentPlayerColor }}
         >
-          {!opponent && "Waiting for a player to join..."}
-          {gameOver ? "" : ready ? "Your turn" : `Waiting for ${opponent}...`}
+          {!opponentName && "Waiting for a player to join..."}
+          {gameOver ? "" : ready ? "Your turn" : `Waiting for ${opponentName}...`}
         </h4>
       </>
     );
