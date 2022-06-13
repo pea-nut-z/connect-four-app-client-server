@@ -14,7 +14,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   const [gameOver, setGameOver] = useState(true);
   const [resultMsg, setResultMsg] = useState("");
   const [info, setInfo] = useState("");
-  const [replayButton, setReplayButton] = useState(false);
+  const [disableReplayBtn, setDisableReplayBtn] = useState(true);
   const [thisPlayerNum, setThisPlayerNum] = useState(1);
   const [thisPlayerName, setThisPlayerName] = useState("");
   const opponentName = useMemo(
@@ -39,7 +39,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       if (lastPlayer === thisPlayerNum || game === "single") setInfo("Click Replay ⬇️");
       if (game === "multi" && lastPlayer !== thisPlayerNum) {
         setInfo(`Waiting for ${thisPlayerName} to restart the game...`);
-        setReplayButton(true);
+        setDisableReplayBtn(true);
       }
       result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
       result === 1 && setScore1((score) => score + 1);
@@ -61,7 +61,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       setRound((PreRound) => PreRound + 1);
       setResultMsg("");
       setInfo("");
-      setReplayButton(false);
+      setDisableReplayBtn(false);
     },
     [client, incrementData, thisPlayerNum, game, gameOver]
   );
@@ -77,12 +77,14 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     player1 && setPlayer1Name(player1);
     player2 && setPlayer2Name(player2);
     if (player1 && player2) {
+      console.log({ player1 });
+      console.log({ player2 });
       setScore1(0);
       setScore2(0);
       setInfo("");
       setRound(1);
       setGameOver(false);
-      setReplayButton(false);
+      setDisableReplayBtn(false);
     }
   });
 
@@ -91,12 +93,13 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     setInfo(`${playerName} left💨`);
     setResultMsg("");
     setGameOver(true);
-    setReplayButton(true);
+    setDisableReplayBtn(true);
   });
 
   useEffect(() => {
     if (game === "single") {
       setGameOver(false);
+      setDisableReplayBtn(false);
       setPlayer1Name(userName);
       setPlayer2Name("Peanutbot");
     }
@@ -193,7 +196,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       </h5>
 
       <Button
-        disabled={replayButton}
+        disabled={disableReplayBtn}
         id="replay"
         data-testid="replay"
         className="btn-warning w-100 mt-4"
