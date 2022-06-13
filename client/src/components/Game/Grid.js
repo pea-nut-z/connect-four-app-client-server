@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   useEffect,
   useContext,
-  useCallback,
+  useRef,
 } from "react";
 import SquareGrid from "./SquareGrid";
 import { getRowChart, checkResult, findAiMove, getGrid } from "./help";
@@ -17,7 +17,6 @@ export const Grid = forwardRef(
     const INITIAL_GRID = getGrid();
     const INITIAL_ROW_CHART = getRowChart(INITIAL_GRID);
     const [grid, setGrid] = useState(INITIAL_GRID);
-
     // const testRow = [3, 3, 3, 5, 5, 5, 5];
     // DRAW
     // const testRow = [9, 9, 9, 9, 9, 0, 9];
@@ -28,6 +27,10 @@ export const Grid = forwardRef(
     const thisPlayerColor = thisPlayerNum === 1 ? "#f012be" : "#2ecc40";
     const opponentPlayerColor = thisPlayerNum === 1 ? "#2ecc40" : "#f012be";
     const client = useContext(SocketContext);
+    // 12 RENDERS
+    // const [thisPlayerColor] = useState(thisPlayerNum === 1 ? "#f012be" : "#2ecc40");
+    // const thisPlayerColor = useRef(thisPlayerNum === 1 ? "#f012be" : "#2ecc40");
+    console.log({ thisPlayerColor });
 
     useImperativeHandle(ref, () => ({
       grid,

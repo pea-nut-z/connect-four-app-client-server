@@ -3,7 +3,7 @@ const app = express();
 const http = require("http").createServer(app);
 const server = require("socket.io")(http, {
   cors: {
-    origin: "/",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
@@ -46,34 +46,34 @@ server.on("connection", (socket) => {
   });
 
   socket.on("go-first", () => {
-    console.log("SERVER RECEIVED GO-FIRST");
+    console.log("SERVER - GO-FIRST");
     socket.broadcast.emit("go-first");
   });
 
   socket.on("update-grid", ({ grid, rowChart, result }) => {
-    console.log("SERVER SENDING UPDATE GRID");
+    console.log("SERVER - UPDATE GRID");
     socket.broadcast.emit("update-grid", { grid, rowChart, result });
   });
 
   socket.on("handle-result", ({ result, lastPlayer }) => {
-    console.log("SERVER SEND HANDLE-RESULT");
+    console.log("SERVER - HANDLE-RESULT");
     socket.broadcast.emit("handle-result", { result, lastPlayer });
   });
 
-  socket.on("handle-replay", (playerNum) => {
+  socket.on("handle-replay", ({ playerNum }) => {
     socket.broadcast.emit("handle-replay", { playerNum });
+  });
+
+  socket.on("player-disconnected", ({ playerNum }) => {
+    console.log(`Player ${playerNum} has disconnected`);
+    let playerName = connectionStatus[playerNum - 1];
+    socket.broadcast.emit("player-disconnected", { playerName, playerNum });
+    connectionStatus[playerIndex] = false;
+    console.log("Updated Connections: ", connectionStatus);
   });
 
   // handle disconnect
   socket.on("disconnect", () => {
-    console.log(`Player ${playerIndex} has disconnected`);
-    if (playerIndex !== -1) {
-      let name = connectionStatus[playerIndex];
-      let num = playerIndex;
-      socket.broadcast.emit("player-disconnected", { name, num });
-      console.log("SERVER EMITTED DISCONNECT");
-      connectionStatus[playerIndex] = false;
-    }
-    console.log("Updated Connections: ", connectionStatus);
+    console.log("PLAYERS ALL LEFT AND SOCKET IS CLOSED.");
   });
 });

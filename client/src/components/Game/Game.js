@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
+import React, { useState, useEffect, useRef, useCallback, useContext, useMemo } from "react";
 import { Button } from "react-bootstrap";
 import { Grid } from "./Grid";
 import { getGrid } from "../game/help";
@@ -14,12 +14,15 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   const [gameOver, setGameOver] = useState(true);
   const [resultMsg, setResultMsg] = useState("");
   const [info, setInfo] = useState("");
-  const [replayButton, disableReplayButton] = useState(false);
+  const [replayButton, setReplayButton] = useState(false);
   const [thisPlayerNum, setThisPlayerNum] = useState(1);
   const [thisPlayerName, setThisPlayerName] = useState("");
-  const opponentName = thisPlayerNum === 1 ? player2Name : player1Name;
   const INITIAL_GRID = getGrid();
 
+  const opponentName = useMemo(
+    () => (thisPlayerNum === 1 ? player2Name : player1Name),
+    [player1Name, player2Name, thisPlayerNum]
+  );
   const client = useContext(SocketContext);
   const ref = useRef();
 
@@ -38,7 +41,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
       if (lastPlayer === thisPlayerNum || game === "single") setInfo("Click Replay ⬇️");
       if (game === "multi" && lastPlayer !== thisPlayerNum) {
         setInfo(`Waiting for ${thisPlayerName} to restart the game...`);
-        disableReplayButton(true);
+        setReplayButton(true);
       }
       result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
       result === 1 && setScore1((score) => score + 1);
@@ -59,7 +62,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
       setRound((PreRound) => PreRound + 1);
       setResultMsg("");
       setInfo("");
-      disableReplayButton(false);
+      setReplayButton(false);
     },
     [client, incrementData, thisPlayerNum, INITIAL_GRID, game, gameOver]
   );
@@ -67,7 +70,7 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
   const handleQuit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(INITIAL_GRID);
     if (!info && !isBlankGrid) incrementData("played");
-    // client.disconnect();
+    client.emit("player-disconnected", { playerNum: thisPlayerNum });
     toggleGameMode("");
   };
 
@@ -80,15 +83,16 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
       setInfo("");
       setRound(1);
       setGameOver(false);
-      disableReplayButton(false);
+      setReplayButton(false);
     }
   });
 
-  client.on("player-disconnected", ({ name, num }) => {
-    num === 0 ? setPlayer1Name("") : setPlayer2Name("");
-    setInfo(`${name} left💨`);
+  client.on("player-disconnected", ({ playerName, playerNum }) => {
+    playerNum === 1 ? setPlayer1Name("") : setPlayer2Name("");
+    setInfo(`${playerName} left💨`);
     setResultMsg("");
     setGameOver(true);
+    setReplayButton(true);
   });
 
   useEffect(() => {
@@ -99,7 +103,9 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
     }
 
     if (game === "multi") {
-      client.emit("player-connecting", { USER_NAME });
+      client.emit("player-connecting", { USER_NAME }, () => {
+        console.log("EMMITING FROM CLIENT");
+      });
 
       // client.on("full-server", () => {
       //   toggleGameMode("");
@@ -119,7 +125,6 @@ export default function Game({ USER_NAME, game, incrementData, toggleGameMode })
         client.off("full-server");
         client.off("player-1-connected");
         client.off("player-2-connected");
-        // client.off("player-disconnected");
       };
     }
   }, [client, game, USER_NAME]);
