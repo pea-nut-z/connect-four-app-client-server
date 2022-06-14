@@ -77,8 +77,6 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     player1 && setPlayer1Name(player1);
     player2 && setPlayer2Name(player2);
     if (player1 && player2) {
-      console.log({ player1 });
-      console.log({ player2 });
       setScore1(0);
       setScore2(0);
       setInfo("");
@@ -122,7 +120,9 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       });
 
       return () => {
-        client.off("full-server");
+        client.off("player-has-joined");
+        client.off("player-disconnected");
+        client.off("full-server", toggleGameModeCb);
         client.off("player-1-connected");
         client.off("player-2-connected");
       };
@@ -140,8 +140,8 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       });
     }
     return () => {
-      client.off("handle-result");
-      client.off("handle-replay");
+      client.off("handle-result", handleResultCb);
+      client.off("handle-replay", handleReplayCb);
     };
   }, [client, game, handleResultCb, handleReplayCb]);
 
