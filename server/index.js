@@ -53,12 +53,12 @@ server.on("connection", (socket) => {
     socket.broadcast.emit("update-grid", { grid, rowChart, result });
   });
 
-  socket.on("handle-result", ({ result, lastPlayer }) => {
-    socket.broadcast.emit("handle-result", { result, lastPlayer });
+  socket.on("result", ({ result, playerNum }) => {
+    socket.broadcast.emit("result", { result, playerNum });
   });
 
-  socket.on("handle-replay", ({ playerNum }) => {
-    socket.broadcast.emit("handle-replay", { playerNum });
+  socket.on("replay", ({ playerNum }) => {
+    socket.broadcast.emit("replay", { playerNum });
   });
 
   socket.on("player-disconnected", ({ playerNum }) => {

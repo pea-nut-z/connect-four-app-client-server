@@ -40,16 +40,23 @@ export default function Page() {
     history.push("/update-profile");
   }
 
-  function incrementData(key1, key2) {
-    let updatedData = { ...data, [key1]: data[key1] + 1 };
-    if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
-    base.post(id, {
-      data: updatedData,
-      then(err) {
-        if (err) console.log(err);
-      },
-    });
-  }
+  const incrementData = useCallback(
+    (key1, key2) => {
+      let updatedData = { ...data, [key1]: data[key1] + 1 };
+      if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
+      base.post(id, {
+        data: updatedData,
+        then(err) {
+          if (err) console.log(err);
+        },
+      });
+    },
+    [data, id]
+  );
+
+  // function incrementData(key1, key2) {
+
+  // }
 
   return (
     <>
