@@ -57,7 +57,6 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     if (game === "multi") {
       client.emit("player-connecting", { userName });
       client.on("player-has-joined", ({ player1, player2 }) => {
-        console.log("SOCKET ID", client.id);
         player1 && setPlayer1Name(player1);
         player2 && setPlayer2Name(player2);
         if (player1 && player2) {
@@ -76,13 +75,11 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       });
 
       client.on("player-1-connected", () => {
-        console.log("on player 1 connected");
         setThisPlayerName(userName);
       });
 
       client.on("player-2-connected", () => {
         setThisPlayerNum(2);
-        console.log("on player 2 connected");
         setThisPlayerName(userName);
       });
 
@@ -107,12 +104,10 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   useEffect(() => {
     if (game === "multi") {
       client.on("result", ({ result, playerNum }) => {
-        // console.log("on handle-RESULT");
         handleResultCb(result, playerNum);
       });
 
       client.on("replay", ({ playerNum }) => {
-        // console.log("on handle-REPLAY");
         replayCb(playerNum);
       });
     }
@@ -131,13 +126,10 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       } else if (result === "Draw") {
         setResultMsg(result + "! 🤝");
       } else {
-        console.log("trig lost");
         setResultMsg("😱 YOU LOST! 💩");
       }
 
       if (whoTrigger === thisPlayerNum || game === "single") {
-        console.log({ whoTrigger });
-        console.log({ thisPlayerNum });
         setInfo("Click Replay ⬇️");
       }
       if (game === "multi" && whoTrigger !== thisPlayerNum) {

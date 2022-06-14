@@ -13,15 +13,15 @@ import "./game.css";
 
 export const Grid = forwardRef(
   ({ game, handleResultCb, opponentName, thisPlayerNum, gameOver }, ref) => {
-    const initialGrid = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [2, 2, 2, 0, 0, 0, 0],
-      [1, 1, 1, 0, 0, 0, 0],
-    ];
-    const initialRowChart = [3, 3, 3, 5, 5, 5, 5];
+    // const initialGrid = [
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [2, 2, 2, 0, 0, 0, 0],
+    //   [1, 1, 1, 0, 0, 0, 0],
+    // ];
+    // const initialRowChart = [3, 3, 3, 5, 5, 5, 5];
 
     const [grid, setGrid] = useState(initialGrid);
     const [rowChart, setRowChart] = useState(initialRowChart);
@@ -80,7 +80,6 @@ export const Grid = forwardRef(
         setGrid(newGrid);
         const result = checkResult(newGrid, rowIdx, colIdx);
         if (result) {
-          console.log("Emit handle-result");
           client.emit("result", { result, playerNum: thisPlayerNum });
           handleResultCb(result, thisPlayerNum);
         } else {
