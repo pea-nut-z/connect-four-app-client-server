@@ -19,7 +19,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   const [thisPlayerName, setThisPlayerName] = useState("");
 
   const [result, setResult] = useState(0);
-  const [whoTrigger, setWhoTrigger] = useState(0);
+  const [triggeredBy, setTriggeredBy] = useState(0);
   const [replay, setReplay] = useState(false);
 
   const opponentName = useMemo(
@@ -31,18 +31,23 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   const handleResultCb = useCallback((result, playerNum) => {
     setResult(result);
-    setWhoTrigger(playerNum);
+    setTriggeredBy(playerNum);
   }, []);
 
   const replayCb = useCallback((playerNum) => {
     setReplay(true);
-    setWhoTrigger(playerNum);
+    setTriggeredBy(playerNum);
   }, []);
 
   const quit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
     if (!info && !isBlankGrid) incrementData("played");
-    if (game === "multi") client.emit("player-disconnected", { playerNum: thisPlayerNum });
+    if (game === "multi") {
+      client.emit("player-disconnected", { playerNum: thisPlayerNum });
+    }
+    // if (game === "multi" && !opponentName) {
+    //   client.disconnect();
+    // }
     toggleGameModeCb("");
   };
 
@@ -129,10 +134,10 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         setResultMsg("😱 YOU LOST! 💩");
       }
 
-      if (whoTrigger === thisPlayerNum || game === "single") {
+      if (triggeredBy === thisPlayerNum || game === "single") {
         setInfo("Click Replay ⬇️");
       }
-      if (game === "multi" && whoTrigger !== thisPlayerNum) {
+      if (game === "multi" && triggeredBy !== thisPlayerNum) {
         setInfo(`Waiting for ${thisPlayerName} to restart the game...`);
         setDisableReplayBtn(true);
       }
@@ -141,14 +146,14 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       result === 2 && setScore2((score) => score + 1);
       setGameOver(true);
       setResult(0);
-      setWhoTrigger(0);
+      setTriggeredBy(0);
     }
-  }, [result, game, incrementData, whoTrigger, thisPlayerName, thisPlayerNum]);
+  }, [result, game, incrementData, triggeredBy, thisPlayerName, thisPlayerNum]);
 
   useEffect(() => {
     if (replay) {
       const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
-      if (!gameOver && !isBlankGrid && whoTrigger === thisPlayerNum) incrementData("played"); //replay in the middle of the game
+      if (!gameOver && !isBlankGrid && triggeredBy === thisPlayerNum) incrementData("played"); //replay in the middle of the game
       ref.current.resetGrid();
       setGameOver(false);
       setRound((PreRound) => PreRound + 1);
@@ -156,9 +161,9 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       setInfo("");
       setDisableReplayBtn(false);
       setReplay(false);
-      setWhoTrigger(0);
+      setTriggeredBy(0);
     }
-  }, [gameOver, incrementData, whoTrigger, replay, thisPlayerNum]);
+  }, [gameOver, incrementData, triggeredBy, replay, thisPlayerNum]);
 
   return (
     <div className="box">

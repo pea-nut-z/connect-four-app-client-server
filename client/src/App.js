@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./components/auth/PrivateRoute";
-import Page from "./components/Page";
+import Dashboard from "./components/Dashboard";
 import UpdateProfile from "./components/auth/UpdateProfile";
 import Signup from "./components/auth/Signup";
 import Login from "./components/auth/Login";
@@ -20,7 +20,7 @@ export default function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact path="/" component={Page} />
+              <PrivateRoute exact path="/" component={Dashboard} />
               <PrivateRoute path="/update-profile" component={UpdateProfile} />
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
