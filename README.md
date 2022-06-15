@@ -28,10 +28,11 @@ In single player mode, you are playing against Peanutbot (AI player). In multipl
 
 ### Road blocks
 
-- [ ] A memory leak occurs at logging in again after logging out. It causes the score to be unable to sync
 - [ ] Critical runtime in single player mode on a mobile device
 - [ ] Authentication components at the "client/src/components/auth" directory are tested using Puppeteer, unlike others which use Jest. Its test files are at "client/\_\_tests\_\_/functional_tests". Puppeteer uses the build of the application to run the tests. Thus, it does not have source mapping. As a result, the coverage report is not present.
 
 Resolved
+
+- [x] A memory leak occurs at logging in again after logging out. It causes the score to be unable to sync
 
 - [x] Playing against Peanutbot (AI) in a single-player mode took an average of 2660 to 2670 milliseconds for Peanutbot to execute its move. It has now reduced to an average of 1230 to 1240 milliseconds.
