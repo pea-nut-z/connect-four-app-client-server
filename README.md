@@ -28,8 +28,8 @@ In single-player mode, you are playing against Peanutbot (AI player). In multipl
 
 **Calculation**
 
-Played: number of games you played
-Won: number of times you won
+Played: number of games you played  
+Won: number of times you won  
 Round: number of games for the current session
 
 These trackers increment under different game results and circumstances for each player.
