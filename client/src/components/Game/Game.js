@@ -131,7 +131,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       } else if (result === "Draw") {
         setResultMsg(result + "! 🤝");
       } else {
-        setResultMsg("😱 YOU LOST! 💩");
+        setResultMsg("😱 YOU LOSE! 💩");
       }
 
       if (triggeredBy === thisPlayerNum || game === "single") {
