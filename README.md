@@ -34,7 +34,7 @@ Round: number of games for the current session
 
 These trackers increment under different game results and circumstances for each player.
 
-On game over:
+Game over:
 
 |      | Played | Won |
 | ---- | ------ | --- |
@@ -42,7 +42,7 @@ On game over:
 | Lose | +1     | 0   |
 | Draw | +1     | 0   |
 
-On replay or quit:
+Replay or quit:
 
 |                    | Played    | Won       | Round  |
 | ------------------ | --------- | --------- | ------ |
