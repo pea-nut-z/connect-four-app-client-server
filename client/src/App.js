@@ -2,12 +2,12 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import PrivateRoute from "./components/auth/PrivateRoute";
-import Dashboard from "./components/Dashboard";
-import UpdateProfile from "./components/auth/UpdateProfile";
-import Signup from "./components/auth/Signup";
-import Login from "./components/auth/Login";
-import ForgotPassword from "./components/auth/ForgotPassword";
+import PrivateRoute from "./auth/PrivateRoute";
+import Dashboard from "./game/Dashboard";
+import UpdateProfile from "./auth/UpdateProfile";
+import Signup from "./auth/Signup";
+import Login from "./auth/Login";
+import ForgotPassword from "./auth/ForgotPassword";
 import "./app.css";
 
 export default function App() {
