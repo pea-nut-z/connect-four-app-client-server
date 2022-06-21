@@ -1,0 +1,60 @@
+.grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid black;
+  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+  padding: 2px;
+}
+
+.circle {
+  height: 45px;
+  width: 45px;
+  border: 1px solid black;
+  border-radius: 70%;
+  box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+}
+
+.p1 {
+  background-color: #f012be;
+  animation: player-1 1.5s;
+}
+
+.p2 {
+  background-color: #2ecc40;
+  animation: player-2 1.5s;
+}
+
+@keyframes player-1 {
+  from {
+    background-color: rgb(0, 123, 255);
+  }
+  to {
+    background-color: #f012be;
+  }
+}
+
+@keyframes player-2 {
+  from {
+    background-color: rgb(0, 123, 255);
+  }
+  to {
+    background-color: #2ecc40;
+  }
+}
+
+.indicator {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1rem;
+  border-radius: 0.15rem;
+}
