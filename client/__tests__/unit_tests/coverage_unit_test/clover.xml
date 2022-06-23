@@ -312,7 +312,7 @@
         <line num="85" count="468" type="stmt"/>
         <line num="87" count="3276" type="stmt"/>
       </file>
-      <file name="SquareGrid.js" path="/Users/paulinez/connect-four/client/src/components/game/SquareGrid.js">
+      <file name="Square.js" path="/Users/paulinez/connect-four/client/src/components/game/Square.js">
         <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
         <line num="4" count="3109" type="stmt"/>
         <line num="5" count="8" type="stmt"/>

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Card, Alert } from "react-bootstrap";
+import { SubHeader, CustomButton, CustomLink } from "../UI";
 import { useAuth } from "../contexts/AuthContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Signup() {
   const usernameRef = useRef();
@@ -36,10 +37,10 @@ export default function Signup() {
   }
 
   return (
-    <>
+    <div>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Sign Up</h2>
+          <SubHeader text="Sign Up" />
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="username">
@@ -69,18 +70,11 @@ export default function Signup() {
                 required
               />
             </Form.Group>
-            <Button id="signupBtn" disabled={loading} className="w-100" type="submit">
-              Sign Up
-            </Button>
+            <CustomButton id="signupBtn" text="Sign Up" disabled={loading} type="submit" />
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account?{" "}
-        <Link className="text-decoration-none" to="/login">
-          Log In
-        </Link>
-      </div>
-    </>
+      <CustomLink text="Log In" moreText="Already have an account? " to="/login" />
+    </div>
   );
 }

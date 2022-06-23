@@ -594,12 +594,12 @@ BRF:35
 BRH:32
 end_of_record
 TN:
-SF:src/components/game/SquareGrid.js
-FN:3,SquareGrid
+SF:src/components/game/Square.js
+FN:3,Square
 FN:5,(anonymous_1)
 FNF:2
 FNH:2
-FNDA:3109,SquareGrid
+FNDA:3109,Square
 FNDA:8,(anonymous_1)
 DA:4,3109
 DA:5,8

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Card, Alert } from "react-bootstrap";
+import { SubHeader, CustomButton, CustomLink } from "../UI";
 import { useAuth } from "../contexts/AuthContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function UpdateProfile() {
   const usernameRef = useRef();
@@ -47,7 +48,7 @@ export default function UpdateProfile() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Update Profile</h2>
+          <SubHeader text="Update Profile" />
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="username">
@@ -80,17 +81,11 @@ export default function UpdateProfile() {
                 placeholder="Leave blank to keep the same"
               />
             </Form.Group>
-            <Button id="updateBtn" disabled={loading} className="w-100" type="submit">
-              Update
-            </Button>
+            <CustomButton id="updateBtn" text="Update" disabled={loading} type="submit" />
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        <Link id="cancelLink" to="/">
-          Cancel
-        </Link>
-      </div>
+      <CustomLink text="Cancel" id="cancelLink" to="/" />
     </>
   );
 }

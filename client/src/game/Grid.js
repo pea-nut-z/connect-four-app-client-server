@@ -6,10 +6,9 @@ import React, {
   useContext,
   useMemo,
 } from "react";
-import SquareGrid from "./SquareGrid";
+import Square from "./Square";
 import { checkResult, findAiMove, initialGrid, initialRowChart } from "./help";
 import { SocketContext } from "../contexts/socket";
-import "./game.css";
 
 export const Grid = forwardRef(
   ({ game, handleResultCb, opponentName, thisPlayerNum, gameOver }, ref) => {
@@ -122,18 +121,16 @@ export const Grid = forwardRef(
     }, [client, game]);
 
     return (
-      <>
+      <div>
         {/* Grid */}
-        <div id="boarder">
-          <div id="grid" className="grid">
-            {grid.map((row, rowIndex) => (
-              <div className="row" key={rowIndex}>
-                {row.map((value, colIdx) => (
-                  <SquareGrid key={colIdx} value={value} colIdx={colIdx} handleMove={handleMove} />
-                ))}
-              </div>
-            ))}
-          </div>
+        <div id="grid" className="grid">
+          {grid.map((row, rowIndex) => (
+            <div className="row grid_row" key={rowIndex}>
+              {row.map((value, colIdx) => (
+                <Square key={colIdx} value={value} colIdx={colIdx} handleMove={handleMove} />
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* WHO's TURN */}
@@ -145,7 +142,7 @@ export const Grid = forwardRef(
           {!opponentName && "Waiting for a player to join..."}
           {gameOver ? "" : ready ? "Your turn" : `Waiting for ${opponentName}...`}
         </h4>
-      </>
+      </div>
     );
   }
 );

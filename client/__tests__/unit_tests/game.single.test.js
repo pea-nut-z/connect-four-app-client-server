@@ -9,7 +9,7 @@ import {
 import "@testing-library/jest-dom";
 import { shallow } from "enzyme";
 import Game from "../../src/components/game/Game";
-import SquareGrid from "../../src/components/game/SquareGrid";
+import Square from "../../src/components/game/Square";
 import { testGridSingle, player1 } from "../constants";
 
 const incrementData = jest.fn();
@@ -20,8 +20,8 @@ describe("Game Screen", () => {
     shallow(<Game />);
   });
 
-  it("renders SquareGrid component without crashing", () => {
-    shallow(<SquareGrid />);
+  it("renders Square component without crashing", () => {
+    shallow(<Square />);
   });
 });
 

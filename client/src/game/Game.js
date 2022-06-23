@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback, useContext, useMemo } from "react";
-import { Button } from "react-bootstrap";
+import CustomButton from "../UI/CustomButton";
 import { Grid } from "./Grid";
 import { initialGrid } from "./help";
 import { SocketContext } from "../contexts/socket";
-import "./game.css";
 
 export default function Game({ userName, game, incrementData, toggleGameModeCb }) {
   const [player1Name, setPlayer1Name] = useState("");
@@ -166,14 +165,14 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   }, [gameOver, incrementData, triggeredBy, replay, thisPlayerNum]);
 
   return (
-    <div className="box">
+    <div className="container">
       <div className="row">
         {/* SCORE DSIPLAY */}
         <div className="col">
           <h6 data-testid="round" className="text-primary">
             Round: {round}
           </h6>
-          <h4>
+          <h5>
             <span data-testid="score1" style={{ color: "#f012be" }}>
               {score1}
             </span>
@@ -181,7 +180,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
             <span data-testid="score2" className="text-success">
               {score2}
             </span>
-          </h4>
+          </h5>
         </div>
         {/* PLAYERS LEGEND */}
         <div className="col align-self-end">
@@ -203,34 +202,35 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         opponentName={opponentName}
         thisPlayerNum={thisPlayerNum}
         gameOver={gameOver}
-        // client={client}
       />
 
       {/* RESULT */}
-      <h4 data-testid="resultMsg" className="text-center text-warning mt-4">
+      <h4 data-testid="resultMsg" className="text-center text-warning mt-2">
         {resultMsg}
       </h4>
 
       {/* INFO */}
-      <h5 data-testid="info" className="text-center text-warning mt-4">
+      <h5 data-testid="info" className="text-center text-warning mt-2">
         {info}
       </h5>
 
-      <Button
-        disabled={disableReplayBtn}
-        id="replay"
-        data-testid="replay"
-        className="btn-warning w-100 mt-4"
+      {/* BUTTONS */}
+      <div
         onClick={() => {
           client.emit("replay", { playerNum: thisPlayerNum });
-          replayCb(thisPlayerNum);
         }}
       >
-        Replay
-      </Button>
-      <Button id="quitBtn" data-testid="quit" className="btn btn-warning w-100 mt-3 " onClick={quit}>
-        Quit
-      </Button>
+        <CustomButton
+          id="replay"
+          testid="replay"
+          text="Replay"
+          type="button"
+          func={replayCb}
+          funcArgu={thisPlayerNum}
+          disabled={disableReplayBtn}
+        />
+      </div>
+      <CustomButton id="quitBtn" testid="quit" text="Quit" type="button" func={quit} />
     </div>
   );
 }

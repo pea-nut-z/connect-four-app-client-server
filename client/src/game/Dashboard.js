@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Card, Button, Alert } from "react-bootstrap";
+import { Card, Alert } from "react-bootstrap";
+import CustomButton from "../UI/CustomButton";
 import { useAuth } from "../contexts/AuthContext";
 import { SocketContext, socket } from "../contexts/socket";
 import { useLocation, useHistory } from "react-router-dom";
@@ -56,7 +57,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div>
+    <main>
       {game ? (
         <SocketContext.Provider value={socket}>
           <Game
@@ -82,46 +83,37 @@ export default function Dashboard() {
                 </h4>
               </div>
               {error && <Alert variant="danger">{error}</Alert>}
-
-              <Button
+              <CustomButton
                 id="single"
-                onClick={() => {
-                  toggleGameModeCb("single");
-                }}
-                className="btn btn-warning w-100 mt-3"
-              >
-                Challenge Peanutbot
-              </Button>
-              <Button
+                text="Challenge Peanutbot"
+                type="button"
+                func={toggleGameModeCb}
+                funcArgu="single"
+              />
+              <CustomButton
                 id="multi"
-                onClick={() => {
-                  toggleGameModeCb("multi");
-                }}
-                className="btn btn-warning w-100 mt-3"
-              >
-                Play With A Friend
-              </Button>
-              <Button
+                text="Play With A Friend"
+                type="button"
+                func={toggleGameModeCb}
+                funcArgu="multi"
+              />
+              <CustomButton
                 id="updateProfile"
-                className="btn btn-warning w-100 mt-3"
-                onClick={updateProfile}
-              >
-                Update Profile
-              </Button>
+                text="Update Profile"
+                type="button"
+                func={updateProfile}
+              />
             </Card.Body>
           </Card>
-          <div className="w-100 text-center mt-2">
-            <Button
-              id="logoutBtn"
-              variant="link"
-              className="text-decoration-none"
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
-          </div>
+          <CustomButton
+            id="logoutBtn"
+            link={true}
+            text="Log Out"
+            type="button"
+            func={handleLogout}
+          />
         </div>
       )}
-    </div>
+    </main>
   );
 }

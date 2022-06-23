@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Card, Alert } from "react-bootstrap";
+import { CustomButton, CustomLink } from "../UI";
 import { useAuth } from "../contexts/AuthContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
   const emailRef = useRef();
@@ -26,10 +27,10 @@ export default function Login() {
   }
 
   return (
-    <>
-      <h1 data-testid="title" className="title text-center text-primary">
+    <div>
+      <header data-testid="title" className="title text-primary">
         Connect Four
-      </h1>
+      </header>
       <Card className="box">
         <Card.Body>
           {error && (
@@ -46,23 +47,12 @@ export default function Login() {
               <Form.Label>Password</Form.Label>
               <Form.Control id="passwordInput" type="password" ref={passwordRef} required />
             </Form.Group>
-            <Button id="loginBtn" disabled={loading} className="btn-warning w-100" type="submit">
-              Log In
-            </Button>
+            <CustomButton id="loginBtn" text="Log In" disabled={loading} type="submit" />
           </Form>
-          <div className="w-100 text-center mt-3">
-            <Link className="text-decoration-none" to="/forgot-password">
-              Forgot Password?
-            </Link>
-          </div>
+          <CustomLink text="Forgot Password?" to="/forgot-password" />
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account?{" "}
-        <Link id="signupLink" className="text-decoration-none" to="/signup">
-          Sign Up
-        </Link>
-      </div>
-    </>
+      <CustomLink id="signupLink" text="Sign Up" moreText="Need an account? " to="/signup" />
+    </div>
   );
 }

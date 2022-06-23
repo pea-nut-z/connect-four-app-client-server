@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Card, Alert } from "react-bootstrap";
+import { SubHeader, CustomButton, CustomLink } from "../UI";
 import { useAuth } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
   const emailRef = useRef();
@@ -30,7 +30,7 @@ export default function ForgotPassword() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Password Reset</h2>
+          <SubHeader text="Password Reset" />
           {error && <Alert variant="danger">{error}</Alert>}
           {message && <Alert variant="success">{message}</Alert>}
           <Form onSubmit={handleSubmit}>
@@ -38,18 +38,12 @@ export default function ForgotPassword() {
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
-              Reset Password
-            </Button>
+            <CustomButton text="Reset Password" disabled={loading} type="submit" />
           </Form>
-          <div className="w-100 text-center mt-3">
-            <Link to="/login">Login</Link>
-          </div>
+          <CustomLink text="Login" to="/login" />
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
+      <CustomLink text="Sign Up" moreText="Need an account? " to="/signup" />
     </>
   );
 }
