@@ -27,7 +27,7 @@ export default function Login() {
   }
 
   return (
-    <div>
+    <div className="container">
       <header data-testid="title" className="title text-primary">
         Connect Four
       </header>

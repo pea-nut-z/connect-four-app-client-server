@@ -45,7 +45,7 @@ export default function UpdateProfile() {
   }
 
   return (
-    <>
+    <div className="container">
       <Card>
         <Card.Body>
           <SubHeader text="Update Profile" />
@@ -86,6 +86,6 @@ export default function UpdateProfile() {
         </Card.Body>
       </Card>
       <CustomLink text="Cancel" id="cancelLink" to="/" />
-    </>
+    </div>
   );
 }

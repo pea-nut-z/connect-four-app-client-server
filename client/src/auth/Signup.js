@@ -37,7 +37,7 @@ export default function Signup() {
   }
 
   return (
-    <div>
+    <div className="container">
       <Card>
         <Card.Body>
           <SubHeader text="Sign Up" />

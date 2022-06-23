@@ -42,9 +42,9 @@ export default function Dashboard() {
     setGame(mode);
   }, []);
 
-  function updateProfile() {
+  const updateProfile = () => {
     history.push("/update-profile");
-  }
+  };
 
   const incrementData = useCallback(
     (key1, key2) => {
@@ -57,7 +57,7 @@ export default function Dashboard() {
   );
 
   return (
-    <main>
+    <main className="container">
       {game ? (
         <SocketContext.Provider value={socket}>
           <Game

@@ -27,7 +27,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <>
+    <div className="container">
       <Card>
         <Card.Body>
           <SubHeader text="Password Reset" />
@@ -44,6 +44,6 @@ export default function ForgotPassword() {
         </Card.Body>
       </Card>
       <CustomLink text="Sign Up" moreText="Need an account? " to="/signup" />
-    </>
+    </div>
   );
 }
