@@ -31,7 +31,7 @@ export default function Login() {
       <header data-testid="title" className="title text-primary">
         Connect Four
       </header>
-      <Card className="box">
+      <Card>
         <Card.Body>
           {error && (
             <Alert id="error" variant="danger">

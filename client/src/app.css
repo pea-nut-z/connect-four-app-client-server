@@ -2,20 +2,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Modak&display=swap");
 
 body {
-  margin: 5% 0 5% 0;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
   background-color: #f3f3f3;
   font-family: "Grandstander", cursive;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  height: 100vh;
+  height: auto;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  overflow:auto;
 }
 
 .title {
   font-family: "Modak", cursive;
-  font-size: 3rem;
+  font-size: clamp(40px, 12vw, 100px);
+  max-width: 700px;
   text-shadow: 7px 7px 0px #d2d2d22e;
   animation: title 2s ease-in-out alternate infinite;
   text-align: center;
@@ -30,15 +34,37 @@ body {
   }
 }
 
-.container{
-width: 60vw;
-min-width: 300px;
+.btn{
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
+.pink_font{
+color:#f012be
+}
+
+.pink_background{
+  background-color:#f012be
+}
+
+.indicator {
+  display: inline-block;
+  aspect-ratio: 1/1;
+  width: 1.5rem;
+  margin-right: 1rem;
+  border-radius: 0.15rem;
+}
+
+.container{
+  width: 90vw;
+  max-width: 700px;
+  margin: 5% 0 5% 0;
+  padding: 0;
+  }
+
 .grid {
-  width: 50vw;
-  min-width: 242px;
-  min-height: 208px;
+  width: 81vw;
+  max-width: 600px;
   margin: auto;
   box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
 }
@@ -104,22 +130,11 @@ min-width: 300px;
   }
 }
 
-.indicator {
-  display: inline-block;
-  aspect-ratio: 1/1;
-  width: 1rem;
-  margin-right: 1rem;
-  border-radius: 0.15rem;
-}
-
-@media screen and (max-width: 500px) {
-  #title-msg-container {
-    font-size: 3.5rem !important ;
+@media screen and (max-width: 359px) {
+  .container{
+    width: 270px !important
   }
-}
-
-@media screen and (min-width: 470px) {
- .grid{
-  width: 25vw !important
+  .grid{
+   width: 242px !important
+  }
  }
-}

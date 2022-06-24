@@ -75,12 +75,12 @@ export default function Dashboard() {
                 Hello, {userName}!
               </h2>
               <div className="row">
-                <h4 id="played" className="col-6 text-center">
+                <h2 id="played" className="col-6 text-center">
                   🎮 ✖️ {data?.played !== undefined ? data.played : "Loading..."}
-                </h4>
-                <h4 id="won" className="col-6 text-center">
+                </h2>
+                <h2 id="won" className="col-6 text-center">
                   🏆 ✖️ {data?.won !== undefined ? data.won : "Loading..."}
-                </h4>
+                </h2>
               </div>
               {error && <Alert variant="danger">{error}</Alert>}
               <CustomButton

@@ -169,11 +169,11 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       <div className="row">
         {/* SCORE DSIPLAY */}
         <div className="col">
-          <h6 data-testid="round" className="text-primary">
+          <h5 data-testid="round" className="text-primary">
             Round: {round}
-          </h6>
+          </h5>
           <h5>
-            <span data-testid="score1" style={{ color: "#f012be" }}>
+            <span data-testid="score1" className="pink_font">
               {score1}
             </span>
             <span className="text-primary"> vs </span>
@@ -184,14 +184,14 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         </div>
         {/* PLAYERS LEGEND */}
         <div className="col align-self-end">
-          <h6 data-testid="p1Name" className="player row justify-content-end">
+          <h5 data-testid="p1Name" className="player row justify-content-end">
             {player1Name ? player1Name : "Waiting..."}
-            <div style={{ background: "#f012be" }} className="indicator rounded ml-2" />
-          </h6>
-          <h6 data-testid="p2Name" className="player row justify-content-end">
+            <div className="pink_background indicator rounded ml-2" />
+          </h5>
+          <h5 data-testid="p2Name" className="player row justify-content-end">
             {player2Name ? player2Name : "Waiting..."}
             <div className="bg-success indicator rounded ml-2" />
-          </h6>
+          </h5>
         </div>
       </div>
 
@@ -210,9 +210,9 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       </h4>
 
       {/* INFO */}
-      <h5 data-testid="info" className="text-center text-warning mt-2">
+      <h4 data-testid="info" className="text-center text-warning mt-2">
         {info}
-      </h5>
+      </h4>
 
       {/* BUTTONS */}
       <div
