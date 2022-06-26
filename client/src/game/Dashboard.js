@@ -20,9 +20,15 @@ export default function Dashboard() {
 
   useEffect(() => {
     const ref = app.database().ref(id);
-    const newData = ref.on("value", (snapshot) => {
-      snapshot.val() ? setData(snapshot.val()) : setData({ played: 0, won: 0 });
-    });
+    const newData = ref.on(
+      "value",
+      (snapshot) => {
+        snapshot.val() ? setData(snapshot.val()) : setData({ played: 0, won: 0 });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
     return () => {
       ref.off("value", newData);
     };
