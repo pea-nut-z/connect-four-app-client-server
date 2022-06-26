@@ -26,13 +26,13 @@ The app uses React hooks, Socket.io, Firebase authentication and Real-time Datab
 
 In single-player mode, you are playing against Peanutbot (AI player). In multiplayer mode, a game starts when two players are connected. The third player connected to multiplayer mode will get an alert that the server is full, but they can play in single-player mode.
 
-**Calculation**
+### Calculation
 
 Played: number of games you played  
 Won: number of times you won  
 Round: number of games for the current session
 
-These trackers increment under different game results and circumstances for each player.
+These trackers increment under different game results and scenarios when each player triggers the Replay or Quit button.
 
 Game over:
 
