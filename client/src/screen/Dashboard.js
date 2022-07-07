@@ -11,7 +11,6 @@ export default function Dashboard() {
   const history = useHistory();
   const location = useLocation();
   const { currentUser, logout } = useAuth();
-
   const [data, setData] = useState();
   const [game, setGame] = useState();
   const [id] = useState(currentUser.uid);
@@ -77,7 +76,7 @@ export default function Dashboard() {
         <div>
           <Card className="box">
             <Card.Body>
-              <h2 id="userName" className="text-center mb-4">
+              <h2 data-testid="userName" className="text-center mb-4">
                 Hello, {userName}!
               </h2>
               <div className="row">

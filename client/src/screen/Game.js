@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useContext, useMemo } from "react";
 import CustomButton from "../UI/CustomButton";
 import { Grid } from "./Grid";
-import { initialGrid } from "./help";
+import { initialGrid } from "../help";
 import { SocketContext } from "../contexts/socket";
 
 export default function Game({ userName, game, incrementData, toggleGameModeCb }) {

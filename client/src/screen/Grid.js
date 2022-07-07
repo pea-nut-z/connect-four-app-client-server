@@ -6,8 +6,8 @@ import React, {
   useContext,
   useMemo,
 } from "react";
-import Square from "./Square";
-import { checkResult, findAiMove, initialGrid, initialRowChart } from "./help";
+import Square from "../UI/Square";
+import { checkResult, findAiMove, initialGrid, initialRowChart } from "../help";
 import { SocketContext } from "../contexts/socket";
 
 export const Grid = forwardRef(
