@@ -3,7 +3,7 @@ const DEFAULT_ROWS = 6;
 const DEFAULT_COLS = 7;
 const FULL_COLUMN = 9; // Because the max standard number of rows is 8
 
-const getGrid = (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) => {
+export const getGrid = (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) => {
   const grid = [];
   let i = 0;
   while (i < rows) {
@@ -15,7 +15,7 @@ const getGrid = (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) => {
 
 export const initialGrid = getGrid();
 
-function getRowChart(grid) {
+export function getRowChart(grid) {
   const numOfCol = grid[0].length;
   const maxRowIdx = grid.length - 1;
   const rowChart = [];

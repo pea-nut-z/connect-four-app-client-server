@@ -1,6 +1,6 @@
-import { getGrid, getRowChart, checkResult, findAiMove } from "../../src/components/game/help";
+import { getGrid, getRowChart, checkResult, findAiMove } from "../../help";
 
-describe("getGrid function", () => {
+describe("getGrid", () => {
   it("returns a specified size of blank grid", () => {
     const rows = 4;
     const cols = 4;
@@ -29,7 +29,7 @@ describe("getGrid function", () => {
   });
 });
 
-describe("getRowChart function", () => {
+describe("getRowChart", () => {
   it("returns an array that has the number of columns in length and holds the max row index as each value", () => {
     const grid = [
       [0, 0, 0, 0, 0, 0, 0],
