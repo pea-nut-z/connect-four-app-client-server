@@ -7,10 +7,7 @@ import { createMemoryHistory } from "history";
 
 describe("Dashboard", () => {
   const mockUser = {
-    uid: "123",
-    displayName: "Test 1",
-    played: 1,
-    won: 1,
+    displayName: "Tester",
   };
 
   const mockLogout = jest.fn();
