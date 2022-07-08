@@ -3,7 +3,7 @@ const DEFAULT_ROWS = 6;
 const DEFAULT_COLS = 7;
 const FULL_COLUMN = 9; // Because the max standard number of rows is 8
 
-const getGrid = function (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
+const getGrid = (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) => {
   const grid = [];
   let i = 0;
   while (i < rows) {

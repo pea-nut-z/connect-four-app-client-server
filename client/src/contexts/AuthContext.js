@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
 
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -36,6 +36,5 @@ export function AuthProvider({ children }) {
     updateEmail,
     updatePassword,
   };
-
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }

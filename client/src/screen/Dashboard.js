@@ -1,37 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Card, Alert } from "react-bootstrap";
 import CustomButton from "../UI/CustomButton";
-import { useAuth } from "../contexts/AuthContext";
 import { SocketContext, socket } from "../contexts/socket";
 import { useLocation, useHistory } from "react-router-dom";
 import Game from "./Game";
-import { app } from "../firebase";
 
-export default function Dashboard() {
+export default function Dashboard({ currentUser, data, incrementData, logout }) {
   const history = useHistory();
   const location = useLocation();
-  const { currentUser, logout } = useAuth();
-  const [data, setData] = useState();
   const [game, setGame] = useState();
-  const [id] = useState(currentUser.uid);
   const [userName] = useState(location.state?.userName || currentUser.displayName);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    const ref = app.database().ref(id);
-    const newData = ref.on(
-      "value",
-      (snapshot) => {
-        snapshot.val() ? setData(snapshot.val()) : setData({ played: 0, won: 0 });
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-    return () => {
-      ref.off("value", newData);
-    };
-  }, [id]);
 
   const handleLogout = async () => {
     setError("");
@@ -50,16 +29,6 @@ export default function Dashboard() {
   const updateProfile = () => {
     history.push("/update-profile");
   };
-
-  const incrementData = useCallback(
-    (key1, key2) => {
-      let updatedData = { ...data, [key1]: data[key1] + 1 };
-      if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
-      const ref = app.database().ref(id);
-      ref.update({ ...updatedData });
-    },
-    [data, id]
-  );
 
   return (
     <main className="container">
@@ -80,10 +49,10 @@ export default function Dashboard() {
                 Hello, {userName}!
               </h2>
               <div className="row">
-                <h2 id="played" className="col-6 text-center">
+                <h2 data-testid="played" className="col-6 text-center">
                   🎮 ✖️ {data?.played !== undefined ? data.played : "Loading..."}
                 </h2>
-                <h2 id="won" className="col-6 text-center">
+                <h2 data-testid="won" className="col-6 text-center">
                   🏆 ✖️ {data?.won !== undefined ? data.won : "Loading..."}
                 </h2>
               </div>
