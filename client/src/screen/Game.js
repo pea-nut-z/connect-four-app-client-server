@@ -5,8 +5,8 @@ import { initialGrid } from "../help";
 import { SocketContext } from "../contexts/socket";
 
 export default function Game({ userName, game, incrementData, toggleGameModeCb }) {
-  const [player1Name, setPlayer1Name] = useState("");
-  const [player2Name, setPlayer2Name] = useState("");
+  const [player1Name, setPlayer1Name] = useState(game === "single" ? userName : null);
+  const [player2Name, setPlayer2Name] = useState(game === "single" ? "Peanutbot" : null);
   const [round, setRound] = useState(1);
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
@@ -51,13 +51,6 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   };
 
   useEffect(() => {
-    if (game === "single") {
-      setGameOver(false);
-      setDisableReplayBtn(false);
-      setPlayer1Name(userName);
-      setPlayer2Name("Peanutbot");
-    }
-
     if (game === "multi") {
       client.emit("player-connecting", { userName });
       client.on("player-has-joined", ({ player1, player2 }) => {
