@@ -15,7 +15,7 @@ export const getGrid = (rows = DEFAULT_ROWS, cols = DEFAULT_COLS) => {
 
 export const initialGrid = getGrid();
 
-export function getRowChart(grid) {
+export const getRowIndex = (grid) => {
   const numOfCol = grid[0].length;
   const maxRowIdx = grid.length - 1;
   const rowChart = [];
@@ -25,11 +25,11 @@ export function getRowChart(grid) {
     i++;
   }
   return rowChart;
-}
+};
 
-export const initialRowChart = getRowChart(getGrid());
+export const initialRowIndex = getRowIndex(getGrid());
 
-export function checkResult(grid, row, col) {
+export const checkResult = (grid, row, col) => {
   const value = grid[row][col];
   // INDEXES
   let rMins = row - 1;
@@ -97,9 +97,9 @@ export function checkResult(grid, row, col) {
   const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
   if (counts.some((count) => count >= 4)) return value;
   if (row === 0 && !grid[0].includes(0)) return "Draw";
-}
+};
 
-export function findAiMove(grid, rowChart) {
+export const findAiMove = (grid, rowChart) => {
   // const t0 = performance.now();
   const maxDepth = 7;
   const numOfCols = grid[0].length;
@@ -142,9 +142,9 @@ export function findAiMove(grid, rowChart) {
   // console.log({ average });
 
   return bestMoves[randomMove];
-}
+};
 
-function alphabeta(row, col, grid, numOfCols, rowChart, depth, isMaximizingPlayer) {
+const alphabeta = (row, col, grid, numOfCols, rowChart, depth, isMaximizingPlayer) => {
   let result = checkResult(grid, row, col);
   switch (result) {
     case 1:
@@ -208,4 +208,4 @@ function alphabeta(row, col, grid, numOfCols, rowChart, depth, isMaximizingPlaye
     }
     return bestMove;
   }
-}
+};

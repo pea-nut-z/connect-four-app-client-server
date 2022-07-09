@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import Square from "../UI/Square";
-import { checkResult, findAiMove, initialGrid, initialRowChart } from "../help";
+import { checkResult, findAiMove, initialGrid, initialRowIndex } from "../helper";
 import { SocketContext } from "../contexts/socket";
 
 export const Grid = forwardRef(
@@ -20,10 +20,10 @@ export const Grid = forwardRef(
     //   [2, 2, 2, 0, 0, 0, 0],
     //   [1, 1, 1, 0, 0, 0, 0],
     // ];
-    // const initialRowChart = [3, 3, 3, 5, 5, 5, 5];
+    // const initialRowIndex = [3, 3, 3, 5, 5, 5, 5];
 
     const [grid, setGrid] = useState(initialGrid);
-    const [rowChart, setRowChart] = useState(initialRowChart);
+    const [rowChart, setRowChart] = useState(initialRowIndex);
     const [ready, setReady] = useState(game === "single" ? true : false);
 
     const thisPlayerColor = useMemo(
@@ -44,10 +44,10 @@ export const Grid = forwardRef(
 
     const resetGrid = () => {
       setGrid(initialGrid);
-      setRowChart(initialRowChart);
+      setRowChart(initialRowIndex);
       if (game === "single" && !ready) {
         setTimeout(() => {
-          handleAiMove(initialGrid, initialRowChart);
+          handleAiMove(initialGrid, initialRowIndex);
         }, 100);
       }
     };
@@ -105,7 +105,7 @@ export const Grid = forwardRef(
         client.on("go-first", () => {
           setReady(true);
           setGrid(initialGrid);
-          setRowChart(initialRowChart);
+          setRowChart(initialRowIndex);
         });
       }
 
