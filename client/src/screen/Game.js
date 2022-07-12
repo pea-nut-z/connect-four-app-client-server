@@ -19,7 +19,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   const [result, setResult] = useState(0);
   const [triggeredBy, setTriggeredBy] = useState(0);
-  const [replay, setReplay] = useState(false);
+  const [replay, setReplay] = useState(game === "single" ? true : false);
 
   const opponentName = useMemo(
     () => (thisPlayerNum === 1 ? player2Name : player1Name),
