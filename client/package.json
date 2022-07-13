@@ -23,12 +23,6 @@
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -56,15 +50,6 @@
     "babel-jest": "^26.6.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "eslint": "^7.19.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-wesbos": "^1.0.1",
-    "eslint-plugin-html": "^6.1.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
     "firebase-mock": "^2.3.2",
     "firebase-tools": "^9.12.0",
     "nyc": "^15.1.0",
