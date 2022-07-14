@@ -1,12 +1,5 @@
 import React from "react";
-import { shallow, mount } from "enzyme";
-import {
-  render,
-  fireEvent,
-  cleanup,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react/pure";
+import { shallow } from "enzyme";
 import "@testing-library/jest-dom";
 import Game from "../../screen/Game";
 
@@ -14,7 +7,7 @@ describe("Single player mode", () => {
   const player = "Tester";
   const incrementData = jest.fn();
   const toggleGameModeCb = jest.fn();
-  let wrapper, getByTestId;
+  let wrapper;
 
   beforeAll(() => {
     wrapper = shallow(
@@ -25,11 +18,6 @@ describe("Single player mode", () => {
         toggleGameModeCb={toggleGameModeCb}
       />
     );
-    // component = component.getByTestId;
-  });
-
-  afterAll(() => {
-    cleanup();
   });
 
   it("renders initial setup", () => {

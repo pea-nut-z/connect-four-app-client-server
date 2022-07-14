@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, cleanup } from "@testing-library/react/pure";
+import { render } from "@testing-library/react/pure";
 import Dashboard from "../../screen/Dashboard";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
@@ -13,8 +13,8 @@ describe("Dashboard", () => {
   const mockLogout = jest.fn();
 
   const mockData = {
-    played: 1,
-    won: 2,
+    played: 2,
+    won: 1,
   };
 
   const mockUseLocationValue = {
@@ -39,10 +39,6 @@ describe("Dashboard", () => {
       </Router>
     );
     getByTestId = component.getByTestId;
-  });
-
-  afterAll(() => {
-    cleanup();
   });
 
   it("shows username", () => {

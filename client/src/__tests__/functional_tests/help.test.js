@@ -1,7 +1,14 @@
-import { getGrid, getRowChart, checkResult, findAiMove } from "../../help";
+import {
+  getGrid,
+  initialGrid,
+  getRowIndex,
+  initialRowIndex,
+  checkResult,
+  findAiMove,
+} from "../../helper";
 
 describe("getGrid", () => {
-  it("returns a specified size of blank grid", () => {
+  it("returns a specific blank grid when passing arguments", () => {
     const rows = 4;
     const cols = 4;
     const grid = [
@@ -15,7 +22,7 @@ describe("getGrid", () => {
     expect(newGrid).toEqual(grid);
   });
 
-  it("returns a default size of blank grid", () => {
+  it("returns a default size blank grid when passing no arguments", () => {
     const grid = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
@@ -24,23 +31,23 @@ describe("getGrid", () => {
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
     ];
-    const newGrid = getGrid();
-    expect(newGrid).toEqual(grid);
+    expect(initialGrid).toEqual(grid);
   });
 });
 
-describe("getRowChart", () => {
+describe("getRowIndex", () => {
   it("returns an array that has the number of columns in length and holds the max row index as each value", () => {
     const grid = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
     ];
-    const rowChart = getRowChart(grid);
-    expect(rowChart).toEqual([5, 5, 5, 5, 5, 5, 5]);
+    const arr = getRowIndex(grid);
+    expect(arr).toEqual([2, 2, 2]);
+  });
+
+  it("returns an array that has the default number of columns in length and holds the default max row index as each value", () => {
+    expect(initialRowIndex).toEqual([5, 5, 5, 5, 5, 5, 5]);
   });
 });
 
