@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Game from "../../screen/Game";
+jest.mock("../../screen/Grid");
 
 describe("Single player mode", () => {
   const props = {
@@ -10,19 +11,21 @@ describe("Single player mode", () => {
     incrementData: jest.fn(),
     toggleGameModeCb: jest.fn(),
   };
-  let wrapper;
+  let component, getByTestId;
 
   beforeAll(() => {
-    wrapper = shallow(<Game {...props} />);
+    component = render(<Game {...props} />);
+    getByTestId = component.getByTestId;
   });
 
   it("renders initial setup", () => {
-    expect(wrapper.find({ "data-testid": "p1Name" }).text()).toEqual(props.userName);
-    expect(wrapper.find({ "data-testid": "p2Name" }).text()).toEqual("Peanutbot");
-    expect(wrapper.find({ "data-testid": "round" }).text()).toEqual("Round: 1");
-    expect(wrapper.find({ "data-testid": "score1" }).text()).toEqual("0");
-    expect(wrapper.find({ "data-testid": "score2" }).text()).toEqual("0");
-    expect(wrapper.find({ "data-testid": "resultMsg" }).text()).toEqual("");
-    expect(wrapper.find({ "data-testid": "info" }).text()).toEqual("");
+    expect(getByTestId("p1Name").textContent).toBe(props.userName);
+    expect(getByTestId("p2Name").textContent).toBe("Peanutbot");
+    expect(getByTestId("round").textContent).toBe("Round: 1");
+    expect(getByTestId("score1").textContent).toBe("0");
+    expect(getByTestId("score2").textContent).toBe("0");
+    expect(getByTestId("resultMsg").textContent).toBe("");
+    expect(getByTestId("info").textContent).toBe("");
+    expect(getByTestId("replay")).not.toBeDisabled();
   });
 });

@@ -1,45 +1,47 @@
-import React from "react";
-import { render, fireEvent, cleanup, act, waitFor } from "@testing-library/react/pure";
+import React, { useContext } from "react";
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react/pure";
 import "@testing-library/jest-dom";
-import Game from "../../src/components/game/Game";
-import { SocketContext, socket } from "../../contexts/socket";
-import puppeteer from "puppeteer";
-import { app, player1, player2, testGridMulti, testGridDraw } from "../constants";
-
-let browser, page;
-const incrementData = jest.fn();
-const toggleGameModeCb = jest.fn();
+import Game from "../../screen/Game";
+import { SocketContext } from "../../contexts/socket";
+import { mockio, socket, serverSocket, cleanUp } from "../mockSocketio";
+jest.mock("../../screen/Grid");
 
 describe("Multi player mode", () => {
-  let component, grid;
-  let getByTestId, getAllByTestId;
+  const props = {
+    userName: "Tester1",
+    game: "multi",
+    incrementData: jest.fn(),
+    toggleGameModeCb: jest.fn(),
+  };
 
-  beforeAll(async () => {
-    await act(async () => {
-      component = await render(
-        <SocketContext.Provider value={socket}>
-          <Game
-            userName={player1}
-            game={"multi"}
-            INITIAL_GRID={testGridMulti}
-            incrementData={incrementData}
-            toggleGameModeCb={toggleGameModeCb}
-          />
-        </SocketContext.Provider>
-      );
-      getByTestId = component.getByTestId;
-      getAllByTestId = component.getAllByTestId;
-      grid = getAllByTestId("square");
-    });
+  let component, getByTestId;
+
+  beforeAll(() => {
+    component = render(
+      <SocketContext.Provider value={mockio.connect()}>
+        <Game {...props} />
+      </SocketContext.Provider>
+    );
+    getByTestId = component.getByTestId;
   });
 
-  afterAll(async () => {
-    await browser.close();
-    cleanup();
-  });
+  it.only("renders initial setup for the first player joining the game", () => {
+    expect(getByTestId("p1Name").textContent).toBe(props.userName);
+    expect(getByTestId("p2Name").textContent).toBe("Waiting...");
+    expect(getByTestId("round").textContent).toBe("Round: 1");
+    expect(getByTestId("score1").textContent).toBe("0");
+    expect(getByTestId("score2").textContent).toBe("0");
+    expect(getByTestId("resultMsg").textContent).toBe("");
+    expect(getByTestId("info").textContent).toBe("");
+    expect(getByTestId("replay")).toBeDisabled();
 
-  it("says it is waiting for another player to join. ", () => {
-    expect(getByTestId("p2Name")).toHaveTextContent("Waiting...");
+    // console.log(component.debug());
   });
 
   it("displays two players' names when another player joins in.", async () => {
@@ -69,51 +71,10 @@ describe("Multi player mode", () => {
     });
   });
 
-  it("says player1 wins and increments its score.", async () => {
-    fireEvent.click(grid[2]);
-    await waitFor(() => {
-      expect(getByTestId("resultMsg")).toHaveTextContent("🥂 YOU WIN! 🎉");
-      expect(getByTestId("score1")).toHaveTextContent(1);
-      expect(getByTestId("info")).toHaveTextContent("Click Replay ⬇️");
-      expect(getByTestId("replay")).not.toBeDisabled();
-    });
-  });
-
-  it("increments the number of rounds after winner clicks replay.", () => {
+  it("increments the number of rounds on click of replay.", () => {
     const replayBtn = getByTestId("replay");
     fireEvent.click(replayBtn);
     expect(getByTestId("numOfRounds")).toHaveTextContent("2");
-  });
-
-  it("says it is player2's turn in green.", () => {
-    fireEvent.click(grid[0]);
-    expect(getByTestId("turn")).toHaveTextContent(`Waiting for ${player2.username}...`);
-    expect(getByTestId("turn").style).toHaveProperty("color", "rgb(46, 204, 64)");
-  });
-
-  it("says player1 has lost and increments opponent's score.", async () => {
-    page.click("#grid");
-    await waitFor(() => {
-      expect(getByTestId("resultMsg")).toHaveTextContent("😱 YOU LOST! 💩");
-      expect(getByTestId("score2")).toHaveTextContent(1);
-      expect(getByTestId("info")).toHaveTextContent(
-        `Waiting for ${player2.username} to restart the game...`
-      );
-      expect(getByTestId("replay")).toBeDisabled();
-    });
-  });
-
-  it("says draw.", async () => {
-    await act(async () => {
-      await page.click("#replay");
-      await page.click("#testCol2");
-      await fireEvent.click(grid[3]);
-      await page.click("#testCol0");
-      await waitFor(() => {
-        expect(getByTestId("resultMsg")).toHaveTextContent("Draw! 🤝");
-        expect(getByTestId("replay")).toBeDisabled();
-      });
-    });
   });
 
   it("says a player has left the game.", async () => {
