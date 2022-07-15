@@ -10,16 +10,16 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   const [round, setRound] = useState(1);
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
-  const [gameOver, setGameOver] = useState(true);
+  const [gameOver, setGameOver] = useState(game === "single" ? false : true);
   const [resultMsg, setResultMsg] = useState("");
   const [info, setInfo] = useState("");
-  const [disableReplayBtn, setDisableReplayBtn] = useState(true);
+  const [disableReplayBtn, setDisableReplayBtn] = useState(game === "single" ? false : true);
   const [thisPlayerNum, setThisPlayerNum] = useState(1);
   const [thisPlayerName, setThisPlayerName] = useState("");
 
   const [result, setResult] = useState(0);
   const [triggeredBy, setTriggeredBy] = useState(0);
-  const [replay, setReplay] = useState(game === "single" ? true : false);
+  const [replay, setReplay] = useState(false);
 
   const opponentName = useMemo(
     () => (thisPlayerNum === 1 ? player2Name : player1Name),
@@ -89,15 +89,18 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       });
 
       return () => {
-        client.off("player-has-joined");
-        client.off("full-server", toggleGameModeCb);
-        client.off("player-1-connected");
-        client.off("player-2-connected");
-        client.off("player-disconnected");
+        if (game === "multi") {
+          client.off("player-has-joined");
+          client.off("full-server", toggleGameModeCb);
+          client.off("player-1-connected");
+          client.off("player-2-connected");
+          client.off("player-disconnected");
+        }
       };
     }
   }, [client, game, userName, toggleGameModeCb]);
 
+  // NEXT MOCK HERE
   useEffect(() => {
     if (game === "multi") {
       client.on("result", ({ result, playerNum }) => {
@@ -110,8 +113,10 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     }
 
     return () => {
-      client.off("result", handleResultCb);
-      client.off("replay", replayCb);
+      if (game === "multi") {
+        client.off("result", handleResultCb);
+        client.off("replay", replayCb);
+      }
     };
   }, [client, game, handleResultCb, replayCb]);
 
