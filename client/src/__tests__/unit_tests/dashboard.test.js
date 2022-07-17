@@ -15,6 +15,15 @@ jest.mock("react-router-dom", () => ({
   }),
 }));
 
+jest.mock("../../UI/CustomButton", () => {
+  return {
+    __esModule: true,
+    default: () => {
+      return <div />;
+    },
+  };
+});
+
 const history = createMemoryHistory();
 
 const props = {
