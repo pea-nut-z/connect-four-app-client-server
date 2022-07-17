@@ -24,7 +24,6 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     if (currentUser) {
       const uid = currentUser.uid;
       setId(uid);
-      console.log("mount");
       ref = app.database().ref(uid);
       newData = ref.on(
         "value",

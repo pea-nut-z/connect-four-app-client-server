@@ -47,7 +47,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     // if (game === "multi" && !opponentName) {
     //   client.disconnect();
     // }
-    toggleGameModeCb("");
+    // toggleGameModeCb("");
   };
 
   useEffect(() => {
@@ -87,7 +87,6 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         setGameOver(true);
         setDisableReplayBtn(true);
       });
-
       return () => {
         if (game === "multi") {
           client.off("player-has-joined");
