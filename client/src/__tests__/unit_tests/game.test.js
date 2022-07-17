@@ -3,7 +3,8 @@ import { render, fireEvent, cleanup } from "@testing-library/react/pure";
 import "@testing-library/jest-dom";
 import Game from "../../screen/Game";
 import { SocketContext } from "../../contexts/socket";
-import { mockio } from "../mockSocketio";
+import { initialGrid } from "../../helper";
+import * as mock from "../mockSocketio";
 
 global.alert = jest.fn();
 jest.mock("../../screen/Grid");
@@ -14,29 +15,27 @@ jest.mock("react", () => {
     useRef: jest.fn(() => ({ current: {} })),
   };
 });
+useRef.mockReturnValue({ current: { grid: initialGrid, resetGrid: jest.fn() } });
 
-const grid = [
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-];
+const singlePlayerProps = {
+  userName: "Player",
+  game: "single",
+  incrementData: jest.fn(),
+  toggleGameModeCb: jest.fn(),
+};
 
-useRef.mockReturnValue({ current: { grid, resetGrid: jest.fn() } });
+const multiPlayerProps = {
+  userName: "Jester",
+  game: "multi",
+  incrementData: jest.fn(),
+  toggleGameModeCb: jest.fn(),
+};
 
 describe("Single player mode", () => {
-  const props = {
-    userName: "Player",
-    game: "single",
-    incrementData: jest.fn(),
-    toggleGameModeCb: jest.fn(),
-  };
   let component, getByTestId;
 
   beforeAll(() => {
-    component = render(<Game {...props} />);
+    component = render(<Game {...singlePlayerProps} />);
     getByTestId = component.getByTestId;
   });
 
@@ -45,7 +44,7 @@ describe("Single player mode", () => {
   });
 
   it("renders initial setup", () => {
-    expect(getByTestId("p1Name").textContent).toBe(props.userName);
+    expect(getByTestId("p1Name").textContent).toBe(singlePlayerProps.userName);
     expect(getByTestId("p2Name").textContent).toBe("Peanutbot");
     expect(getByTestId("round").textContent).toBe("Round: 1");
     expect(getByTestId("score1").textContent).toBe("0");
@@ -56,20 +55,13 @@ describe("Single player mode", () => {
   });
 });
 
-describe("Multi player mode", () => {
-  const props = {
-    userName: "Jester",
-    game: "multi",
-    incrementData: jest.fn(),
-    toggleGameModeCb: jest.fn(),
-  };
-
+describe("Multi player mode - all spots are available", () => {
   let component, getByTestId;
 
   beforeEach(() => {
     component = render(
-      <SocketContext.Provider value={mockio.connect()}>
-        <Game {...props} />
+      <SocketContext.Provider value={mock.allAvailable}>
+        <Game {...multiPlayerProps} />
       </SocketContext.Provider>
     );
     getByTestId = component.getByTestId;
@@ -80,7 +72,7 @@ describe("Multi player mode", () => {
   });
 
   it("renders the setup for when one player joins the game", () => {
-    expect(getByTestId("p1Name").textContent).toBe(props.userName);
+    expect(getByTestId("p1Name").textContent).toBe(multiPlayerProps.userName);
     expect(getByTestId("p2Name").textContent).toBe("Waiting...");
     expect(getByTestId("round").textContent).toBe("Round: 1");
     expect(getByTestId("score1").textContent).toBe("0");
@@ -89,24 +81,76 @@ describe("Multi player mode", () => {
     expect(getByTestId("info").textContent).toBe("");
     expect(getByTestId("replay")).toBeDisabled();
   });
+});
+
+describe("Multi player mode - one spot is available", () => {
+  let component, getByTestId;
+
+  beforeEach(() => {
+    component = render(
+      <SocketContext.Provider value={mock.oneAvailable}>
+        <Game {...multiPlayerProps} />
+      </SocketContext.Provider>
+    );
+    getByTestId = component.getByTestId;
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
 
   it("renders the setup for when two players join the game", async () => {
     expect(getByTestId("p1Name").textContent).toBe("Tester");
-    expect(getByTestId("p2Name").textContent).toBe(props.userName);
+    expect(getByTestId("p2Name").textContent).toBe(multiPlayerProps.userName);
     expect(getByTestId("replay")).not.toBeDisabled();
-  });
-
-  it("renders an alert for the third player who joins the game", () => {
-    expect(global.alert).toBeCalledWith("Sorry, server is full.");
   });
 
   it("increments the number of rounds on click of replay", () => {
     fireEvent.click(getByTestId("replay"));
     expect(getByTestId("round").textContent).toBe("Round: 2");
   });
+});
+
+describe("Multi player mode - no spots are available", () => {
+  let component, getByTestId;
+
+  beforeEach(() => {
+    component = render(
+      <SocketContext.Provider value={mock.unavailable}>
+        <Game {...multiPlayerProps} />
+      </SocketContext.Provider>
+    );
+    getByTestId = component.getByTestId;
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it("renders an alert for the third player who joins the game", () => {
+    expect(global.alert).toBeCalledWith("Sorry, server is full.");
+  });
+});
+
+describe("Multi player mode - one spot becomes available", () => {
+  let component, getByTestId;
+
+  beforeEach(() => {
+    component = render(
+      <SocketContext.Provider value={mock.disconnect}>
+        <Game {...multiPlayerProps} />
+      </SocketContext.Provider>
+    );
+    getByTestId = component.getByTestId;
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
 
   it("renders the layout for when a player leaves the game", () => {
     fireEvent.click(getByTestId("quit"));
+    expect(getByTestId("p1Name").textContent).toBe("Waiting...");
     expect(getByTestId("info").textContent).toBe("Tester left💨");
     expect(getByTestId("replay")).toBeDisabled();
   });
