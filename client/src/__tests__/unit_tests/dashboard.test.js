@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react/pure";
+import { getAllByTestId, render } from "@testing-library/react/pure";
 import Dashboard from "../../screen/Dashboard";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
@@ -19,7 +19,7 @@ jest.mock("../../UI/CustomButton", () => {
   return {
     __esModule: true,
     default: () => {
-      return <div />;
+      return <div data-testid="customButton" />;
     },
   };
 });
@@ -38,7 +38,7 @@ const props = {
 };
 
 describe("Dashboard", () => {
-  let component, getByTestId;
+  let component, getByTestId, getAllByTestId;
 
   beforeAll(() => {
     component = render(
@@ -47,6 +47,7 @@ describe("Dashboard", () => {
       </Router>
     );
     getByTestId = component.getByTestId;
+    getAllByTestId = component.getAllByTestId;
   });
 
   it("shows username", () => {
@@ -59,5 +60,9 @@ describe("Dashboard", () => {
 
   it("shows number of times won", () => {
     expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${props.data.won}`);
+  });
+
+  it("renders four buttons", () => {
+    expect(getAllByTestId("customButton").length).toEqual(4);
   });
 });
