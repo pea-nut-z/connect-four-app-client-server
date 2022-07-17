@@ -5,51 +5,50 @@ import Dashboard from "../../screen/Dashboard";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
-describe("Dashboard", () => {
-  const mockUser = {
-    displayName: "Tester",
-  };
-
-  const mockLogout = jest.fn();
-
-  const mockData = {
-    played: 2,
-    won: 1,
-  };
-
-  const mockUseLocationValue = {
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: () => ({
     pathname: "/testroute",
     search: "",
     hash: "",
     state: null,
-  };
+  }),
+}));
 
+const history = createMemoryHistory();
+
+const props = {
+  currentUser: {
+    displayName: "Tester",
+  },
+  data: {
+    played: 2,
+    won: 1,
+  },
+  logout: jest.fn(),
+};
+
+describe("Dashboard", () => {
   let component, getByTestId;
 
   beforeAll(() => {
-    jest.mock("react-router-dom", () => ({
-      ...jest.requireActual("react-router-dom"),
-      useLocation: () => mockUseLocationValue,
-    }));
-
-    const history = createMemoryHistory();
     component = render(
       <Router history={history}>
-        <Dashboard currentUser={mockUser} data={mockData} logout={mockLogout} />
+        <Dashboard {...props} />
       </Router>
     );
     getByTestId = component.getByTestId;
   });
 
   it("shows username", () => {
-    expect(getByTestId("userName")).toHaveTextContent(`Hello, ${mockUser.displayName}!`);
+    expect(getByTestId("userName")).toHaveTextContent(`Hello, ${props.currentUser.displayName}!`);
   });
 
   it("shows number of games played", () => {
-    expect(getByTestId("played")).toHaveTextContent(`🎮 ✖️ ${mockData.played}`);
+    expect(getByTestId("played")).toHaveTextContent(`🎮 ✖️ ${props.data.played}`);
   });
 
   it("shows number of times won", () => {
-    expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${mockData.won}`);
+    expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${props.data.won}`);
   });
 });
