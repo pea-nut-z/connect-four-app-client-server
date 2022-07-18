@@ -105,7 +105,7 @@ describe("Multi player mode - one spot is available", () => {
     unmount();
   });
 
-  it("says waiting for the first player to start the game in pink when the second player joins the game", () => {
+  it("says waiting for the first player to start in pink when the second player joins the game", () => {
     expect(getByTestId("turn")).toHaveTextContent("Waiting for Tester...");
     expect(getByTestId("turn").style).toHaveProperty("color", "rgb(240, 18, 190)");
   });
