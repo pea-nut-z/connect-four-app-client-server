@@ -18,8 +18,8 @@
     "start": "rimraf .eslintcache && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --watch --detectOpenHandles",
-    "func:coverage": "jest ./__tests__/functional_tests --detectOpenHandles",
-    "unit:coverage": "jest ./__tests__/unit_tests --coverage --no-cache --force-exit --detectOpenHandles",
+    "selectedTest": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/help.test.js --watch --detectOpenHandles",
+    "coverage": "npm run selectedTest -- --coverage --watchAll",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start"
   },
