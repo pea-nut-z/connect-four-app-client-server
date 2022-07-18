@@ -1,6 +1,5 @@
 import React from "react";
 import { render } from "@testing-library/react/pure";
-import "@testing-library/jest-dom";
 import { SocketContext } from "../../contexts/socket";
 import { Grid } from "../../screen/Grid";
 import * as mock from "../mockSocketio";

@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { render, fireEvent, cleanup } from "@testing-library/react/pure";
-import "@testing-library/jest-dom";
 import Game from "../../screen/Game";
 import { SocketContext } from "../../contexts/socket";
 import { initialGrid } from "../../helper";

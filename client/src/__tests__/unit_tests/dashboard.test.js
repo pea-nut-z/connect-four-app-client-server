@@ -1,6 +1,5 @@
 import React from "react";
-import "@testing-library/jest-dom";
-import { getAllByTestId, render } from "@testing-library/react/pure";
+import { render } from "@testing-library/react/pure";
 import Dashboard from "../../screen/Dashboard";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
