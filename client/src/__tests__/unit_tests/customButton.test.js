@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, cleanup } from "@testing-library/react/pure";
 import CustomButton from "../../UI/CustomButton";
 
-describe("CustomButton", () => {
+describe("CustomButton - button style", () => {
   const props = {
     id: "123",
     testid: "456",
@@ -60,7 +60,7 @@ describe("CustomButton", () => {
   //   });
 });
 
-describe("CustomButton", () => {
+describe("CustomButton - link style", () => {
   const props = {
     testid: "456",
     link: true,
