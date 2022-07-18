@@ -107,16 +107,19 @@ export const Grid = forwardRef(
           setGrid(initialGrid);
           setRowChart(initialRowIndex);
         });
+
+        client.on("update-grid", ({ grid, rowChart, result }) => {
+          if (!result) setReady(true);
+          setGrid(grid);
+          setRowChart(rowChart);
+        });
       }
 
-      client.on("update-grid", ({ grid, rowChart, result }) => {
-        if (!result) setReady(true);
-        setGrid(grid);
-        setRowChart(rowChart);
-      });
       return () => {
-        client.off("go-first");
-        client.off("update-grid");
+        if (game === "multi") {
+          client.off("go-first");
+          client.off("update-grid");
+        }
       };
     }, [client, game]);
 
