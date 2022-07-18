@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1658176433692" clover="3.2.0">
-  <project timestamp="1658176433692" name="All files">
-    <metrics statements="324" coveredstatements="254" conditionals="220" coveredconditionals="166" methods="54" coveredmethods="37" elements="598" coveredelements="457" complexity="0" loc="324" ncloc="324" packages="4" files="8" classes="8"/>
+<coverage generated="1658179396497" clover="3.2.0">
+  <project timestamp="1658179396497" name="All files">
+    <metrics statements="324" coveredstatements="258" conditionals="220" coveredconditionals="169" methods="54" coveredmethods="38" elements="598" coveredelements="465" complexity="0" loc="324" ncloc="324" packages="4" files="8" classes="8"/>
     <package name="src">
       <metrics statements="128" coveredstatements="128" conditionals="95" coveredconditionals="95" methods="6" coveredmethods="6"/>
       <file name="helper.js" path="/Users/paulinez/connect-four-react/client/src/helper.js">
@@ -140,8 +140,8 @@
       <metrics statements="5" coveredstatements="5" conditionals="8" coveredconditionals="8" methods="5" coveredmethods="5"/>
       <file name="CustomButton.js" path="/Users/paulinez/connect-four-react/client/src/UI/CustomButton.js">
         <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
-        <line num="5" count="26" type="stmt"/>
-        <line num="13" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="38" type="stmt"/>
+        <line num="13" count="4" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="CustomLink.js" path="/Users/paulinez/connect-four-react/client/src/UI/CustomLink.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -162,25 +162,25 @@
       </file>
     </package>
     <package name="src.screen">
-      <metrics statements="189" coveredstatements="119" conditionals="117" coveredconditionals="63" methods="43" coveredmethods="26"/>
+      <metrics statements="189" coveredstatements="123" conditionals="117" coveredconditionals="66" methods="43" coveredmethods="27"/>
       <file name="Dashboard.js" path="/Users/paulinez/connect-four-react/client/src/screen/Dashboard.js">
-        <metrics statements="16" coveredstatements="9" conditionals="10" coveredconditionals="6" methods="4" coveredmethods="1"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
+        <metrics statements="16" coveredstatements="13" conditionals="10" coveredconditionals="9" methods="4" coveredmethods="2"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
       </file>
       <file name="Game.js" path="/Users/paulinez/connect-four-react/client/src/screen/Game.js">
         <metrics statements="106" coveredstatements="85" conditionals="65" coveredconditionals="39" methods="22" coveredmethods="17"/>

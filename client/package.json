@@ -18,7 +18,7 @@
     "start": "rimraf .eslintcache && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --watch --detectOpenHandles",
-    "selectedTest": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/help.test.js --watch --detectOpenHandles",
+    "selectedTest": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/helper.test.js --watch --detectOpenHandles",
     "coverage": "npm run selectedTest -- --coverage --watchAll",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start"

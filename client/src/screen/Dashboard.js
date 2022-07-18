@@ -56,7 +56,11 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
                   🏆 ✖️ {data?.won !== undefined ? data.won : "Loading..."}
                 </h2>
               </div>
-              {error && <Alert variant="danger">{error}</Alert>}
+              {error && (
+                <Alert data-testid="error" variant="danger">
+                  {error}
+                </Alert>
+              )}
               <CustomButton
                 id="single"
                 text="Challenge Peanutbot"
@@ -81,6 +85,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
           </Card>
           <CustomButton
             id="logoutBtn"
+            testid="logoutBtn"
             link={true}
             text="Log Out"
             type="button"
