@@ -56,6 +56,7 @@ export const checkResult = (grid, row, col) => {
   while (up || down || left || right || upLeft || downRight || upRight || downLeft) {
     const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
     if (counts.some((count) => count >= 4)) return value;
+    0;
 
     if (up) {
       grid[rMins]?.[col] === value ? up_down++ : (up = false);
@@ -93,9 +94,6 @@ export const checkResult = (grid, row, col) => {
     cMins--;
     cPlus++;
   }
-
-  const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
-  if (counts.some((count) => count >= 4)) return value;
   if (row === 0 && !grid[0].includes(0)) return "Draw";
 };
 
@@ -117,7 +115,7 @@ export const findAiMove = (grid, rowChart) => {
     let [moveDepth, moveScore] = depthAndScore;
     if (
       moveScore < bestScore || // LOOK FOR LOWEST SCORE (-10)
-      (moveScore === bestScore && moveDepth < bestDepth && moveScore >= 0) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
+      (bestScore > 0 && moveScore === bestScore && moveDepth < bestDepth) || // POSITIVE SCORE - human is winning; look for min depth to delay human's win
       (moveScore === bestScore && moveDepth > bestDepth && moveScore < 0) // NEGATIVE SCORE - bot is winning; look for max depth to speed up bot's win
     ) {
       bestMoves = [];
@@ -140,7 +138,6 @@ export const findAiMove = (grid, rowChart) => {
   // }, 0);
   // const average = total / times.length;
   // console.log({ average });
-
   return bestMoves[randomMove];
 };
 
@@ -157,8 +154,6 @@ const alphabeta = (row, col, grid, numOfCols, rowChart, depth, isMaximizingPlaye
       if (depth === 0) return [depth, 0];
       rowChart[col] = row === 0 ? 9 : row - 1;
       break;
-    default:
-      console.log("uncaught result", result);
   }
 
   if (isMaximizingPlayer) {

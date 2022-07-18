@@ -114,7 +114,7 @@ describe("checkResult function checks/returns winning result in every direction"
 });
 
 describe("findAiMove function", () => {
-  it("makes a move to avoid human from winning", () => {
+  it("makes a move to stop human from winning", () => {
     const grid = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
@@ -140,5 +140,50 @@ describe("findAiMove function", () => {
     const [row, col] = findAiMove(grid, [2, 4, 4, 4, 5, 5, 5]);
     expect(row).toEqual(5);
     expect(col).toEqual(4);
+  });
+
+  it("makes one of the two best moves", () => {
+    const grid = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 2, 1, 0, 0, 0, 0],
+      [1, 2, 1, 0, 0, 0, 0],
+      [1, 2, 2, 2, 0, 0, 0],
+    ];
+    const [row, col] = findAiMove(grid, [2, 2, 2, 4, 5, 5, 5]);
+    // two possibilities [2,1] or [5,4]
+    const rowAnswers = [2, 5];
+    const colAnswers = [1, 4];
+    expect(rowAnswers).toContain(row);
+    expect(colAnswers).toContain(col);
+  });
+
+  it("makes a move to win instead of to get a draw", () => {
+    const grid = [
+      [0, 0, 1, 1, 2, 1, 1],
+      [2, 2, 1, 2, 1, 2, 1],
+      [2, 1, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
+      [1, 2, 1, 2, 1, 2, 1],
+      [1, 2, 1, 2, 1, 2, 1],
+    ];
+    const [row, col] = findAiMove(grid, [0, 0, 9, 9, 9, 9, 9]);
+    expect(row).toEqual(0);
+    expect(col).toEqual(0);
+  });
+
+  it("delays human's win", () => {
+    const grid = [
+      [0, 1, 1, 1, 2, 1, 0],
+      [0, 1, 2, 1, 2, 1, 0],
+      [0, 2, 1, 1, 2, 2, 0],
+      [0, 2, 1, 2, 1, 1, 0],
+      [1, 1, 1, 2, 1, 2, 1],
+      [2, 2, 2, 1, 2, 2, 2],
+    ];
+    const [row, col] = findAiMove(grid, [3, 9, 9, 9, 9, 9, 3]);
+    expect(row).toEqual(3);
+    expect(col).toEqual(0);
   });
 });
