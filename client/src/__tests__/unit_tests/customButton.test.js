@@ -53,11 +53,6 @@ describe("CustomButton - button style", () => {
   it("has a type attribute", () => {
     expect(button).toHaveAttribute("type", props.type);
   });
-
-  //   it("has the variant attribute for a button", () => {
-  //     console.log(component.debug());
-  //     expect(button).toHaveProperty("variant", "warning");
-  //   });
 });
 
 describe("CustomButton - link style", () => {
