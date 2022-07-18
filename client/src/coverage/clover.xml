@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1658115897257" clover="3.2.0">
-  <project timestamp="1658115897258" name="All files">
-    <metrics statements="325" coveredstatements="252" conditionals="223" coveredconditionals="157" methods="54" coveredmethods="37" elements="602" coveredelements="446" complexity="0" loc="325" ncloc="325" packages="4" files="7" classes="7"/>
+<coverage generated="1658119485958" clover="3.2.0">
+  <project timestamp="1658119485958" name="All files">
+    <metrics statements="325" coveredstatements="252" conditionals="223" coveredconditionals="159" methods="54" coveredmethods="37" elements="602" coveredelements="448" complexity="0" loc="325" ncloc="325" packages="4" files="7" classes="7"/>
     <package name="src">
       <metrics statements="130" coveredstatements="127" conditionals="98" coveredconditionals="88" methods="7" coveredmethods="7"/>
       <file name="helper.js" path="/Users/paulinez/connect-four-react/client/src/helper.js">
@@ -139,11 +139,11 @@
       </file>
     </package>
     <package name="src.UI">
-      <metrics statements="4" coveredstatements="4" conditionals="8" coveredconditionals="6" methods="4" coveredmethods="4"/>
+      <metrics statements="4" coveredstatements="4" conditionals="8" coveredconditionals="8" methods="4" coveredmethods="4"/>
       <file name="CustomButton.js" path="/Users/paulinez/connect-four-react/client/src/UI/CustomButton.js">
-        <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="4" methods="2" coveredmethods="2"/>
-        <line num="5" count="24" type="stmt"/>
-        <line num="13" count="2" type="cond" truecount="2" falsecount="0"/>
+        <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <line num="5" count="26" type="stmt"/>
+        <line num="13" count="3" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="Square.js" path="/Users/paulinez/connect-four-react/client/src/UI/Square.js">
         <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
