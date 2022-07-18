@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function CustomLink({ text, moreText, id, to }) {
+export default function CustomLink({ text, moreText, id, testid, to }) {
   return (
-    <p className="text-center mt-2">
+    <p data-testid="linkText" className="text-center mt-2">
       {moreText}
-      <Link className="text-decoration-none" id={id} to={to}>
+      <Link data-testid={testid} className="text-decoration-none" id={id} to={to}>
         {text}
       </Link>
     </p>
