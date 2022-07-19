@@ -79,7 +79,7 @@ export const Grid = forwardRef(
         setGrid(newGrid);
         const result = checkResult(newGrid, rowIdx, colIdx);
         if (result) {
-          client.emit("result", { result, playerNum: thisPlayerNum });
+          game === "multi" && client.emit("result", { result, playerNum: thisPlayerNum });
           handleResultCb(result, thisPlayerNum);
         } else {
           setReady(false);

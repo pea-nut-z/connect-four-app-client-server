@@ -214,7 +214,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       {/* BUTTONS */}
       <div
         onClick={() => {
-          client.emit("replay", { playerNum: thisPlayerNum });
+          game === "multi" && client.emit("replay", { playerNum: thisPlayerNum });
         }}
       >
         <CustomButton
