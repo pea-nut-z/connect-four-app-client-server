@@ -47,7 +47,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     // if (game === "multi" && !opponentName) {
     //   client.disconnect();
     // }
-    // toggleGameModeCb("");
+    toggleGameModeCb("");
   };
 
   useEffect(() => {

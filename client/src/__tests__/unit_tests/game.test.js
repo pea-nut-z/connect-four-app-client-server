@@ -54,12 +54,12 @@ describe("Single player mode", () => {
   });
 });
 
-describe("Multi player mode - all spots are available", () => {
+describe("Multi player mode - player one connecting", () => {
   let component, getByTestId;
 
   beforeEach(() => {
     component = render(
-      <SocketContext.Provider value={mock.allAvailable}>
+      <SocketContext.Provider value={mock.connect1}>
         <Game {...multiPlayerProps} />
       </SocketContext.Provider>
     );
@@ -82,12 +82,12 @@ describe("Multi player mode - all spots are available", () => {
   });
 });
 
-describe("Multi player mode - one spot is available", () => {
+describe("Multi player mode - player two connecting", () => {
   let component, getByTestId;
 
   beforeEach(() => {
     component = render(
-      <SocketContext.Provider value={mock.oneAvailable}>
+      <SocketContext.Provider value={mock.connect2}>
         <Game {...multiPlayerProps} />
       </SocketContext.Provider>
     );
@@ -110,12 +110,12 @@ describe("Multi player mode - one spot is available", () => {
   });
 });
 
-describe("Multi player mode - no spots are available", () => {
+describe("Multi player mode - player three connecting", () => {
   let component, getByTestId;
 
   beforeEach(() => {
     component = render(
-      <SocketContext.Provider value={mock.unavailable}>
+      <SocketContext.Provider value={mock.connect3}>
         <Game {...multiPlayerProps} />
       </SocketContext.Provider>
     );
@@ -131,12 +131,12 @@ describe("Multi player mode - no spots are available", () => {
   });
 });
 
-describe("Multi player mode - one spot becomes available", () => {
+describe("Multi player mode - player one disconnecting", () => {
   let component, getByTestId;
 
   beforeEach(() => {
     component = render(
-      <SocketContext.Provider value={mock.disconnect}>
+      <SocketContext.Provider value={mock.disconnect1}>
         <Game {...multiPlayerProps} />
       </SocketContext.Provider>
     );
@@ -151,6 +151,30 @@ describe("Multi player mode - one spot becomes available", () => {
     fireEvent.click(getByTestId("quit"));
     expect(getByTestId("p1Name").textContent).toBe("Waiting...");
     expect(getByTestId("info").textContent).toBe("Tester left💨");
+    expect(getByTestId("replay")).toBeDisabled();
+  });
+});
+
+describe("Multi player mode - player two disconnecting", () => {
+  let component, getByTestId;
+
+  beforeEach(() => {
+    component = render(
+      <SocketContext.Provider value={mock.disconnect2}>
+        <Game {...multiPlayerProps} />
+      </SocketContext.Provider>
+    );
+    getByTestId = component.getByTestId;
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it("renders the layout for when a player leaves the game", () => {
+    fireEvent.click(getByTestId("quit"));
+    expect(getByTestId("p2Name").textContent).toBe("Waiting...");
+    expect(getByTestId("info").textContent).toBe("Jester left💨");
     expect(getByTestId("replay")).toBeDisabled();
   });
 });

@@ -15,18 +15,17 @@ jest.mock("react-router-dom", () => ({
   }),
 }));
 
+jest.mock("../../screen/Game", () => {
+  return {
+    __esModule: true,
+    default: () => {
+      return <div data-testid="game">Game Component</div>;
+    },
+  };
+});
 const history = createMemoryHistory();
 
-describe("Dashboard", () => {
-  // jest.mock("../../UI/CustomButton", () => {
-  //   return {
-  //     __esModule: true,
-  //     default: () => {
-  //       return <div data-testid="customButton" />;
-  //     },
-  //   };
-  // });
-
+describe("Dashboard - success", () => {
   const props = {
     currentUser: {
       displayName: "Tester",
@@ -35,11 +34,12 @@ describe("Dashboard", () => {
       played: 2,
       won: 1,
     },
+    logout: jest.fn(() => ({ auth: { logout: jest.fn() } })),
   };
 
   let component, getByTestId;
 
-  beforeAll(() => {
+  beforeEach(() => {
     component = render(
       <Router history={history}>
         <Dashboard {...props} />
@@ -48,7 +48,7 @@ describe("Dashboard", () => {
     getByTestId = component.getByTestId;
   });
 
-  afterAll(() => {
+  afterEach(() => {
     cleanup();
   });
 
@@ -64,12 +64,26 @@ describe("Dashboard", () => {
     expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${props.data.won}`);
   });
 
-  // it("renders four buttons", () => {
-  //   expect(getAllByTestId("customButton").length).toEqual(4);
-  // });
+  it("renders game component on click", async () => {
+    await act(async () => {
+      await fireEvent.click(getByTestId("single"));
+    });
+    expect(getByTestId("game").textContent).toBe("Game Component");
+  });
+
+  it("navigates to Update Profile on click", () => {
+    fireEvent.click(getByTestId("update"));
+    expect(history.location.pathname).toBe("/update-profile");
+  });
+
+  it("navigates to Log In on successful log out", () => {
+    history.goBack();
+    fireEvent.click(getByTestId("logout"));
+    expect(history.location.pathname).toBe("/");
+  });
 });
 
-describe("Dashboard", () => {
+describe("Dashboard - failture", () => {
   const props = {
     currentUser: {
       displayName: "Tester",
@@ -95,14 +109,14 @@ describe("Dashboard", () => {
     cleanup();
   });
 
-  it("shows loading", () => {
+  it("shows loading when there is no player data", () => {
     expect(getByTestId("played").textContent).toBe("🎮 ✖️ Loading...");
     expect(getByTestId("won").textContent).toBe("🏆 ✖️ Loading...");
   });
 
   it("shows error messsage on log out failure", async () => {
     await act(async () => {
-      await fireEvent.click(getByTestId("logoutBtn"));
+      await fireEvent.click(getByTestId("logout"));
     });
     expect(getByTestId("error").textContent).toBe("Failed to log out");
   });

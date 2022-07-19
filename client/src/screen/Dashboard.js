@@ -63,6 +63,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
               )}
               <CustomButton
                 id="single"
+                testid="single"
                 text="Challenge Peanutbot"
                 type="button"
                 func={toggleGameModeCb}
@@ -77,6 +78,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
               />
               <CustomButton
                 id="updateProfile"
+                testid="update"
                 text="Update Profile"
                 type="button"
                 func={updateProfile}
@@ -84,8 +86,8 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
             </Card.Body>
           </Card>
           <CustomButton
-            id="logoutBtn"
-            testid="logoutBtn"
+            id="logout"
+            testid="logout"
             link={true}
             text="Log Out"
             type="button"

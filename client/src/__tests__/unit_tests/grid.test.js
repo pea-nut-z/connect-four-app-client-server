@@ -46,7 +46,7 @@ describe("Single player mode", () => {
   });
 });
 
-describe("Multi player mode - all spots are available", () => {
+describe("Multi player mode - player one connecting", () => {
   const multiPlayerProps = {
     ref: React.createRef(),
     game: "multi",
@@ -60,7 +60,7 @@ describe("Multi player mode - all spots are available", () => {
 
   beforeAll(() => {
     component = render(
-      <SocketContext.Provider value={mock.allAvailable}>
+      <SocketContext.Provider value={mock.connect1}>
         <Grid {...multiPlayerProps} />
       </SocketContext.Provider>
     );
@@ -78,7 +78,7 @@ describe("Multi player mode - all spots are available", () => {
   });
 });
 
-describe("Multi player mode - one spot is available", () => {
+describe("Multi player mode - player two connecting", () => {
   const multiPlayerProps = {
     ref: React.createRef(),
     game: "multi",
@@ -92,7 +92,7 @@ describe("Multi player mode - one spot is available", () => {
 
   beforeAll(() => {
     component = render(
-      <SocketContext.Provider value={mock.oneAvailable}>
+      <SocketContext.Provider value={mock.connect2}>
         <Grid {...multiPlayerProps} />
       </SocketContext.Provider>
     );

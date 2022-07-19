@@ -19,7 +19,7 @@ describe("Authentication and database", () => {
 
   afterAll(async () => {
     // change player2's username back to Puppeteer
-    await page.click("#updateProfile");
+    await page.click("#update");
     await page.waitForSelector("#usernameInput", { visible: true });
     await page.$eval("#usernameInput", (input) => {
       return (input.value = "");
@@ -55,7 +55,7 @@ describe("Authentication and database", () => {
   });
 
   it("updates user profile.", async () => {
-    await page.click("#updateProfile");
+    await page.click("#update");
     await page.type("#usernameInput", "123");
     await page.click("#updateBtn");
     await page.waitForSelector("#", { visible: true });
@@ -66,7 +66,7 @@ describe("Authentication and database", () => {
   });
 
   it("clicks cancel on update profile page and returns to Dashboard.", async () => {
-    await page.click("#updateProfile");
+    await page.click("#update");
     await page.type("#usernameInput", "456");
     await page.click("#cancelLink");
     const nameDisplay = await page.waitForSelector("#", (element) => {
@@ -76,7 +76,7 @@ describe("Authentication and database", () => {
   });
 
   it("returns to update profile page and player's information is unchanged.", async () => {
-    await page.click("#updateProfile");
+    await page.click("#update");
     await page.waitForSelector("#usernameInput", { visible: true });
     let name = await page.$eval("#usernameInput", (input) => {
       return input.getAttribute("value");
@@ -97,7 +97,7 @@ describe("Authentication and database", () => {
   });
 
   it("logs out successfully.", async () => {
-    await page.click("#logoutBtn");
+    await page.click("#logout");
     const loginBtn = await page.waitForSelector("#loginBtn", (button) => {
       return button;
     });

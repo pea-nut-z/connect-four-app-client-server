@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -155,7 +155,9 @@
 <a name='L96'></a><a href='#L96'>96</a>
 <a name='L97'></a><a href='#L97'>97</a>
 <a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,31 +165,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,24 +275,24 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
     setError("");
     try {
       await logout();
-<span class="cstat-no" title="statement not covered" >      history.push("/");</span>
+      history.push("/");
     } catch {
       setError("Failed to log out");
     }
   };
 &nbsp;
-  const toggleGameModeCb = useCallback(<span class="fstat-no" title="function not covered" >(m</span>ode) =&gt; {
-<span class="cstat-no" title="statement not covered" >    setGame(mode);</span>
+  const toggleGameModeCb = useCallback((mode) =&gt; {
+    setGame(mode);
   }, []);
 &nbsp;
-  const updateProfile = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >    history.push("/update-profile");</span>
+  const updateProfile = () =&gt; {
+    history.push("/update-profile");
   };
 &nbsp;
   return (
     &lt;main className="container"&gt;
       {game ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;SocketContext.Provider value={socket}&gt;</span>
+        &lt;SocketContext.Provider value={socket}&gt;
           &lt;Game
             userName={userName}
             game={game}
@@ -318,6 +322,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
               )}
               &lt;CustomButton
                 id="single"
+                testid="single"
                 text="Challenge Peanutbot"
                 type="button"
                 func={toggleGameModeCb}
@@ -332,6 +337,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
               /&gt;
               &lt;CustomButton
                 id="updateProfile"
+                testid="update"
                 text="Update Profile"
                 type="button"
                 func={updateProfile}
@@ -339,8 +345,8 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
             &lt;/Card.Body&gt;
           &lt;/Card&gt;
           &lt;CustomButton
-            id="logoutBtn"
-            testid="logoutBtn"
+            id="logout"
+            testid="logout"
             link={true}
             text="Log Out"
             type="button"
@@ -358,7 +364,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jul 18 2022 17:23:16 GMT-0400 (Eastern Daylight Time)
+                at Mon Jul 18 2022 22:57:05 GMT-0400 (Eastern Daylight Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
