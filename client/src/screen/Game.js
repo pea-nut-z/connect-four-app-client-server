@@ -103,6 +103,8 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   useEffect(() => {
     if (game === "multi") {
       client.on("result", ({ result, playerNum }) => {
+        console.log("ON RESULT");
+
         handleResultCb(result, playerNum);
       });
 
@@ -134,7 +136,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         setInfo("Click Replay ⬇️");
       }
       if (game === "multi" && triggeredBy !== thisPlayerNum) {
-        setInfo(`Waiting for ${thisPlayerName} to restart the game...`);
+        setInfo(`Waiting for ${opponentName} to restart the game...`);
         setDisableReplayBtn(true);
       }
       result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
