@@ -34,25 +34,30 @@ export default function Login() {
       <Card>
         <Card.Body>
           {error && (
-            <Alert id="error" variant="danger">
+            <Alert data-testid="error" variant="danger">
               {error}
             </Alert>
           )}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control id="emailInput" type="email" ref={emailRef} required />
+              <Form.Control data-testid="loginEmailInput" type="email" ref={emailRef} required />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control id="passwordInput" type="password" ref={passwordRef} required />
+              <Form.Control
+                data-testid="loginPasswordInput"
+                type="password"
+                ref={passwordRef}
+                required
+              />
             </Form.Group>
-            <CustomButton id="loginBtn" text="Log In" disabled={loading} type="submit" />
+            <CustomButton testid="login" text="Log In" disabled={loading} type="submit" />
           </Form>
-          <CustomLink text="Forgot Password?" to="/forgot-password" />
+          <CustomLink testid="forgotPassword" text="Forgot Password?" to="/forgot-password" />
         </Card.Body>
       </Card>
-      <CustomLink id="signupLink" text="Sign Up" moreText="Need an account? " to="/signup" />
+      <CustomLink testid="goToSignup" text="Sign Up" moreText="Need an account? " to="/signup" />
     </div>
   );
 }

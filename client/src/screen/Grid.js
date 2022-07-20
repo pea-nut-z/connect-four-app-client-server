@@ -126,7 +126,7 @@ export const Grid = forwardRef(
     return (
       <div>
         {/* Grid */}
-        <div id="grid" className="grid">
+        <div data-testid="grid" className="grid">
           {grid.map((row, rowIndex) => (
             <div className="row grid_row" key={rowIndex}>
               {row.map((value, colIdx) => (

@@ -45,16 +45,16 @@ export default function Signup() {
           <Form onSubmit={handleSubmit}>
             <Form.Group id="username">
               <Form.Label>Username</Form.Label>
-              <Form.Control id="nameInput" type="text" ref={usernameRef} required />
+              <Form.Control data-testid="nameInput" type="text" ref={usernameRef} required />
             </Form.Group>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control id="emailInput" type="email" ref={emailRef} required />
+              <Form.Control data-testid="emailInput" type="email" ref={emailRef} required />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                id="passwordInput"
+                data-testid="passwordInput"
                 type="password"
                 placeholder="Minimum 6 characters"
                 ref={passwordRef}
@@ -64,13 +64,13 @@ export default function Signup() {
             <Form.Group id="password-confirm">
               <Form.Label>Password Confirmation</Form.Label>
               <Form.Control
-                id="confirmPasswordInput"
+                data-testid="confirmPasswordInput"
                 type="password"
                 ref={passwordConfirmRef}
                 required
               />
             </Form.Group>
-            <CustomButton id="signupBtn" text="Sign Up" disabled={loading} type="submit" />
+            <CustomButton testid="signup" text="Sign Up" disabled={loading} type="submit" />
           </Form>
         </Card.Body>
       </Card>

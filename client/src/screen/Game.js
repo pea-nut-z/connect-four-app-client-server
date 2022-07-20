@@ -226,7 +226,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
           disabled={disableReplayBtn}
         />
       </div>
-      <CustomButton id="quitBtn" testid="quit" text="Quit" type="button" func={quit} />
+      <CustomButton testid="quit" text="Quit" type="button" func={quit} />
     </div>
   );
 }

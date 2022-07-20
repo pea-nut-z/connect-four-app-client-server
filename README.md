@@ -22,7 +22,7 @@ This app was my first project when I started learning to code. I recently refact
 
 <img src="client/public/test-coverage.jpg" width="75%" height="75%" alt="Test coverage table">
 
-For authentication-related components, I utilized Puppeteer and Firebase emulators- Authentication and Database.
+I utilized Puppeteer and Firebase emulators to test authentication-related components. The emulators allow testing without connecting to the actual Firebase server for authentication and retrieving data.
 
 <img src="client/public/puppeteer-tests.jpg" width="75%" height="75%" alt="Authentication tests">
 

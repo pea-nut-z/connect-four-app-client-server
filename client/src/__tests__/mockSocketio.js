@@ -1,23 +1,23 @@
-let EVENTS = {};
+let events = {};
 
 const on = (event, func) => {
-  if (EVENTS[event]) {
-    const value = EVENTS[event];
-    delete EVENTS[event];
+  if (events[event]) {
+    const value = events[event];
+    delete events[event];
     return func(value);
   }
 };
 
 const off = () => {
-  EVENTS = {};
+  events = {};
 };
 
 export const connect1 = {
   on,
   emit(event, args) {
     if (event === "player-connecting") {
-      EVENTS["player-1-connected"] = true;
-      EVENTS["player-has-joined"] = { player1: args.userName, player2: false };
+      events["player-1-connected"] = true;
+      events["player-has-joined"] = { player1: args.userName, player2: false };
     }
   },
   off,
@@ -28,20 +28,20 @@ export const connect2 = {
   emit(event, args) {
     switch (event) {
       case "player-connecting":
-        EVENTS["player-2-connected"] = true;
-        EVENTS["player-has-joined"] = { player1: "Tester", player2: args.userName };
+        events["player-2-connected"] = true;
+        events["player-has-joined"] = { player1: "Tester", player2: args.userName };
         break;
       case "replay":
-        EVENTS[event] = args.playerNum;
+        events[event] = args.playerNum;
         break;
       case "go-first":
-        EVENTS[event] = true;
+        events[event] = true;
         break;
       case "result":
-        EVENTS[event] = args;
+        events[event] = args;
         break;
       case "update-grid":
-        EVENTS[event] = args;
+        events[event] = args;
         break;
       default:
         return;
@@ -54,7 +54,7 @@ export const connect3 = {
   on,
   emit(event) {
     if (event === "player-connecting") {
-      EVENTS["full-server"] = true;
+      events["full-server"] = true;
     }
   },
   off,
@@ -64,9 +64,9 @@ export const disconnect1 = {
   on,
   emit(event, args) {
     if (event === "player-connecting") {
-      EVENTS["player-2-connected"] = true;
-      EVENTS["player-has-joined"] = { player1: "Tester", player2: args.userName };
-      EVENTS["player-disconnected"] = { playerName: "Tester", playerNum: 1 };
+      events["player-2-connected"] = true;
+      events["player-has-joined"] = { player1: "Tester", player2: args.userName };
+      events["player-disconnected"] = { playerName: "Tester", playerNum: 1 };
     }
   },
   off,
@@ -76,9 +76,9 @@ export const disconnect2 = {
   on,
   emit(event, args) {
     if (event === "player-connecting") {
-      EVENTS["player-2-connected"] = true;
-      EVENTS["player-has-joined"] = { player1: "Tester", player2: args.userName };
-      EVENTS["player-disconnected"] = { playerName: "Jester", playerNum: 2 };
+      events["player-2-connected"] = true;
+      events["player-has-joined"] = { player1: "Tester", player2: args.userName };
+      events["player-disconnected"] = { playerName: "Jester", playerNum: 2 };
     }
   },
   off,
@@ -108,9 +108,9 @@ export const onResult = {
       case "update-grid":
         return func(resultValues);
       default:
-        if (EVENTS[event]) {
-          const value = EVENTS[event];
-          delete EVENTS[event];
+        if (events[event]) {
+          const value = events[event];
+          delete events[event];
           return func(value);
         }
     }
@@ -143,9 +143,9 @@ export const onUpdate = {
       case "update-grid":
         return func(updatedValues);
       default:
-        if (EVENTS[event]) {
-          const value = EVENTS[event];
-          delete EVENTS[event];
+        if (events[event]) {
+          const value = events[event];
+          delete events[event];
           return func(value);
         }
     }
@@ -162,9 +162,9 @@ export const onReplay = {
       case "replay":
         return func({ playerNum: 1 });
       default:
-        if (EVENTS[event]) {
-          const value = EVENTS[event];
-          delete EVENTS[event];
+        if (events[event]) {
+          const value = events[event];
+          delete events[event];
           return func(value);
         }
     }

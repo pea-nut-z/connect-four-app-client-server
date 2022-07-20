@@ -54,7 +54,7 @@ export default function UpdateProfile() {
             <Form.Group id="username">
               <Form.Label>Username</Form.Label>
               <Form.Control
-                id="usernameInput"
+                data-testid="updateUsernameInput"
                 type="text"
                 ref={usernameRef}
                 required
@@ -81,11 +81,11 @@ export default function UpdateProfile() {
                 placeholder="Leave blank to keep the same"
               />
             </Form.Group>
-            <CustomButton id="updateBtn" text="Update" disabled={loading} type="submit" />
+            <CustomButton testid="update" text="Update" disabled={loading} type="submit" />
           </Form>
         </Card.Body>
       </Card>
-      <CustomLink text="Cancel" id="cancelLink" to="/" />
+      <CustomLink testid="cancel" text="Cancel" to="/" />
     </div>
   );
 }

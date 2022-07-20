@@ -72,7 +72,7 @@ describe("Dashboard - success", () => {
   });
 
   it("navigates to Update Profile on click", () => {
-    fireEvent.click(getByTestId("update"));
+    fireEvent.click(getByTestId("goToUpdate"));
     expect(history.location.pathname).toBe("/update-profile");
   });
 
