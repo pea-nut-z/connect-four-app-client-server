@@ -18,9 +18,13 @@ To test multi-player mode, go to the link in a Incognito browser and log in with
 
 ### Context
 
-This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. I mocked Socket.io and achieved 100% coverage for the game-related components. For authentication-related components, I utilized Puppeteer.
+This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. I mocked Socket.io and achieved 100% coverage using Jest for the game-related components.
 
 <img src="client/public/test-coverage.jpg" width="75%" height="75%" alt="Test coverage table">
+
+For authentication-related components, I utilized Puppeteer and Firebase emulators- Authentication and Database.
+
+<img src="client/public/puppeteer-tests.jpg" width="75%" height="75%" alt="Authentication tests">
 
 The app uses React hooks, Socket.io, Firebase authentication and Real-time Database. It authenticates the user and tracks wins and the number of games you have played. In addition, it offers the option of playing in single or multiplayer mode.
 
