@@ -1,10 +1,8 @@
 ## Web App - Connect Four
 
-Click [here](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) to watch me demonstrate the app.
+[DEMO](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) | [APP](https://peanutz-connect-four.herokuapp.com/)
 
 ### To get started
-
-[Link to app](https://peanutz-connect-four.herokuapp.com/)
 
 You can either sign up for an account or use a pre-existing account below for a test drive. Pre-existing accounts may have been used by others so the scores may not start from zero.
 
@@ -16,11 +14,13 @@ Email: test3@gmail.com
 Password for all accounts : 123456
 ```
 
-To test multi-player mode, go to the link in a second browser and log in with a different account.
+To test multi-player mode, go to the link in a Incognito browser and log in with a different account.
 
 ### Context
 
-This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance.
+This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. I mocked Socket.io and achieved 100% coverage for the game-related components. For authentication-related components, I utilized Puppeteer.
+
+<img src="client/public/test-coverage.jpg" width="50%" height="50%" alt="Test coverage table">
 
 The app uses React hooks, Socket.io, Firebase authentication and Real-time Database. It authenticates the user and tracks wins and the number of games you have played. In addition, it offers the option of playing in single or multiplayer mode.
 
