@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, cleanup, waitFor } from "@testing-library/react/pure";
 import "@testing-library/jest-dom/extend-expect";
 import Game from "../../screen/Game";
-import * as helper from "../../helper";
+import * as mock from "../../helper";
 import { act } from "react-dom/test-utils";
 
 const singlePlayerProps = {
@@ -13,10 +13,10 @@ const singlePlayerProps = {
 };
 
 describe("Single player mode - win and lose", () => {
-  let component, getByTestId, getAllByTestId, container;
+  let component, getByTestId, getAllByTestId;
 
   beforeEach(() => {
-    helper.initialGrid = [
+    mock.initialGrid = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 2, 1],
       [0, 0, 0, 0, 0, 2, 1],
@@ -24,11 +24,10 @@ describe("Single player mode - win and lose", () => {
       [0, 0, 0, 0, 0, 1, 2],
       [0, 0, 0, 0, 0, 1, 2],
     ];
-    helper.initialRowIndex = [5, 5, 5, 5, 5, 0, 0];
+    mock.initialRowIndex = [5, 5, 5, 5, 5, 0, 0];
     component = render(<Game {...singlePlayerProps} />);
     getByTestId = component.getByTestId;
     getAllByTestId = component.getAllByTestId;
-    container = component.container;
   });
 
   afterEach(() => {
@@ -75,7 +74,7 @@ describe("Single player mode - draw", () => {
   let component, getByTestId, getAllByTestId;
 
   beforeEach(() => {
-    helper.initialGrid = [
+    mock.initialGrid = [
       [0, 2, 1, 1, 2, 1, 1],
       [1, 2, 1, 1, 2, 1, 2],
       [1, 1, 1, 2, 2, 1, 1],
@@ -83,7 +82,7 @@ describe("Single player mode - draw", () => {
       [2, 1, 1, 2, 2, 1, 2],
       [2, 2, 1, 1, 2, 2, 2],
     ];
-    helper.initialRowIndex = [0, 9, 9, 9, 9, 9, 9];
+    mock.initialRowIndex = [0, 9, 9, 9, 9, 9, 9];
     component = render(<Game {...singlePlayerProps} />);
     getByTestId = component.getByTestId;
     getAllByTestId = component.getAllByTestId;
@@ -107,7 +106,7 @@ describe("Single player mode - moves and buttons", () => {
   let component, getByTestId, getAllByTestId, container;
 
   beforeEach(() => {
-    helper.initialGrid = [
+    mock.initialGrid = [
       [0, 0, 0, 0, 0, 2, 0],
       [0, 0, 0, 0, 2, 1, 0],
       [0, 0, 0, 0, 1, 1, 0],
@@ -115,7 +114,7 @@ describe("Single player mode - moves and buttons", () => {
       [0, 0, 0, 2, 2, 2, 1],
       [0, 0, 0, 1, 2, 2, 1],
     ];
-    helper.initialRowIndex = [5, 5, 5, 2, 0, 9, 2];
+    mock.initialRowIndex = [5, 5, 5, 2, 0, 9, 2];
     component = render(<Game {...singlePlayerProps} />);
     getByTestId = component.getByTestId;
     getAllByTestId = component.getAllByTestId;

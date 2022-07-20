@@ -99,12 +99,9 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     }
   }, [client, game, userName, toggleGameModeCb]);
 
-  // NEXT MOCK HERE
   useEffect(() => {
     if (game === "multi") {
       client.on("result", ({ result, playerNum }) => {
-        console.log("ON RESULT");
-
         handleResultCb(result, playerNum);
       });
 

@@ -104,8 +104,9 @@ describe("Multi player mode - player two connecting", () => {
     unmount();
   });
 
-  it("says waiting for the first player to start in pink when the second player joins the game", () => {
-    expect(getByTestId("turn")).toHaveTextContent("Waiting for Tester...");
-    expect(getByTestId("turn").style).toHaveProperty("color", "rgb(240, 18, 190)");
+  it("goes first when the player's socket receives a 'go-first' message", () => {
+    // In real life when the second player joins the first player goes first
+    expect(getByTestId("turn")).toHaveTextContent("Your turn");
+    expect(getByTestId("turn").style).toHaveProperty("color", "rgb(46, 204, 64)");
   });
 });
