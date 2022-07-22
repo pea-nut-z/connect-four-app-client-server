@@ -21,6 +21,7 @@
     "coverage": "npm run test -- --coverage --watchAll",
     "emulators": "firebase emulators:start",
     "e2eTest": "jest ./src/__tests__/e2e_tests/auth.test.js",
+    "e2eCoverage": "nyc report --reporter=html --cwd='./src/__tests__/e2e_tests'",
     "eject": "react-scripts eject"
   },
   "browserslist": {

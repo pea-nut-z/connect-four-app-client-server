@@ -1,15 +1,14 @@
 import puppeteer from "puppeteer";
-import * as pti from "puppeteer-to-istanbul";
+import pti from "puppeteer-to-istanbul";
 
 const player = {
   username: "Puppeteer",
-  email: "testing6@gmail.com",
+  email: "testing16@gmail.com",
   password: "123456",
 };
 
 let browser, page;
-
-describe("Authentication and database", () => {
+describe("Authentication and Database", () => {
   beforeAll(async () => {
     browser = await puppeteer.launch({
       headless: false,
@@ -18,23 +17,15 @@ describe("Authentication and database", () => {
     });
     page = await browser.newPage();
     await page.coverage.startJSCoverage();
-    await page.goto("http://localhost:3000/");
-    await page.waitForNavigation();
-    jest.setTimeout(30000);
+    await page.goto("http://localhost:3000/", { waitUntil: "networkidle2" });
   });
 
   afterAll(async () => {
-    // change player2's username back to Puppeteer
-    await page.click("#update");
-    await page.waitForSelector("#usernameInput", { visible: true });
-    await page.$eval("#usernameInput", (input) => {
-      return (input.value = "");
+    const jsCoverage = await page.coverage.stopJSCoverage();
+    pti.write(jsCoverage, {
+      includeHostname: true,
+      storagePath: "./src/__tests__/e2e_tests/.nyc_output",
     });
-    await page.type("#usernameInput", player2.username);
-    await page.click("#updateBtn");
-
-    const [jsCoverage] = await Promise.all([page.coverage.stopJSCoverage()]);
-    pti.write([...jsCoverage]);
     await browser.close();
   });
 
@@ -47,13 +38,13 @@ describe("Authentication and database", () => {
     await page.click("[data-testid='signup']");
     await page.waitForSelector("[data-testid='userName']", { visible: true });
     const msg = await page.$eval("[data-testid='userName']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     const played = await page.$eval("[data-testid='played']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     const won = await page.$eval("[data-testid='won']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(msg).toBe(`Hello, ${player.username}!`);
     expect(played).toContain("0");
@@ -66,7 +57,7 @@ describe("Authentication and database", () => {
     await page.click("[data-testid='update']");
     await page.waitForSelector("[data-testid='userName']", { visible: true });
     const msg = await page.$eval("[data-testid='userName']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(msg).toBe(`Hello, ${player.username}123!`);
   });
@@ -77,7 +68,7 @@ describe("Authentication and database", () => {
     await page.click("[data-testid='cancel']");
     await page.waitForSelector("[data-testid='userName']", { visible: true });
     const msg = await page.$eval("[data-testid='userName']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(msg).toBe(`Hello, ${player.username}123!`);
   });
@@ -98,7 +89,7 @@ describe("Authentication and database", () => {
     await page.click("[data-testid='quit']");
     await page.waitForSelector("[data-testid='played']", { visible: true });
     const played = await page.$eval("[data-testid='played']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(played).toContain("1");
   });
@@ -116,7 +107,7 @@ describe("Authentication and database", () => {
     await page.type("[data-testid='loginPasswordInput']", "123");
     await page.click("[data-testid='login']");
     const errorMsg = await page.$eval("[data-testid='error']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(errorMsg).toBe("Failed to log in");
   });
@@ -127,7 +118,7 @@ describe("Authentication and database", () => {
     await page.click("[data-testid='login']");
     await page.waitForSelector("[data-testid='played']", { visible: true });
     const played = await page.$eval("[data-testid='played']", (element) => {
-      return element.innerHTML;
+      return element.textContent;
     });
     expect(played).toContain("1");
   });
