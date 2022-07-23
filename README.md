@@ -83,5 +83,5 @@ Triggering replay will increment Round for both players, and quit will not.
 
 ### Potential future features
 
-Multiple sockets - enables more than two persons to play in multiplayer mode
+Multiple sockets - enables more than two persons to play in multiplayer mode  
 Chat
