@@ -1,5 +1,6 @@
 ## Web App - Connect Four
 
+It is hosted on Heroku and may take up to 30 seconds to load. 😅
 [DEMO](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) | [APP](https://peanutz-connect-four.herokuapp.com/)
 
 ### To get started
@@ -14,11 +15,22 @@ Email: test3@gmail.com
 Password for all accounts : 123456
 ```
 
-To test multi-player mode, go to the link in a Incognito browser and log in with a different account.
+To try out multi-player mode, go to the link in an Incognito browser and log in with a different account. Using another computer or mobile device to log in with a different account and play against yourself is also an option.
 
-### Context
+This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. In single-player mode, you are playing against Peanutbot (AI player). In multiplayer mode, a game starts when two players are connected. The third player connected to multiplayer mode will get an alert that the server is full, but they can play in single-player mode.
 
-This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. I mocked Socket.io and achieved 100% coverage using Jest for the game-related components.
+### Technologies used
+
+- React
+- Socket.io
+- Firebase Authentication, Real-time Database and Emulators
+- Jest
+- Puppeteer
+- Bootstrap
+
+### Test
+
+I mocked Socket.io and achieved 100% coverage using Jest for the game-related components.
 
 <img src="client/public/test-coverage.jpg" width="75%" height="75%" alt="Test coverage table">
 
@@ -26,11 +38,9 @@ I utilized Puppeteer and Firebase emulators to test authentication-related compo
 
 <img src="client/public/puppeteer-tests.jpg" width="75%" height="75%" alt="Authentication tests">
 
-The app uses React hooks, Socket.io, Firebase authentication and Real-time Database. It authenticates the user and tracks wins and the number of games you have played. In addition, it offers the option of playing in single or multiplayer mode.
-
-In single-player mode, you are playing against Peanutbot (AI player). In multiplayer mode, a game starts when two players are connected. The third player connected to multiplayer mode will get an alert that the server is full, but they can play in single-player mode.
-
 ### Calculation
+
+It authenticates the user and tracks wins and the number of games you have played.
 
 Played: number of games you played  
 Won: number of times you won  
@@ -58,11 +68,6 @@ The player who triggers replay or quit during a game will have Played incremente
 
 Triggering replay will increment Round for both players, and quit will not.
 
-### Potential future features
-
-1. Multiple Web Sockets - enables more than two persons to play in multiplayer mode
-2. Chat
-
 ### Road blocks
 
 **Resolved**
@@ -74,3 +79,8 @@ Triggering replay will increment Round for both players, and quit will not.
 - [x] Critical runtime in single player mode on a mobile device
 
 - [x] Authentication components are tested using Puppeteer. Puppeteer uses the build of the application to run the tests. Thus, it does not have source mapping. As a result, the coverage report is not present.
+
+### Potential future features
+
+Multiple sockets - enables more than two persons to play in multiplayer mode
+Chat
