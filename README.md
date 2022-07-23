@@ -2,7 +2,7 @@
 
 [DEMO](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) | [APP](https://peanutz-connect-four.herokuapp.com/)
 
-It is hosted on Heroku and may take up to 30 seconds to load. 😅
+It is hosted on Heroku Free Dyno and may take up to 30 seconds to load. 😅
 
 ### To get started
 
