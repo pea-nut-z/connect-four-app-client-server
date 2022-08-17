@@ -10,9 +10,17 @@ You can either sign up for an account or use a pre-existing account below for a 
 
 ```
 Email: test1@gmail.com
-Email: test2@gmail.com
-Email: test3@gmail.com
+```
 
+```
+Email: test2@gmail.com
+```
+
+```
+Email: test3@gmail.com
+```
+
+```
 Password for all accounts : 123456
 ```
 
@@ -20,8 +28,9 @@ To try out multi-player mode, go to the link in an Incognito browser and log in 
 
 This app was my first project when I started learning to code. I recently refactored the code to fix mistakes I made and improve performance. In single-player mode, you are playing against Peanutbot (AI player). In multiplayer mode, a game starts when two players are connected. The third player connected to multiplayer mode will get an alert that the server is full, but they can play in single-player mode.
 
-### Technologies used
+### Tech-Stack
 
+- JavaScript
 - React
 - Socket.io
 - Firebase Authentication, Real-time Database and Emulators
