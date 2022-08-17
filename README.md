@@ -8,20 +8,24 @@ It is hosted on Heroku Free Dyno and may take up to 30 seconds to load. 😅
 
 You can either sign up for an account or use a pre-existing account below for a test drive. Pre-existing accounts may have been used by others so the scores may not start from zero.
 
+Pre-existing account emails:
+
 ```
-Email: test1@gmail.com
+test1@gmail.com
 ```
 
 ```
-Email: test2@gmail.com
+test2@gmail.com
 ```
 
 ```
-Email: test3@gmail.com
+test3@gmail.com
 ```
 
+Password for all accounts :
+
 ```
-Password for all accounts : 123456
+123456
 ```
 
 To try out multi-player mode, go to the link in an Incognito browser and log in with a different account. Using another computer or mobile device to log in with a different account and play against yourself is also an option.
