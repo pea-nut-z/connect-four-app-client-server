@@ -1,7 +1,9 @@
 ## Web App - Connect Four
 
-[DEMO](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) | [APP](https://peanutz-connect-four.herokuapp.com/)
+[Connect Four.webm](https://user-images.githubusercontent.com/66141752/192046744-abba1664-b347-48a1-86b7-6af46a50dda8.webm)
 
+
+### [DEMO](https://drive.google.com/file/d/1MkOhLko22vGLN958mTbkm0QLf4dRq65f/view?usp=sharing) | [APP](https://peanutz-connect-four.herokuapp.com/)
 It is hosted on Heroku Free Dyno and may take up to 30 seconds to load. 😅
 
 ### To get started
