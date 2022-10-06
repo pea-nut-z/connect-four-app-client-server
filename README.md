@@ -1,4 +1,4 @@
-## Web App - Connect Four
+## Web App - Connect Four 
 
 https://user-images.githubusercontent.com/66141752/192190080-57ccd63f-7caa-499c-ae0e-d8a04c6a41cf.mp4
 
