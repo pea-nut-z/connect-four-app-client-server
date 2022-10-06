@@ -13,7 +13,7 @@ body {
   width: 100vw;
   display: flex;
   justify-content: center;
-  overflow:auto;
+  overflow: auto;
 }
 
 .title {
@@ -29,22 +29,23 @@ body {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(1.1);
   }
 }
 
-.btn{
+.btn {
   font-size: 1.5rem;
   font-weight: 400;
 }
 
-.pink_font{
-color:#f012be
+.pink_font {
+  color: #f012be
 }
 
-.pink_background{
-  background-color:#f012be
+.pink_background {
+  background-color: #f012be
 }
 
 .indicator {
@@ -55,33 +56,43 @@ color:#f012be
   border-radius: 0.15rem;
 }
 
-.container{
+.container {
   width: 90vw;
   max-width: 700px;
   margin: 5% 0 5% 0;
   padding: 0;
-  }
+}
 
 .grid {
   width: 81vw;
   max-width: 600px;
   margin: auto;
   box-shadow: 5px 5px 20px rgba(16, 16, 50, 0.3);
+  border: 1.5px solid black;
+  border-radius: 0.4rem;
 }
 
-.grid>div:first-child>div:first-child{
+.grid_row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.01%;
+}
+
+.grid>div:first-child>div:first-child {
   border-top-left-radius: 0.3rem;
 }
 
-.grid>div:first-child>div:last-child{
+.grid>div:first-child>div:last-child {
   border-top-right-radius: 0.3rem;
 }
 
-.grid>div:last-child>div:first-child{
+.grid>div:last-child>div:first-child {
   border-bottom-left-radius: 0.3rem;
 }
 
-.grid>div:last-child>div:last-child{
+.grid>div:last-child>div:last-child {
   border-bottom-right-radius: 0.3rem;
 }
 
@@ -97,25 +108,25 @@ color:#f012be
   aspect-ratio: 1/1;
   width: 80%;
   border-radius: 70%;
-  background-color:  #f3f3f3;
+  background-color: #f3f3f3;
+  border: 1px solid black;
 }
 
 .p1 {
   background-color: #f012be;
   animation: player-1 1.5s;
-  border: 1px solid black;
 }
 
 .p2 {
   background-color: #2ecc40;
   animation: player-2 1.5s;
-  border: 1px solid black;
 }
 
 @keyframes player-1 {
   from {
     background-color: rgb(0, 123, 255);
   }
+
   to {
     background-color: #f012be;
   }
@@ -125,16 +136,18 @@ color:#f012be
   from {
     background-color: rgb(0, 123, 255);
   }
+
   to {
     background-color: #2ecc40;
   }
 }
 
 @media screen and (max-width: 359px) {
-  .container{
+  .container {
     width: 270px !important
   }
-  .grid{
-   width: 242px !important
+
+  .grid {
+    width: 242px !important
   }
- }
+}
