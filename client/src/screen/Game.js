@@ -162,7 +162,7 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   return (
     <div className="container">
-     {gameOver && <div>
+     {resultMsg && <div>
           <img alt="peanut" src="peanut.ico" className="peanut peanut1" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut2" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut3" />

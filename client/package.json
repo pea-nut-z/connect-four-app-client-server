@@ -2,6 +2,7 @@
   "name": "connect-four",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "bootstrap": "^4.5.3",
     "firebase": "^8.6.2",
@@ -13,7 +14,6 @@
     "react-scripts": "4.0.1",
     "socket.io-client": "^3.0.5"
   },
-  "proxy": "http://localhost:3001",
   "scripts": {
     "start": "rimraf .eslintcache && react-scripts start",
     "build": "react-scripts build",

@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js",
+    "start": "nodemon index.js",
     "client": "cd ../client && npm start",
-    "dev": "concurrently --kill-others-on-fail 'npm run server' 'npm run client'",
-    "start": "node index.js"
+    "dev": "concurrently --kill-others-on-fail 'npm run start' 'npm run client'"
   },
   "keywords": [],
   "author": "",
