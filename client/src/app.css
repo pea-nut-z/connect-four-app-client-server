@@ -16,6 +16,27 @@ body {
   overflow: auto;
 }
 
+.corner-wrapper {
+  position: fixed;
+  right: -9rem;
+  bottom: -9rem;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  background-color: var(--white);
+  ;
+  width: 15rem;
+  height: 15rem;
+  text-align: center;
+  z-index: 3;
+  font-size: 1rem;
+  border-top: var(--gray) solid 1px;
+  opacity: 0.7
+}
+
+p {
+  margin: 0
+}
+
 .title {
   font-family: "Modak", cursive;
   font-size: clamp(40px, 12vw, 100px);

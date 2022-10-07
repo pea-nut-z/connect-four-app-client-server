@@ -13,6 +13,19 @@ import "./app.css";
 export default function App() {
   return (
     <Router>
+       <div className="corner-wrapper">
+        <p>PAULINE ZHANG</p>
+        <a
+          href="https://pauline-zhang.netlify.app/"
+          className="portfolio-link"
+          aria-label="Porfolio Link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <title>Portfolio Link</title>
+          <p>See more</p>
+        </a>
+      </div>
       <AuthProvider>
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} />

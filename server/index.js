@@ -71,6 +71,6 @@ server.on("connection", (socket) => {
   // handle disconnect
   socket.on("disconnect", () => {
     connectionStatus = [false, false];
-    // console.log("All players left: ", connectionStatus);
+    console.log("All players left: ", connectionStatus);
   });
 });
