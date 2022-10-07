@@ -201,12 +201,12 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
       />
 
       {/* RESULT */}
-      <h4 data-testid="resultMsg" className="text-center text-warning mt-2">
+      <h4 data-testid="resultMsg" className="text-center text-warning mt-2 msg-display">
         {resultMsg}
       </h4>
 
       {/* INFO */}
-      <h4 data-testid="info" className="text-center text-warning mt-2">
+      <h4 data-testid="info" className="text-center text-warning mt-2 msg-display">
         {info}
       </h4>
 

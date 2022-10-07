@@ -139,7 +139,7 @@ export const Grid = forwardRef(
         {/* WHO's TURN */}
         <h4
           data-testid="turn"
-          className="text-center mt-4"
+          className="text-center mt-4 msg-display"
           style={{ color: ready ? thisPlayerColor : opponentPlayerColor }}
         >
           {!opponentName && "Waiting for a player to join..."}

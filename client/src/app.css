@@ -163,6 +163,11 @@ p {
   }
 }
 
+.msg-display {
+  height: 28.8px;
+  width: 100%;
+}
+
 @media screen and (max-width: 359px) {
   .container {
     width: 270px !important
