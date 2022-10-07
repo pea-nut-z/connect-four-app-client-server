@@ -162,6 +162,15 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   return (
     <div className="container">
+     {gameOver && <div>
+          <img alt="peanut" src="peanut.ico" className="peanut peanut1" />
+          <img alt="peanut" src="peanut.ico" className="peanut peanut2" />
+          <img alt="peanut" src="peanut.ico" className="peanut peanut3" />
+          <img alt="peanut" src="peanut.ico" className="peanut peanut4" />
+          <img alt="peanut" src="peanut.ico" className="peanut peanut5" />
+          <img alt="peanut" src="peanut.ico" className="peanut peanut6" />
+      </div>
+      }
       <div className="row">
         {/* SCORE DSIPLAY */}
         <div className="col">
