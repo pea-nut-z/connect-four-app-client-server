@@ -3,16 +3,16 @@ const app = express();
 const http = require("http").createServer(app);
 const server = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://connect-four-pz.netlify.app"],
     methods: ["GET", "POST"],
   },
 });
 
 const path = require("path");
-app.use(express.static(path.join(__dirname, "../client/build")));
+// app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-  // res.send("working")
+  // res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+  res.send("working")
 });
 
 const PORT = process.env.PORT || 3001;

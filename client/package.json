@@ -2,6 +2,7 @@
   "name": "connect-four",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://connect-four-server.up.railway.app",
   "proxy": "http://localhost:3001",
   "dependencies": {
     "bootstrap": "^4.5.3",
