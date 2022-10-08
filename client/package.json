@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "rimraf .eslintcache && react-scripts start",
-    "build": "react-scripts build",
+    "build": "export PUBLIC_URL=https://connect-four-server.up.railway.app && react-scripts build",
     "test": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/ ./src/__tests__/integration_tests --watch --detectOpenHandles",
     "coverage": "npm run test -- --coverage --watchAll",
     "emulators": "firebase emulators:start",
