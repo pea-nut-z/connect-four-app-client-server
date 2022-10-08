@@ -6,7 +6,7 @@ https://user-images.githubusercontent.com/66141752/194459979-45701c90-4c21-4552-
 
 ### To get started
 
-You can either sign up for an account or click on Gust Login. Logging in as a guest creates an account with a unique Id generated. The Id can be found right after the word “Gust” once you are logged in. You can log in to the same gust account next time using the Id as below :
+You can either sign up for an account or click on Guest Login. Logging in as a guest creates an account with a unique Id generated. The Id can be found right after the word “Guest” once you are logged in. You can log in to the same guest account next time using the Id as below :
 
 ```
 ###### is the unique Id
