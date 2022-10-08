@@ -44,9 +44,6 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     if (game === "multi") {
       client.emit("player-disconnected", { playerNum: thisPlayerNum });
     }
-    // if (game === "multi" && !opponentName) {
-    //   client.disconnect();
-    // }
     toggleGameModeCb("");
   };
 
