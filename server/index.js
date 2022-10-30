@@ -4,27 +4,22 @@ const http = require("http").createServer(app);
 const server = require("socket.io")(http, {
   cors: {
     origin: ["http://localhost:3000", "https://connect-four-pz.netlify.app"],
-    methods: ["GET", "POST"],
+    methods: ["GET"],
   },
 });
 
-const path = require("path");
-// app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("/", (req, res) => {
-  // res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-  res.send("working")
+  res.send("working");
 });
 
 const PORT = process.env.PORT || 3001;
 http.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
 
-// handle a socket connection request from web client
 let connectionStatus = [false, false];
 server.on("connection", (socket) => {
   let playerIndex = -1;
 
   socket.on("player-connecting", ({ userName }) => {
-    // find an available player number
     for (const i in connectionStatus) {
       if (connectionStatus[i] === false) {
         playerIndex = parseInt(i);
@@ -69,7 +64,6 @@ server.on("connection", (socket) => {
     console.log(`Player ${playerNum} has disconnected: `, connectionStatus);
   });
 
-  // handle disconnect
   socket.on("disconnect", () => {
     connectionStatus = [false, false];
     console.log("All players left: ", connectionStatus);
