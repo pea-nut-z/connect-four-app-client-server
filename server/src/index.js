@@ -1,22 +1,38 @@
-const express = require("express");
+import "dotenv/config";
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import mongoose from "mongoose";
+import user from "../src/routes/user.js";
+
 const app = express();
-const http = require("http").createServer(app);
-const server = require("socket.io")(http, {
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
   cors: {
     origin: ["http://localhost:3000", "https://connect-four-pz.netlify.app"],
-    methods: ["GET"],
+    methods: ["GET", "PUT", "POST"],
+    credentials: true,
   },
 });
 
-app.get("/", (req, res) => {
-  res.send("working");
-});
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+app.use(express.json());
+app.use("/user", user);
 
 const PORT = process.env.PORT || 3001;
-http.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
+httpServer.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
 
 let connectionStatus = [false, false];
-server.on("connection", (socket) => {
+io.on("connection", (socket) => {
   let playerIndex = -1;
 
   socket.on("player-connecting", ({ userName }) => {
@@ -37,7 +53,7 @@ server.on("connection", (socket) => {
       socket.emit("full-server");
       return;
     }
-    server.emit("player-has-joined", { player1: connectionStatus[0], player2: connectionStatus[1] });
+    io.emit("player-has-joined", { player1: connectionStatus[0], player2: connectionStatus[1] });
     console.log(`Player has connected: `, connectionStatus);
   });
 
