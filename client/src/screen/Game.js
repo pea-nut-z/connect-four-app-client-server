@@ -4,7 +4,7 @@ import { Grid } from "./Grid";
 import { initialGrid } from "../helper";
 import { SocketContext } from "../contexts/socket";
 
-export default function Game({ userName, game, incrementData, toggleGameModeCb }) {
+export default function Game({ currentUser, userName, game, incrementData, toggleGameModeCb }) {
   const [player1Name, setPlayer1Name] = useState(game === "single" ? userName : null);
   const [player2Name, setPlayer2Name] = useState(game === "single" ? "Peanutbot" : null);
   const [round, setRound] = useState(1);
@@ -40,7 +40,8 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   const quit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
-    if (!info && !isBlankGrid) incrementData("played");
+    // if (!info && !isBlankGrid) incrementData("played");
+    if (!info && !isBlankGrid) incrementData({ played: currentUser.played + 1 });
     if (game === "multi") {
       client.emit("player-disconnected", { playerNum: thisPlayerNum });
     }
@@ -119,7 +120,8 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
     if (result) {
       if (result === thisPlayerNum) {
         setResultMsg("🥂 YOU WIN! 🎉");
-        incrementData("won");
+        // incrementData("won");
+        incrementData({ won: currentUser.won + 1 });
       } else if (result === "Draw") {
         setResultMsg(result + "! 🤝");
       } else {
@@ -133,7 +135,10 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
         setInfo(`Waiting for ${opponentName} to restart the game...`);
         setDisableReplayBtn(true);
       }
-      result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
+      // result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
+      result === thisPlayerNum
+        ? incrementData({ played: currentUser.played + 1, won: currentUser.won + 1 })
+        : incrementData({ played: currentUser.played + 1 });
       result === 1 && setScore1((score) => score + 1);
       result === 2 && setScore2((score) => score + 1);
       setGameOver(true);
@@ -145,7 +150,9 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
   useEffect(() => {
     if (replay) {
       const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
-      if (!gameOver && !isBlankGrid && triggeredBy === thisPlayerNum) incrementData("played"); //replay in the middle of the game
+      if (!gameOver && !isBlankGrid && triggeredBy === thisPlayerNum)
+        incrementData({ played: currentUser.played + 1 });
+      // incrementData("played"); //replay in the middle of the game
       ref.current.resetGrid();
       setGameOver(false);
       setRound((PreRound) => PreRound + 1);
@@ -159,15 +166,16 @@ export default function Game({ userName, game, incrementData, toggleGameModeCb }
 
   return (
     <div className="container">
-     {resultMsg && <div>
+      {resultMsg && (
+        <div>
           <img alt="peanut" src="peanut.ico" className="peanut peanut1" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut2" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut3" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut4" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut5" />
           <img alt="peanut" src="peanut.ico" className="peanut peanut6" />
-      </div>
-      }
+        </div>
+      )}
       <div className="row">
         {/* SCORE DSIPLAY */}
         <div className="col">

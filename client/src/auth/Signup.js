@@ -9,7 +9,7 @@ export default function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { signup, setCurrentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -24,12 +24,18 @@ export default function Signup() {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value).then((cred) => {
-        cred.user.updateProfile({
-          displayName: usernameRef.current.value,
-        });
-      });
-      history.push("/", { userName: usernameRef.current.value });
+      // await signup(emailRef.current.value, passwordRef.current.value).then((cred) => {
+      //   cred.user.updateProfile({
+      //     displayName: usernameRef.current.value,
+      //   });
+      // });
+      const res = await signup(
+        emailRef.current.value,
+        passwordRef.current.value,
+        usernameRef.current.value
+      );
+      setCurrentUser(res.data);
+      history.push("/");
     } catch {
       setError("Failed to create an account");
       setLoading(false);

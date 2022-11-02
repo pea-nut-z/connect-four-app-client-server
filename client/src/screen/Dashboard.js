@@ -1,16 +1,16 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Card, Alert } from "react-bootstrap";
 import CustomButton from "../UI/CustomButton";
 import { SocketContext, socket } from "../contexts/socket";
-import { useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Game from "./Game";
 
-export default function Dashboard({ currentUser, data, incrementData, logout }) {
+export default function Dashboard({ currentUser, incrementData, logout }) {
   const history = useHistory();
-  const location = useLocation();
   const [game, setGame] = useState();
-  const [userName] = useState(location.state?.userName || currentUser.displayName);
   const [error, setError] = useState("");
+  const userName = useRef(currentUser.userName).current;
+  // const [userName] = useState(currentUser.userName);
 
   const handleLogout = async () => {
     setError("");
@@ -35,6 +35,7 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
       {game ? (
         <SocketContext.Provider value={socket}>
           <Game
+            currentUser={currentUser}
             userName={userName}
             game={game}
             incrementData={incrementData}
@@ -50,10 +51,10 @@ export default function Dashboard({ currentUser, data, incrementData, logout }) 
               </h2>
               <div className="row">
                 <h2 data-testid="played" className="col-6 text-center">
-                  🎮 ✖️ {data?.played !== undefined ? data.played : "Loading..."}
+                  🎮 ✖️ {currentUser?.played !== undefined ? currentUser.played : "Loading..."}
                 </h2>
                 <h2 data-testid="won" className="col-6 text-center">
-                  🏆 ✖️ {data?.won !== undefined ? data.won : "Loading..."}
+                  🏆 ✖️ {currentUser?.won !== undefined ? currentUser.won : "Loading..."}
                 </h2>
               </div>
               {error && (

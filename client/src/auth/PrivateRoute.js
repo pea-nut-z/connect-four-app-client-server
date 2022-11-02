@@ -4,43 +4,44 @@ import { useAuth } from "../contexts/AuthContext";
 import { app } from "../firebase";
 
 export default function PrivateRoute({ component: Component, ...rest }) {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, incrementData, logout } = useAuth();
   const [id, setId] = useState();
   const [data, setData] = useState();
 
-  const incrementData = useCallback(
-    (key1, key2) => {
-      let updatedData = { ...data, [key1]: data[key1] + 1 };
-      if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
-      const ref = app.database().ref(id);
-      ref.update({ ...updatedData });
-    },
-    [data, id]
-  );
+  // const incrementData = useCallback(
+  //   (key1, key2) => {
+  //     let updatedData = { ...data, [key1]: data[key1] + 1 };
+  //     if (key2) updatedData = { ...updatedData, [key2]: data[key2] + 1 };
+  //     const ref = app.database().ref(id);
+  //     ref.update({ ...updatedData });
+  //     return "runs incrementDate call back";
+  //   },
+  //   [data, id]
+  // );
 
-  useEffect(() => {
-    let ref;
-    let newData;
-    if (currentUser) {
-      const uid = currentUser.uid;
-      setId(uid);
-      ref = app.database().ref(uid);
-      newData = ref.on(
-        "value",
-        (snapshot) => {
-          snapshot.val() ? setData(snapshot.val()) : setData({ played: 0, won: 0 });
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
-    return () => {
-      if (currentUser) {
-        ref.off("value", newData);
-      }
-    };
-  }, [currentUser]);
+  // useEffect(() => {
+  //   let ref;
+  //   let newData;
+  //   if (currentUser) {
+  //     console.log("there's a user @ PrivateRoute");
+  //     setId(currentUser.uid);
+  //     ref = app.database().ref(currentUser.uid);
+  //     newData = ref.on(
+  //       "value",
+  //       (snapshot) => {
+  //         snapshot.val() ? setData(snapshot.val()) : setData({ played: 0, won: 0 });
+  //       },
+  //       (error) => {
+  //         console.error("retriving score error", error);
+  //       }
+  //     );
+  //   }
+  //   return () => {
+  //     if (currentUser) {
+  //       ref.off("value", newData);
+  //     }
+  //   };
+  // }, [currentUser]);
 
   return (
     <Route
@@ -50,7 +51,6 @@ export default function PrivateRoute({ component: Component, ...rest }) {
           <Component
             {...props}
             currentUser={currentUser}
-            data={data}
             incrementData={incrementData}
             logout={logout}
           />
