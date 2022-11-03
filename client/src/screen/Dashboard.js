@@ -5,7 +5,7 @@ import { SocketContext, socket } from "../contexts/socket";
 import { useHistory } from "react-router-dom";
 import Game from "./Game";
 
-export default function Dashboard({ currentUser, incrementData, logout }) {
+export default function Dashboard({ currentUser, updateUser, logout }) {
   const history = useHistory();
   const [game, setGame] = useState();
   const [error, setError] = useState("");
@@ -37,7 +37,7 @@ export default function Dashboard({ currentUser, incrementData, logout }) {
             currentUser={currentUser}
             userName={userName}
             game={game}
-            incrementData={incrementData}
+            updateUser={updateUser}
             toggleGameModeCb={toggleGameModeCb}
           />
         </SocketContext.Provider>

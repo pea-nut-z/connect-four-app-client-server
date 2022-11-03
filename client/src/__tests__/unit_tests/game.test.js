@@ -19,14 +19,14 @@ useRef.mockReturnValue({ current: { grid: initialGrid, resetGrid: jest.fn() } })
 const singlePlayerProps = {
   userName: "Player",
   game: "single",
-  incrementData: jest.fn(),
+  updateUser: jest.fn(),
   toggleGameModeCb: jest.fn(),
 };
 
 const multiPlayerProps = {
   userName: "Jester",
   game: "multi",
-  incrementData: jest.fn(),
+  updateUser: jest.fn(),
   toggleGameModeCb: jest.fn(),
 };
 

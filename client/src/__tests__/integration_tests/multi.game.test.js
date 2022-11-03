@@ -20,7 +20,7 @@ jest.mock("../../helper", () => ({
 const player2Props = {
   userName: "Jester",
   game: "multi",
-  incrementData: jest.fn(),
+  updateUser: jest.fn(),
   toggleGameModeCb: jest.fn(),
 };
 

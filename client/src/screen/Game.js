@@ -4,7 +4,7 @@ import { Grid } from "./Grid";
 import { initialGrid } from "../helper";
 import { SocketContext } from "../contexts/socket";
 
-export default function Game({ currentUser, userName, game, incrementData, toggleGameModeCb }) {
+export default function Game({ currentUser, userName, game, updateUser, toggleGameModeCb }) {
   const [player1Name, setPlayer1Name] = useState(game === "single" ? userName : null);
   const [player2Name, setPlayer2Name] = useState(game === "single" ? "Peanutbot" : null);
   const [round, setRound] = useState(1);
@@ -40,7 +40,7 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
 
   const quit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
-    if (!info && !isBlankGrid) incrementData({ played: currentUser.played + 1 });
+    if (!info && !isBlankGrid) updateUser({ played: currentUser.played + 1 });
     if (game === "multi") {
       client.emit("player-disconnected", { playerNum: thisPlayerNum });
     }
@@ -119,8 +119,7 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
     if (result) {
       if (result === thisPlayerNum) {
         setResultMsg("🥂 YOU WIN! 🎉");
-        // incrementData("won");
-        incrementData({ won: currentUser.won + 1 });
+        updateUser({ won: currentUser.won + 1 });
       } else if (result === "Draw") {
         setResultMsg(result + "! 🤝");
       } else {
@@ -134,23 +133,22 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
         setInfo(`Waiting for ${opponentName} to restart the game...`);
         setDisableReplayBtn(true);
       }
-      // result === thisPlayerNum ? incrementData("played", "won") : incrementData("played");
       result === thisPlayerNum
-        ? incrementData({ played: currentUser.played + 1, won: currentUser.won + 1 })
-        : incrementData({ played: currentUser.played + 1 });
+        ? updateUser({ played: currentUser.played + 1, won: currentUser.won + 1 })
+        : updateUser({ played: currentUser.played + 1 });
       result === 1 && setScore1((score) => score + 1);
       result === 2 && setScore2((score) => score + 1);
       setGameOver(true);
       setResult(0);
       setTriggeredBy(0);
     }
-  }, [result, game, incrementData, triggeredBy, thisPlayerName, thisPlayerNum]);
+  }, [result, game, updateUser, triggeredBy, thisPlayerName, thisPlayerNum]);
 
   useEffect(() => {
     if (replay) {
       const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
       if (!gameOver && !isBlankGrid && triggeredBy === thisPlayerNum)
-        incrementData({ played: currentUser.played + 1 });
+        updateUser({ played: currentUser.played + 1 });
       ref.current.resetGrid();
       setGameOver(false);
       setRound((PreRound) => PreRound + 1);
@@ -160,7 +158,7 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
       setReplay(false);
       setTriggeredBy(0);
     }
-  }, [gameOver, incrementData, triggeredBy, replay, thisPlayerNum]);
+  }, [gameOver, updateUser, triggeredBy, replay, thisPlayerNum]);
 
   return (
     <div className="container">

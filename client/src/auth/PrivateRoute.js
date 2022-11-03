@@ -4,19 +4,14 @@ import { useAuth } from "../contexts/AuthContext";
 import { app } from "../firebase";
 
 export default function PrivateRoute({ component: Component, ...rest }) {
-  const { currentUser, incrementData, logout } = useAuth();
+  const { currentUser, updateUser, logout } = useAuth();
 
   return (
     <Route
       {...rest}
       render={(props) => {
         return currentUser ? (
-          <Component
-            {...props}
-            currentUser={currentUser}
-            incrementData={incrementData}
-            logout={logout}
-          />
+          <Component {...props} currentUser={currentUser} updateUser={updateUser} logout={logout} />
         ) : (
           <Redirect to="/login" />
         );

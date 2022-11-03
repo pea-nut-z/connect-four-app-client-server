@@ -9,7 +9,7 @@ export default function UpdateProfile() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { currentUser, updatePassword, updateEmail } = useAuth();
+  const { currentUser, updateUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -20,25 +20,27 @@ export default function UpdateProfile() {
       return setError("Passwords do not match");
     }
 
-    const promises = [];
+    const update = {};
     setLoading(true);
     setError("");
 
-    if (usernameRef.current.value !== currentUser.displayName) {
-      promises.push(currentUser.updateProfile({ displayName: usernameRef.current.value }));
+    if (usernameRef.current.value !== currentUser.userName) {
+      update.userName = usernameRef.current.value;
     }
     if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
+      update.email = emailRef.current.value;
     }
     if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value));
+      update.password = passwordRef.current.value;
     }
 
-    Promise.all(promises)
+    updateUser(update)
       .then(() => {
         history.push("/");
       })
       .catch(() => {
+        console.log("RAN");
+
         setError("Failed to update account");
         setLoading(false);
       });
@@ -58,7 +60,7 @@ export default function UpdateProfile() {
                 type="text"
                 ref={usernameRef}
                 required
-                defaultValue={currentUser.displayName}
+                defaultValue={currentUser.userName}
               />
             </Form.Group>
             <Form.Group id="email">

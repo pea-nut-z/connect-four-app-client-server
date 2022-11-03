@@ -8,7 +8,7 @@ import { act } from "react-dom/test-utils";
 const singlePlayerProps = {
   userName: "Player",
   game: "single",
-  incrementData: jest.fn(),
+  updateUser: jest.fn(),
   toggleGameModeCb: jest.fn(),
 };
 
@@ -164,13 +164,13 @@ describe("Single player mode - moves and buttons", () => {
     const playerMove = getAllByTestId("4");
     fireEvent.click(playerMove[0]);
     fireEvent.click(getByTestId("replay"));
-    expect(singlePlayerProps.incrementData).toHaveBeenCalledWith("played");
+    expect(singlePlayerProps.updateUser).toHaveBeenCalledWith("played");
   });
 
   it("increments the player's play data on click of 'Quit' in the middle of a game", () => {
     const playerMove = getAllByTestId("4");
     fireEvent.click(playerMove[0]);
     fireEvent.click(getByTestId("quit"));
-    expect(singlePlayerProps.incrementData).toHaveBeenCalledWith("played");
+    expect(singlePlayerProps.updateUser).toHaveBeenCalledWith("played");
   });
 });
