@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { auth } from "../firebase";
 import axios from "axios";
 
@@ -37,7 +37,11 @@ export function AuthProvider({ children }) {
       }
     );
 
-  const incrementData = (data) => {
+  const logout = () => {
+    setCurrentUser(null);
+  };
+
+  const updateUser = (data) =>
     axios
       .patch("/user/update", data, {
         headers: {
@@ -47,14 +51,12 @@ export function AuthProvider({ children }) {
       })
       .then((res) => {
         setCurrentUser({ ...currentUser, ...res.data });
-      })
-      .catch((err) => console.error("Update Error", err));
-  };
+      });
 
   const value = {
     currentUser,
     setCurrentUser,
-    incrementData,
+    updateUser,
     login,
     signup,
     logout,

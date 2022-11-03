@@ -39,6 +39,11 @@ router.post("/signup", async (req, res) => {
 });
 
 router.patch("/update", authToken, async (req, res) => {
+  if (req.body.password) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    req.body.password = hashedPassword;
+  }
+
   try {
     const update = await Users.findOneAndUpdate(
       { _id: req.user._id },
@@ -47,7 +52,6 @@ router.patch("/update", authToken, async (req, res) => {
     );
     res.json(update);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 });
