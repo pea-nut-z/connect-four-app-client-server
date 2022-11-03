@@ -24,11 +24,6 @@ export default function Signup() {
     try {
       setError("");
       setLoading(true);
-      // await signup(emailRef.current.value, passwordRef.current.value).then((cred) => {
-      //   cred.user.updateProfile({
-      //     displayName: usernameRef.current.value,
-      //   });
-      // });
       const res = await signup(
         emailRef.current.value,
         passwordRef.current.value,

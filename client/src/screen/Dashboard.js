@@ -10,7 +10,6 @@ export default function Dashboard({ currentUser, incrementData, logout }) {
   const [game, setGame] = useState();
   const [error, setError] = useState("");
   const userName = useRef(currentUser.userName).current;
-  // const [userName] = useState(currentUser.userName);
 
   const handleLogout = async () => {
     setError("");

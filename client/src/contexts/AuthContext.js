@@ -10,10 +10,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(true);
 
-  const login = (email, password) => auth.signInWithEmailAndPassword(email, password);
-  const logout = () => auth.signOut();
   const resetPassword = (email) => auth.sendPasswordResetEmail(email);
   const updateEmail = (email) => currentUser.updateEmail(email);
   const updatePassword = (password) => currentUser.updatePassword(password);
@@ -22,6 +19,17 @@ export function AuthProvider({ children }) {
     axios.post(
       "/user/signup",
       { email, password, userName },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+  const login = (email, password) =>
+    axios.post(
+      "/user/login",
+      { email, password },
       {
         headers: {
           "Content-Type": "application/json",

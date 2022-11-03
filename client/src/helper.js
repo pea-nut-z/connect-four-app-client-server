@@ -56,7 +56,6 @@ export const checkResult = (grid, row, col) => {
   while (up || down || left || right || upLeft || downRight || upRight || downLeft) {
     const counts = [up_down, left_right, upLeft_downRight, upRight_downLeft];
     if (counts.some((count) => count >= 4)) return value;
-    0;
 
     if (up) {
       grid[rMins]?.[col] === value ? up_down++ : (up = false);

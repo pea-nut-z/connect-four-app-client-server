@@ -40,7 +40,6 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
 
   const quit = () => {
     const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
-    // if (!info && !isBlankGrid) incrementData("played");
     if (!info && !isBlankGrid) incrementData({ played: currentUser.played + 1 });
     if (game === "multi") {
       client.emit("player-disconnected", { playerNum: thisPlayerNum });
@@ -152,7 +151,6 @@ export default function Game({ currentUser, userName, game, incrementData, toggl
       const isBlankGrid = JSON.stringify(ref.current.grid) === JSON.stringify(initialGrid);
       if (!gameOver && !isBlankGrid && triggeredBy === thisPlayerNum)
         incrementData({ played: currentUser.played + 1 });
-      // incrementData("played"); //replay in the middle of the game
       ref.current.resetGrid();
       setGameOver(false);
       setRound((PreRound) => PreRound + 1);
