@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { auth } from "../firebase";
 import axios from "axios";
 
 export const AuthContext = React.createContext();
@@ -10,10 +9,6 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
-
-  const resetPassword = (email) => auth.sendPasswordResetEmail(email);
-  const updateEmail = (email) => currentUser.updateEmail(email);
-  const updatePassword = (password) => currentUser.updatePassword(password);
 
   const signup = (email, password, userName) =>
     axios.post(
@@ -60,9 +55,6 @@ export function AuthProvider({ children }) {
     login,
     signup,
     logout,
-    resetPassword,
-    updateEmail,
-    updatePassword,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

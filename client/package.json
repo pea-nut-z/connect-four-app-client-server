@@ -19,7 +19,10 @@
   "scripts": {
     "start": "rimraf .eslintcache && react-scripts start",
     "build": "react-scripts build",
-    "test": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/ ./src/__tests__/integration_tests --watch --detectOpenHandles",
+    "test:all": "jest ./src/__tests__/unit_tests ./src/__tests__/functional_tests/ ./src/__tests__/integration_tests --watch --detectOpenHandles",
+    "test:single":"jest single.game.test.js",
+    "test:multi":"jest multi.game.test.js",
+    "test":"jest",
     "coverage": "npm run test -- --coverage --watchAll",
     "emulators": "firebase emulators:start",
     "e2eTest": "jest ./src/__tests__/e2e_tests/auth.test.js",

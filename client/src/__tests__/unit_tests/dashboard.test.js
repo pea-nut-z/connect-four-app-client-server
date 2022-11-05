@@ -28,9 +28,7 @@ const history = createMemoryHistory();
 describe("Dashboard - success", () => {
   const props = {
     currentUser: {
-      displayName: "Tester",
-    },
-    data: {
+      userName: "Tester",
       played: 2,
       won: 1,
     },
@@ -53,15 +51,15 @@ describe("Dashboard - success", () => {
   });
 
   it("shows username", () => {
-    expect(getByTestId("userName")).toHaveTextContent(`Hello, ${props.currentUser.displayName}!`);
+    expect(getByTestId("userName")).toHaveTextContent(`Hello, ${props.currentUser.userName}!`);
   });
 
   it("shows number of games played", () => {
-    expect(getByTestId("played")).toHaveTextContent(`🎮 ✖️ ${props.data.played}`);
+    expect(getByTestId("played")).toHaveTextContent(`🎮 ✖️ ${props.currentUser.played}`);
   });
 
   it("shows number of times won", () => {
-    expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${props.data.won}`);
+    expect(getByTestId("won")).toHaveTextContent(`🏆 ✖️ ${props.currentUser.won}`);
   });
 
   it("renders game component on click", async () => {

@@ -210,17 +210,14 @@ export default function Game({ currentUser, userName, game, updateUser, toggleGa
         gameOver={gameOver}
       />
 
-      {/* RESULT */}
       <h4 data-testid="resultMsg" className="text-center text-warning mt-2 msg-display">
         {resultMsg}
       </h4>
 
-      {/* INFO */}
       <h4 data-testid="info" className="text-center text-warning mt-2 msg-display">
         {info}
       </h4>
 
-      {/* BUTTONS */}
       <div
         onClick={() => {
           game === "multi" && client.emit("replay", { playerNum: thisPlayerNum });

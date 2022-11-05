@@ -6,6 +6,7 @@ import * as mock from "../../helper";
 import { act } from "react-dom/test-utils";
 
 const singlePlayerProps = {
+  currentUser: { played: 0, won: 0 },
   userName: "Player",
   game: "single",
   updateUser: jest.fn(),

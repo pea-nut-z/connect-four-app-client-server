@@ -12,16 +12,6 @@ import { SocketContext } from "../contexts/socket";
 
 export const Grid = forwardRef(
   ({ game, handleResultCb, opponentName, thisPlayerNum, gameOver }, ref) => {
-    // const initialGrid = [
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [2, 2, 2, 0, 0, 0, 0],
-    //   [1, 1, 1, 0, 0, 0, 0],
-    // ];
-    // const initialRowIndex = [3, 3, 3, 5, 5, 5, 5];
-
     const [grid, setGrid] = useState(initialGrid);
     const [rowChart, setRowChart] = useState(initialRowIndex);
     const [ready, setReady] = useState(game === "single" ? true : false);
@@ -37,6 +27,7 @@ export const Grid = forwardRef(
     );
 
     const client = useContext(SocketContext);
+
     useImperativeHandle(ref, () => ({
       grid,
       resetGrid,

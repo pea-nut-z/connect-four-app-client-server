@@ -18,6 +18,7 @@ jest.mock("../../helper", () => ({
 }));
 
 const player2Props = {
+  currentUser: { played: 0, won: 0 },
   userName: "Jester",
   game: "multi",
   updateUser: jest.fn(),

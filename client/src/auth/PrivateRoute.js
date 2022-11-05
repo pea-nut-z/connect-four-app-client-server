@@ -1,7 +1,6 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { app } from "../firebase";
 
 export default function PrivateRoute({ component: Component, ...rest }) {
   const { currentUser, updateUser, logout } = useAuth();
